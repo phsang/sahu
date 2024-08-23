@@ -9,8 +9,8 @@ export class ShAvatarComponent implements AfterViewInit, OnChanges {
   @ViewChild('shAvatar') shAvatar!: ElementRef;
   @Input() shSrc?: string;
   @Input() shClass?: string;
-  @Input() shIcon?: string;
-  @Input() shText?: string;
+  @Input() shIcon: true | false = true;
+  @Input() shText: string = 'A';
   @Input() shBackgroundColor: '#c0c0c0' | string = '#c0c0c0';
   @Input() shColor: '#fff' | string = '#fff';
   @Input() shAnimated: boolean = true;
@@ -28,7 +28,7 @@ export class ShAvatarComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['shSrc'] || changes['shIcon'] || changes['shText']) {
+    if (changes['shSrc'] || changes['shText']) {
       this.resetAvatarClass();
       this.updateAvatarClass();
     }
