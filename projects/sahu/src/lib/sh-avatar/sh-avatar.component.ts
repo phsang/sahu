@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, Renderer2, AfterViewInit, input } from '@angular/core';
+import { Component, Input, ElementRef, Renderer2, AfterViewInit, input, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'sh-avatar',
@@ -6,6 +6,7 @@ import { Component, Input, ElementRef, Renderer2, AfterViewInit, input } from '@
   styleUrls: ['./sh-avatar.component.scss']
 })
 export class ShAvatarComponent implements AfterViewInit {
+  @ViewChild('shAvatar') shAvatar!: ElementRef;
   @Input() shSrc?: string;
   @Input() shClass?: string;
   @Input() shIcon?: string;
@@ -20,6 +21,7 @@ export class ShAvatarComponent implements AfterViewInit {
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   ngAfterViewInit(): void {
+    this.shAvatar.nativeElement.classList.remove('avatar-loaded');
     this.avatarClass = `${this.shClass ? this.shClass : ''} sh-avatar-${this.shShape}`;
 
     if (this.shSize === 'large') {
@@ -29,7 +31,7 @@ export class ShAvatarComponent implements AfterViewInit {
     }
 
     if (this.shAnimated) {
-      this.avatarClass += ' sh-avatar-animated';
+      this.avatarClass += ' avatar-animated';
     }
   }
 
@@ -37,7 +39,7 @@ export class ShAvatarComponent implements AfterViewInit {
     if (this.shOnload) {
       this.shOnload();
     }
-    this.renderer.addClass(this.el.nativeElement, 'avatar-loaded');
+    this.shAvatar.nativeElement.classList.add('avatar-loaded');
   }
 
   isNumeric(value: any): value is number {
