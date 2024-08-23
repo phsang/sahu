@@ -28,6 +28,11 @@
   width: 100%;
 }
 
+.sh-avatar-icon svg {
+  height: 46%;
+  width: 46%;
+}
+
 .sh-avatar-text {
   align-items: center;
   background-color: #007bff;
@@ -41,6 +46,7 @@
 img {
   border-radius: inherit;
   height: 100%;
+  object-fit: cover;
   width: 100%;
 }
 
@@ -50,7 +56,7 @@ img {
   transition: 0.3s;
 }
 
-.avatar-loaded .avatar-animated img {
+.avatar-animated.avatar-loaded img {
   opacity: 1;
   transform: scale(1);
 }
