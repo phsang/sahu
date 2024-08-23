@@ -50,7 +50,7 @@ img {
   transition: 0.3s;
 }
 
-.avatar-animated.avatar-loaded img {
+.avatar-loaded .avatar-animated img {
   opacity: 1;
   transform: scale(1);
 }

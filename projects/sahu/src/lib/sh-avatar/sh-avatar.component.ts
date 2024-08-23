@@ -1,27 +1,38 @@
-import { Component, Input, ElementRef, Renderer2, AfterViewInit, input, ViewChild } from '@angular/core';
+import { Component, Input, ElementRef, Renderer2, AfterViewInit, ViewChild, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'sh-avatar',
   templateUrl: './sh-avatar.component.html',
   styleUrls: ['./sh-avatar.component.scss']
 })
-export class ShAvatarComponent implements AfterViewInit {
+export class ShAvatarComponent implements AfterViewInit, OnChanges {
   @ViewChild('shAvatar') shAvatar!: ElementRef;
   @Input() shSrc?: string;
   @Input() shClass?: string;
   @Input() shIcon?: string;
   @Input() shText?: string;
-  @Input() shAnimated: true | false = true;
+  @Input() shAnimated: boolean = true;
   @Input() shShape: 'circle' | 'square' = 'circle';
   @Input() shSize?: 'large' | 'small' | number;
   @Input() shOnload?: () => void;
 
   avatarClass = '';
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit(): void {
-    this.shAvatar.nativeElement.classList.remove('avatar-loaded');
+    this.updateAvatarClass();
+    this.cdr.detectChanges(); // Giải quyết vấn đề ExpressionChangedAfterItHasBeenCheckedError
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['shSrc'] || changes['shIcon'] || changes['shText']) {
+      this.resetAvatarClass();
+      this.updateAvatarClass();
+    }
+  }
+
+  private updateAvatarClass(): void {
     this.avatarClass = `${this.shClass ? this.shClass : ''} sh-avatar-${this.shShape}`;
 
     if (this.shSize === 'large') {
@@ -35,11 +46,17 @@ export class ShAvatarComponent implements AfterViewInit {
     }
   }
 
+  private resetAvatarClass(): void {
+    if (this.shAvatar) {
+      this.renderer.removeClass(this.shAvatar.nativeElement, 'avatar-loaded');
+    }
+  }
+
   handleLoad(): void {
     if (this.shOnload) {
       this.shOnload();
     }
-    this.shAvatar.nativeElement.classList.add('avatar-loaded');
+    this.renderer.addClass(this.shAvatar.nativeElement, 'avatar-loaded');
   }
 
   isNumeric(value: any): value is number {
