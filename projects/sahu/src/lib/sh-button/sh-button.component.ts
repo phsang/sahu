@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./sh-button.component.scss']
 })
 export class ShButtonComponent {
-  @Input() type: 'primary' | 'secondary' | 'danger' = 'primary';
+  @Input() shType: 'button' | 'submit' | 'reset' = 'button';
+  @Input() shClass: string = '';
   @Input() disabled = false;
 }
