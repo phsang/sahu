@@ -1,0 +1,7 @@
+<button [ngClass]="{
+        'sh-button-primary': type === 'primary',
+        'sh-button-secondary': type === 'secondary',
+        'sh-button-danger': type === 'danger'
+      }" [disabled]="disabled">
+  <ng-content></ng-content>
+</button>
