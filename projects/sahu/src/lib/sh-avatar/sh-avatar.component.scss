@@ -38,3 +38,12 @@ img {
   height: 100%;
   width: 100%;
 }
+
+.sh-avatar-animated img {
+  transform: scale(0);
+  transition: .3s ease-in-out;
+}
+
+.avatar-loaded .sh-avatar-animated img {
+  transform: scale(1);
+}
