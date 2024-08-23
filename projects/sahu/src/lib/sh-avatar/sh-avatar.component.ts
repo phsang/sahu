@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'sh-button',
-  templateUrl: './sh-button.component.html',
-  styleUrls: ['./sh-button.component.scss']
+  selector: 'sh-avatar',
+  templateUrl: './sh-avatar.component.html',
+  styleUrls: ['./sh-avatar.component.scss']
 })
-export class ShButtonComponent {
+export class ShAvatarComponent {
   @Input() shType: 'button' | 'submit' | 'reset' = 'button';
   @Input() shClass: string = '';
   @Input() disabled = false;
