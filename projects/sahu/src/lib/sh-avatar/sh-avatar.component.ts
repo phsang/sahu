@@ -12,7 +12,7 @@ export class ShAvatarComponent implements OnInit {
   @Input() shText?: string;
   @Input() shShape: 'circle' | 'square' = 'circle';
   @Input() shSize?: 'large' | 'small' | number;
-  @Input() mfOnload?: () => void;
+  @Input() shOnload?: () => void;
 
   avatarClass = '';
 
@@ -27,8 +27,8 @@ export class ShAvatarComponent implements OnInit {
   }
 
   handleLoad(): void {
-    if (this.mfOnload) {
-      this.mfOnload();
+    if (this.shOnload) {
+      this.shOnload();
     }
   }
 
