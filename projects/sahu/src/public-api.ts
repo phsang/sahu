@@ -6,4 +6,4 @@ export * from './lib/sahu.service';
 export * from './lib/sahu.component';
 
 export * from './lib/sh-button';
-
+export * from './lib/sh-avatar';

@@ -7,4 +7,4 @@ import { ShAvatarComponent } from './sh-avatar.component';
   imports: [CommonModule],
   exports: [ShAvatarComponent],
 })
-export class ShButtonModule { }
+export class ShAvatarModule { }

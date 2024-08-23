@@ -1,0 +1,40 @@
+.sh-avatar-circle {
+  border-radius: 50%;
+}
+
+.sh-avatar-square {
+  border-radius: 0;
+}
+
+.sh-avatar-large {
+  height: 64px;
+  width: 64px;
+}
+
+.sh-avatar-small {
+  height: 32px;
+  width: 32px;
+}
+
+.sh-avatar-icon {
+  align-items: center;
+  display: flex;
+  font-size: 24px;
+  justify-content: center;
+}
+
+.sh-avatar-text {
+  align-items: center;
+  background-color: #007bff;
+  border-radius: inherit;
+  color: #ffffff;
+  display: flex;
+  font-size: 14px;
+  justify-content: center;
+}
+
+img {
+  border-radius: inherit;
+  height: 100%;
+  width: 100%;
+}
