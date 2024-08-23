@@ -43,7 +43,7 @@ export class ShAvatarComponent implements AfterViewInit, OnChanges {
       this.avatarClass += ' sh-avatar-small';
     }
 
-    if (this.shAnimated) {
+    if (this.shAnimated && this.shSrc) {
       this.avatarClass += ' avatar-animated';
     }
 
