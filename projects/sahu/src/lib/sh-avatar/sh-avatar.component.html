@@ -1,7 +1,7 @@
 <div [ngClass]="avatarClass" [style.height.px]="isNumeric(shSize) ? shSize : null" [style.width.px]="isNumeric(shSize) ? shSize : null">
   <img *ngIf="shSrc" [src]="shSrc" (load)="handleLoad()" />
   <ng-container *ngIf="!shSrc">
-    <i *ngIf="shIcon" class="sh-avatar-icon">{{ shIcon }}</i>
+    <i *ngIf="shIcon" class="sh-avatar-icon fal {{shIcon}}"></i>
     <span *ngIf="!shIcon && shText" class="sh-avatar-text">{{ shText }}</span>
   </ng-container>
 </div>
