@@ -46,6 +46,8 @@ export class ShAvatarComponent implements AfterViewInit, OnChanges {
     if (this.shAnimated) {
       this.avatarClass += ' avatar-animated';
     }
+
+    this.avatarClass += ' sh-avatar';
   }
 
   private resetAvatarClass(): void {
