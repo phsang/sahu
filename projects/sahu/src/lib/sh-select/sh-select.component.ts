@@ -13,6 +13,7 @@ export class ShSelectComponent implements OnInit {
   @Input() shPlaceHolder?: string;
   @Input() shShowSearch: boolean = false;
   @Input() shApiCall!: (searchTerm: string) => Observable<any[]>;
+  @Input() ngModel: any;
   @Input() shMultiple: boolean = false;
 
   @Output() ngModelChange = new EventEmitter<any>();
@@ -48,12 +49,28 @@ export class ShSelectComponent implements OnInit {
 
   selectOption(option: any) {
     if (this.shMultiple) {
+      // Kiểm tra xem giá trị đã được chọn hay chưa
       if (!this.selectedTags.includes(option.label)) {
         this.selectedTags.push(option.label);
-        this.ngModelChange.emit(this.selectedTags);
+
+        // Nếu có `ngModel`, cập nhật giá trị và phát ra sự kiện
+        if (this.ngModel !== undefined) {
+          this.ngModel = this.selectedTags;
+          this.ngModelChange.emit(this.ngModel);
+        } else {
+          this.ngModelChange.emit(this.selectedTags);
+        }
       }
     } else {
-      this.ngModelChange.emit(option.value);
+      // Với chế độ chọn đơn lẻ
+      if (this.ngModel !== undefined) {
+        this.ngModel = option.value;
+        this.ngModelChange.emit(this.ngModel);
+      } else {
+        this.ngModelChange.emit(option.value);
+      }
+
+      // Đóng dropdown sau khi chọn
       this.toggleDropdown(false);
     }
   }
