@@ -1,6 +1,6 @@
 <div class="sh-select-container">
   <input type="text" [placeholder]="shPlaceHolder" [formControl]="searchControl" (focus)="toggleDropdown(true)" />
-  <div *ngIf="showTags">
+  <div *ngIf="shMultiple && selectedTags.length > 0">
     <span *ngFor="let tag of selectedTags" class="sh-tag">
       {{ tag }}
       <span class="remove-tag" (click)="removeTag(tag)">x</span>

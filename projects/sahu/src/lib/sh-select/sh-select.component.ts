@@ -8,6 +8,7 @@ import { Observable, of } from 'rxjs';
   templateUrl: './sh-select.component.html',
   styleUrls: ['./sh-select.component.scss']
 })
+
 export class ShSelectComponent implements OnInit {
   @Input() shPlaceHolder?: string;
   @Input() shShowSearch: boolean = false;
