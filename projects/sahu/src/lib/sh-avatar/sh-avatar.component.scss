@@ -67,8 +67,8 @@
 
 .avatar-animated::before {
   animation: rotate 1.5s linear infinite;
-  border-left: 3px solid transparent;
   border-radius: 50%;
+  border-right: 3px solid transparent;
   border-top: 3px solid #b8eaff;
   content: "";
   height: 50%;
@@ -84,7 +84,7 @@
 
 @keyframes rotate {
   100% {
-    transform: translate(-50%, -50%) rotate(-360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 

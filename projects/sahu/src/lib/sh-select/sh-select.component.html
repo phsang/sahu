@@ -1,0 +1,22 @@
+<div class="sh-select-container">
+  <input type="text" [placeholder]="shPlaceHolder" [formControl]="searchControl" (focus)="toggleDropdown(true)" />
+  <div *ngIf="showTags">
+    <span *ngFor="let tag of selectedTags" class="sh-tag">
+      {{ tag }}
+      <span class="remove-tag" (click)="removeTag(tag)">x</span>
+    </span>
+  </div>
+  <div *ngIf="dropdownOpen" class="sh-dropdown">
+    <ng-container *ngIf="loading">
+      <div class="sh-loading">Loading...</div>
+    </ng-container>
+    <ng-container *ngIf="!loading">
+      <ng-container *ngFor="let group of groupedOptions">
+        <div *ngIf="group.label" class="sh-option-group-label">{{ group.label }}</div>
+        <div *ngFor="let option of group.options" (click)="selectOption(option)">
+          {{ option.label }}
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
