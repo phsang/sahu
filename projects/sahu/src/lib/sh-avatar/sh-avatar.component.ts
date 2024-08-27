@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, Renderer2, AfterViewInit, ViewChild, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'sh-avatar',
