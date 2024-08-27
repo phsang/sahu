@@ -1,5 +1,0 @@
-<div class="sh-input input-{{shSize}}" [ngClass]="{ 'input-focus': isFocused }">
-  <i *ngIf="shPrefix" class="fal fa-{{shPrefix}}"></i>
-  <input [type]="shType" [attr.name]="shName ? shName : null" [attr.id]="shId ? shId : null" [attr.class]="shClass ? shClass : null" [placeholder]="shPlaceholder" [autocomplete]="shAutocomplete" [disabled]="disabled" [attr.data-vali]="shValid" (focus)="toggleFocus(true)" (blur)="toggleFocus(false)">
-  <i *ngIf="shSuffix" class="fal fa-{{shSuffix}}"></i>
-</div>
