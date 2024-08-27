@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ShInputComponent } from './sh-input.component';
+import { ShInputDirective } from './sh-input.directive';
 
 @NgModule({
-  declarations: [ShInputComponent],
+  declarations: [ShInputDirective],
   imports: [
     CommonModule,
     FormsModule
   ],
-  exports: [ShInputComponent]
+  exports: [ShInputDirective]
 })
 export class ShInputModule { }
