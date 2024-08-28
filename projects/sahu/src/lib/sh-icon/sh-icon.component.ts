@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
-import * as fs from 'fs';
+import { iconList } from './icon-list';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'sh-icon',
@@ -8,23 +9,38 @@ import * as fs from 'fs';
 })
 export class ShIconComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('shIcon') shIcon!: ElementRef;
-  @Input() shType?: string = '';
+  @Input() shType: string = '';
   @Input() shTheme: 'light' | 'regular' | 'solid' | 'duotone' = 'light'
   @Input() shColor?: string;
+  @Input() shFontSize: number = 14;
   @Input() shRotate?: number;
   @Input() shSpin?: boolean = false;
-  iconList: any = '../../assets/icons.json';
-  iconValue: string = '';
+  @Input() shClass: string = '';
+  iconList: any;
+  iconValue: SafeHtml = '';
+  iconClass: string = '';
 
-  iconClass = '';
+  constructor(
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
+  ) { }
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) { }
+  ngOnInit() {
+    this.iconList = iconList();
 
-  ngOnInit(): void {
-    const jsonData = fs.readFileSync(this.iconList, 'utf-8');
-    const dataList = JSON.parse(jsonData);
+    if (this.shSpin) {
+      this.iconClass = 'sh-icon-spin';
+    }
+    if (this.shClass) {
+      this.iconClass += ' ' + this.shClass;
+    }
+
     if (this.shType) {
-      this.iconValue = dataList[this.shType][this.shTheme];
+      let rawIconValue = this.iconList[this.shType][this.shTheme];
+      let attributes = `fill="currentColor" style="height: ${this.shFontSize}px; width: ${this.shFontSize}px;"`;
+      rawIconValue = rawIconValue.replace('<svg', `<svg ${attributes}`);
+      this.iconValue = this.sanitizer.bypassSecurityTrustHtml(rawIconValue.trim());
     }
   }
 

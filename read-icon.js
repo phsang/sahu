@@ -39,7 +39,7 @@ function getAllSvgFiles(modeIndex, fileList = {}) {
 const directoryPath = './public/fontawesome5'; // Thay thế đường dẫn này bằng thư mục bạn muốn duyệt
 const svgFiles = getAllSvgFiles(0);
 
-const outputFilePath = './projects/sahu/src/assets/icons.json'; // Đường dẫn đến file JSON sẽ ghi
+const outputFilePath = './public/icons.json'; // Đường dẫn đến file JSON sẽ ghi
 
 // Ghi nội dung vào file JSON
 fs.writeFileSync(outputFilePath, JSON.stringify(svgFiles, null, 2), 'utf8');
