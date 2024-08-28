@@ -1,28 +1,8 @@
-.sh-avatar-circle {
-  border-radius: 50%;
-}
-
-.sh-avatar-square {
-  border-radius: 2px;
-}
-
-.sh-avatar {
-  height: 48px;
+.sh-image {
   position: relative;
-  width: 48px;
 }
 
-.sh-avatar-large {
-  height: 64px;
-  width: 64px;
-}
-
-.sh-avatar-small {
-  height: 32px;
-  width: 32px;
-}
-
-.sh-avatar-icon {
+.sh-image-dummy {
   align-items: center;
   background-color: #bfbfbf;
   border-radius: 50%;
@@ -34,40 +14,28 @@
   width: 100%;
 }
 
-.sh-avatar-icon svg {
+.sh-image-dummy svg {
   height: 46%;
   width: 46%;
 }
 
-.sh-avatar-text {
-  align-items: center;
-  border-radius: inherit;
-  color: #ffffff;
-  display: flex;
-  font-size: 14px;
-  height: 100%;
-  justify-content: center;
-  line-height: 1;
-  width: 100%;
-}
-
-.sh-avatar img {
+.sh-image img {
   border-radius: inherit;
   height: 100%;
   object-fit: cover;
   width: 100%;
 }
 
-.avatar-animated img {
+.image-animated img {
   opacity: 0;
   position: relative;
   transform: scale(0);
   transition: 0.3s;
 }
 
-.avatar-animated::before {
+.image-animated::before {
   animation: l1 1s infinite linear;
-  background: linear-gradient(90deg, #0001 33%, #0005 50%, #0001 66%) #bbb;
+  background: linear-gradient(90deg, #0001 33%, #0005 50%, #0001 66%) #f2f2f2;
   background-size: 300% 100%;
   border-radius: 999px;
   content: "";
@@ -90,12 +58,12 @@
   }
 }
 
-.avatar-animated.avatar-loaded img {
+.image-animated.image-loaded img {
   opacity: 1;
   transform: scale(1);
 }
 
-.avatar-animated.avatar-loaded::before {
+.image-animated.image-loaded::before {
   opacity: 0;
   visibility: hidden;
 }
