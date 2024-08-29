@@ -10,4 +10,5 @@ export * from './lib/sh-button';
 export * from './lib/sh-avatar';
 export * from './lib/sh-image';
 export * from './lib/sh-select';
+export * from './lib/sh-form';
 
