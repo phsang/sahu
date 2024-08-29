@@ -1,0 +1,13 @@
+<input
+  [attr.type]="shType"
+  [attr.name]="shName ? shName : null"
+  [attr.id]="shId ? shId : null"
+  [attr.class]="inputClass ? inputClass : null"
+  [attr.value]="shValue ? shValue : null"
+  [attr.readonly]="shReadonly ? true : null"
+  [attr.disabled]="shDisabled ? true : null"
+  [attr.placeholder]="shPlaceholder ? shPlaceholder : null"
+  [attr.checked]="shChecked ? true : null"
+  [attr.data-vali]="shDataVali ? shDataVali : null"
+  ngDefaultControl
+  #shInput>
