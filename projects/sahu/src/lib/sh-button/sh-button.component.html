@@ -1,7 +1,16 @@
-<a *ngIf="shRouterLink" [routerLink]="shRouterLink" class="btn" [ngClass]="shClass">
+<a
+  *ngIf="shRouterLink"
+  [routerLink]="shRouterLink"
+  class="btn"
+  [ngClass]="shClass">
   <ng-container *ngTemplateOutlet="contentTmpl"></ng-container>
 </a>
-<button *ngIf="!shRouterLink" [ngClass]="shClass" [attr.type]="shType" [disabled]="disabled" (click)="handleClick($event)">
+<button
+  *ngIf="!shRouterLink"
+  [ngClass]="shClass"
+  [attr.type]="shType"
+  [disabled]="disabled"
+  (click)="handleClick($event)">
   <ng-container *ngTemplateOutlet="contentTmpl"></ng-container>
 </button>
 <ng-template #contentTmpl>

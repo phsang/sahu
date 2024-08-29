@@ -1,4 +1,7 @@
-<div #shInput>
+<div
+  (focus)="handleFocus($event)"
+  (blur)="resetInputClass()"
+  #shInput>
   <input
     [attr.type]="shType"
     [attr.name]="shName ? shName : null"

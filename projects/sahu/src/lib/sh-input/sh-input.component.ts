@@ -1,4 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  Renderer2,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 
 @Component({
   selector: 'sh-input',
@@ -36,18 +46,18 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
   private updateInputClass(): void {
     this.inputClass = `sh-input ${this.shClass ? this.shClass : ''}`;
 
-    if (
-      this.shType === 'radio' ||
-      this.shType === 'checkbox' ||
-      this.shType === 'file'
-    ) {
-      this.renderer.addClass(this.shInput.nativeElement, `sh-input-${this.shType}`);
-    }
+    this.renderer.addClass(this.shInput.nativeElement, `sh-input-${this.shType}`);
   }
 
   private resetInputClass(): void {
     if (this.shInput) {
-      this.renderer.removeClass(this.shInput.nativeElement, 'input-loaded');
+      this.renderer.removeClass(this.shInput.nativeElement, 'input-focus');
+    }
+  }
+
+  handleFocus(event: FocusEvent): void {
+    if (this.shInput) {
+      this.renderer.addClass(this.shInput.nativeElement, 'input-focus');
     }
   }
 }
