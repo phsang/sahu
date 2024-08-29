@@ -35,6 +35,14 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
 
   private updateInputClass(): void {
     this.inputClass = `sh-input ${this.shClass ? this.shClass : ''}`;
+
+    if (
+      this.shType === 'radio' ||
+      this.shType === 'checkbox' ||
+      this.shType === 'file'
+    ) {
+      this.renderer.addClass(this.shInput.nativeElement, `sh-input-${this.shType}`);
+    }
   }
 
   private resetInputClass(): void {
