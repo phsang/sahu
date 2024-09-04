@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { iconList } from './icon-list';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -7,7 +7,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   templateUrl: './sh-icon.component.html',
   styleUrls: ['./sh-icon.component.scss']
 })
-export class ShIconComponent implements OnInit, AfterViewInit, OnChanges {
+export class ShIconComponent implements OnInit, AfterViewInit {
   @ViewChild('shIcon') shIcon!: ElementRef;
   @Input() shType: string = '';
   @Input() shTheme: 'light' | 'regular' | 'solid' | 'duotone' = 'light'
@@ -30,10 +30,10 @@ export class ShIconComponent implements OnInit, AfterViewInit, OnChanges {
     this.iconList = iconList();
 
     if (this.shSpin) {
-      this.iconClass = 'sh-icon-spin';
+      this.renderer.addClass(this.shIcon.nativeElement, 'sh-icon-spin');
     }
     if (this.shClass) {
-      this.iconClass += ' ' + this.shClass;
+      this.renderer.addClass(this.shIcon.nativeElement, this.shClass);
     }
 
     if (this.shType) {
@@ -48,19 +48,4 @@ export class ShIconComponent implements OnInit, AfterViewInit, OnChanges {
     this.cdr.detectChanges();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['shSrc'] || changes['shText']) {
-      this.resetIconClass();
-    }
-  }
-
-  private resetIconClass(): void {
-    if (this.shIcon) {
-      this.renderer.removeClass(this.shIcon.nativeElement, 'icon-loaded');
-    }
-  }
-
-  isNumeric(value: any): value is number {
-    return !isNaN(value) && typeof value === 'number';
-  }
 }
