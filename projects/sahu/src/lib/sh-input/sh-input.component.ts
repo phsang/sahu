@@ -9,6 +9,8 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { getIconList } from '../utils/icon-list';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'sh-input',
@@ -18,18 +20,28 @@ import {
 export class ShInputComponent implements AfterViewInit, OnChanges {
   @ViewChild('shInput') shInput!: ElementRef;
   @Input() shType: 'text' | 'radio' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
-  @Input() shName: string = '';
-  @Input() shId: string = '';
-  @Input() shClass: string = '';
-  @Input() shValue: string = '';
+  @Input() shIcon?: any;
+  // @Input() shIconTheme: 'light' | 'regular' | 'solid' | 'duotone' = 'light';
+  @Input() shIconTheme?: any;
+  @Input() shName?: string;
+  @Input() shId?: string;
+  @Input() shClass?: string;
+  @Input() shValue?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
-  @Input() shPlaceholder: string = '';
+  @Input() shPlaceholder?: string;
   @Input() shChecked: boolean = false;
-  @Input() shDataVali: string = '';
+  @Input() shDataVali?: string;
   inputClass: string = '';
+  iconList: any;
+  iconLeft: SafeHtml = '';
+  iconRight: SafeHtml = '';
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
+  ) { }
 
   ngAfterViewInit(): void {
     this.updateInputClass();
@@ -44,12 +56,52 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
   }
 
   private updateInputClass(): void {
-    this.inputClass = `sh-input ${this.shClass ? this.shClass : ''}`;
-
+    this.renderer.addClass(this.shInput.nativeElement, `sh-input`);
     this.renderer.addClass(this.shInput.nativeElement, `sh-input-${this.shType}`);
+
+    if (this.shIcon) {
+      this.iconList = getIconList();
+      this.renderer.addClass(this.shInput.nativeElement, `sh-input-icon`);
+      if (!this.shIconTheme) {
+        this.shIconTheme = 'light';
+      }
+
+      if (this.shIcon?.includes(',')) {
+        this.shIcon = this.shIcon.trim().split(',');
+        this.shIcon = this.shIcon.map((ico: any) => {
+          const trimmedIcon = ico.trim();
+          return trimmedIcon === '*' ? null : trimmedIcon;
+        });
+
+        if (this.shIconTheme?.includes(',')) {
+          this.shIconTheme = this.shIconTheme.trim().split(',');
+          this.shIconTheme.map((ico: string) => { ico = ico.trim() });
+        } else {
+          this.shIconTheme = [this.shIconTheme, this.shIconTheme];
+        }
+      } else {
+        this.shIcon = [this.shIcon, null];
+        this.shIconTheme = [this.shIconTheme, this.shIconTheme];
+      }
+
+      console.log(this.shIcon, this.shIconTheme);
+
+      if (this.shIcon[0]) {
+        let _icon = this.iconList[this.shIcon[0]][this.shIconTheme[0]];
+        let attributes = `fill="currentColor" height="1em" width="1em"`;
+        _icon = _icon.replace('<svg', `<svg ${attributes}`);
+        this.iconLeft = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
+      }
+      if (this.shIcon[1]) {
+        let _icon = this.iconList[this.shIcon[1]][this.shIconTheme[1]];
+        let attributes = `fill="currentColor" height="1em" width="1em"`;
+        _icon = _icon.replace('<svg', `<svg ${attributes}`);
+        this.iconRight = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
+      }
+    }
   }
 
-  private resetInputClass(): void {
+  resetInputClass(): void {
     if (this.shInput) {
       this.renderer.removeClass(this.shInput.nativeElement, 'input-focus');
     }

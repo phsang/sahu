@@ -1,7 +1,7 @@
 <div
-  (focus)="handleFocus($event)"
-  (blur)="resetInputClass()"
+  [attr.class]="shClass ? shClass : null"
   #shInput>
+  <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
   <input
     [attr.type]="shType"
     [attr.name]="shName ? shName : null"
@@ -12,5 +12,8 @@
     [attr.disabled]="shDisabled ? true : null"
     [attr.placeholder]="shPlaceholder ? shPlaceholder : null"
     [attr.checked]="shChecked ? true : null"
-    [attr.data-vali]="shDataVali ? shDataVali : null">
+    [attr.data-vali]="shDataVali ? shDataVali : null"
+    (focus)="handleFocus($event)"
+    (blur)="resetInputClass()">
+  <span class="icon" *ngIf="iconRight" [innerHTML]="iconRight"></span>
 </div>
