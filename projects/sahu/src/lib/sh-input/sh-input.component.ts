@@ -75,7 +75,10 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
 
         if (this.shIconTheme?.includes(',')) {
           this.shIconTheme = this.shIconTheme.trim().split(',');
-          this.shIconTheme.map((ico: string) => { ico = ico.trim() });
+          this.shIconTheme = this.shIconTheme.map((ico: any) => {
+            const trimmedIcon = ico.trim();
+            return trimmedIcon === '*' ? null : trimmedIcon;
+          });
         } else {
           this.shIconTheme = [this.shIconTheme, this.shIconTheme];
         }
