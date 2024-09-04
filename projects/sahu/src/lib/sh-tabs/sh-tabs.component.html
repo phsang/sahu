@@ -1,0 +1,6 @@
+<ul class="tab-titles">
+  <li *ngFor="let tab of tabs; let i = index" (click)="selectTab(i)" [class.active]="tab.isActive">
+    {{ tab.shTitle }}
+  </li>
+</ul>
+<ng-content></ng-content>

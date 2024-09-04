@@ -17,7 +17,10 @@ function getAllSvgFiles(modeIndex, fileList = {}) {
       getAllSvgFiles(modeIndex, fileList);
     } else if (path.extname(file) === '.svg') {
       // Nếu là file SVG, đọc nội dung
-      const content = fs.readFileSync(filePath, 'utf8');
+      let content = fs.readFileSync(filePath, 'utf8');
+      let attributes = `fill="currentColor" height="1em" width="1em"`;
+      content = content.replace('<svg', `<svg ${attributes}`);
+
       let _fileName = file.replace('.svg', '');
       if (fileList[_fileName] === undefined) {
         fileList[_fileName] = {
@@ -36,7 +39,6 @@ function getAllSvgFiles(modeIndex, fileList = {}) {
   }
 }
 
-const directoryPath = './public/fontawesome5'; // Thay thế đường dẫn này bằng thư mục bạn muốn duyệt
 const svgFiles = getAllSvgFiles(0);
 
 const outputFilePath = './public/icons.json'; // Đường dẫn đến file JSON sẽ ghi
