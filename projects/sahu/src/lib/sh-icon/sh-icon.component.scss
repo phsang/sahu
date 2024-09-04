@@ -1,6 +1,14 @@
 .sh-icon {
-  display: flex;
-  width: fit-content;
+  align-items: center;
+  color: inherit;
+  display: inline-flex;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  line-height: 0;
+  text-align: center;
+  text-rendering: optimizelegibility;
+  text-transform: none;
+  vertical-align: -.125em;
 }
 
 .sh-icon-spin {

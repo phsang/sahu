@@ -38,7 +38,7 @@ export class ShIconComponent implements OnInit, AfterViewInit, OnChanges {
 
     if (this.shType) {
       let rawIconValue = this.iconList[this.shType][this.shTheme];
-      let attributes = `fill="currentColor" style="height: ${this.shFontSize}px; width: ${this.shFontSize}px;"`;
+      let attributes = `fill="currentColor" height="1em" width="1em"`;
       rawIconValue = rawIconValue.replace('<svg', `<svg ${attributes}`);
       this.iconValue = this.sanitizer.bypassSecurityTrustHtml(rawIconValue.trim());
     }
