@@ -16,7 +16,6 @@ export class ShIconComponent implements OnInit, AfterViewInit {
   @Input() shRotate?: number;
   @Input() shSpin?: boolean = false;
   @Input() shClass: string = '';
-  iconList: any;
   iconValue: SafeHtml = '';
   iconClass: string = '';
 
@@ -27,8 +26,6 @@ export class ShIconComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.iconList = getIconList();
-
     if (this.shSpin) {
       this.iconClass = 'sh-icon-spin';
     }
@@ -37,10 +34,13 @@ export class ShIconComponent implements OnInit, AfterViewInit {
     }
 
     if (this.shType) {
-      let iconValue = this.iconList[this.shType][this.shTheme];
+      let _icon = getIconList(this.shType, this.shTheme);
       let attributes = `fill="currentColor" height="1em" width="1em"`;
-      iconValue = iconValue.replace('<svg', `<svg ${attributes}`);
-      this.iconValue = this.sanitizer.bypassSecurityTrustHtml(iconValue.trim());
+
+      if (_icon) {
+        _icon = _icon.replace('<svg', `<svg ${attributes}`);
+        this.iconValue = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
+      }
     }
   }
 

@@ -33,7 +33,6 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
   @Input() shChecked: boolean = false;
   @Input() shDataVali?: string;
   inputClass: string = '';
-  iconList: any;
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
 
@@ -60,7 +59,6 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
     this.renderer.addClass(this.shInput.nativeElement, `sh-input-${this.shType}`);
 
     if (this.shIcon) {
-      this.iconList = getIconList();
       this.renderer.addClass(this.shInput.nativeElement, `sh-input-icon`);
       if (!this.shIconTheme) {
         this.shIconTheme = 'light';
@@ -90,16 +88,22 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
       console.log(this.shIcon, this.shIconTheme);
 
       if (this.shIcon[0]) {
-        let _icon = this.iconList[this.shIcon[0]][this.shIconTheme[0]];
+        let _icon = getIconList(this.shIcon[0], this.shIconTheme[0]);
         let attributes = `fill="currentColor" height="1em" width="1em"`;
-        _icon = _icon.replace('<svg', `<svg ${attributes}`);
-        this.iconLeft = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
+
+        if (_icon) {
+          _icon = _icon.replace('<svg', `<svg ${attributes}`);
+          this.iconLeft = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
+        }
       }
       if (this.shIcon[1]) {
-        let _icon = this.iconList[this.shIcon[1]][this.shIconTheme[1]];
+        let _icon = getIconList(this.shIcon[1], this.shIconTheme[1]);
         let attributes = `fill="currentColor" height="1em" width="1em"`;
-        _icon = _icon.replace('<svg', `<svg ${attributes}`);
-        this.iconRight = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
+
+        if (_icon) {
+          _icon = _icon.replace('<svg', `<svg ${attributes}`);
+          this.iconRight = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
+        }
       }
     }
   }
