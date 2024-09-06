@@ -4,8 +4,9 @@ import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 export class mfValidation {
+
   generateError(element: HTMLElement, status: boolean = true, msg: string = 'Trường không được trống!'): void {
-    const parent = element.parentElement;
+    const parent = element.closest('.field-validation');
     const msgError = parent?.querySelector('.msg_error');
     msg = '<i class="fal fa-exclamation-triangle"></i>' + msg;
 

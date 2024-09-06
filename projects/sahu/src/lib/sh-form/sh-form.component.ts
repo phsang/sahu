@@ -1,5 +1,6 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
 import { mfValidation } from '../utils/mf.validation';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'sh-form',
@@ -14,12 +15,15 @@ export class ShFormComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private validation: mfValidation
+    private validation: mfValidation,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
-    this.validation.init(document.getElementById('sh-form') as HTMLFormElement);
+    if (isPlatformBrowser(this.platformId)) {
+      this.validation.init(document.getElementById('sh-form') as HTMLFormElement);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

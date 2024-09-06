@@ -1,19 +1,22 @@
-<div
-  [attr.class]="shClass ? shClass : null"
-  #shInput>
-  <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
-  <input
-    [attr.type]="shType"
-    [attr.name]="shName ? shName : null"
-    [attr.id]="shId ? shId : null"
-    [attr.class]="inputClass ? inputClass : null"
-    [attr.value]="shValue ? shValue : null"
-    [attr.readonly]="shReadonly ? true : null"
-    [attr.disabled]="shDisabled ? true : null"
-    [attr.placeholder]="shPlaceholder ? shPlaceholder : null"
-    [attr.checked]="shChecked ? true : null"
-    [attr.data-vali]="shDataVali ? shDataVali : null"
-    (focus)="handleFocus($event)"
-    (blur)="resetInputClass()">
-  <span class="icon" *ngIf="iconRight" [innerHTML]="iconRight"></span>
+<div class="field-validation">
+  <div
+    [attr.class]="shClass ? shClass : null"
+    #shInput>
+    <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
+    <input
+      [attr.type]="shType"
+      [attr.name]="shName ? shName : null"
+      [attr.id]="shId ? shId : null"
+      [attr.class]="inputClass ? inputClass : null"
+      [attr.value]="shValue ? shValue : null"
+      [attr.readonly]="shReadonly ? true : null"
+      [attr.disabled]="shDisabled ? true : null"
+      [attr.placeholder]="shPlaceholder ? shPlaceholder : null"
+      [attr.checked]="shChecked ? true : null"
+      [attr.data-vali]="shDataVali ? shDataVali : null"
+      [attr.data-length]="shDataLength ? shDataLength : null"
+      (focus)="handleFocus($event)"
+      (blur)="resetInputClass()">
+    <span class="icon" *ngIf="iconRight" [innerHTML]="iconRight"></span>
+  </div>
 </div>

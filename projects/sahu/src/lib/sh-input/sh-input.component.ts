@@ -32,6 +32,7 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
   @Input() shPlaceholder?: string;
   @Input() shChecked: boolean = false;
   @Input() shDataVali?: string;
+  @Input() shDataLength?: string;
   inputClass: string = '';
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
