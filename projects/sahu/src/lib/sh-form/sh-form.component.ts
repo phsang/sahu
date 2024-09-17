@@ -22,7 +22,7 @@ export class ShFormComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
     if (isPlatformBrowser(this.platformId)) {
-      this.validation.init(document.getElementById('sh-form') as HTMLFormElement);
+      this.validation.init(this.shForm.nativeElement);
     }
   }
 
@@ -31,8 +31,7 @@ export class ShFormComponent implements AfterViewInit, OnChanges {
 
   handleSubmit(event: Event): void {
     event.preventDefault();
-    let form = document.getElementById('sh-form') as HTMLFormElement;
-    if (this.validation.detectAll(form)) {
+    if (this.validation.detectAll(this.shForm.nativeElement)) {
       this.shSubmit.emit(event);
     }
   }

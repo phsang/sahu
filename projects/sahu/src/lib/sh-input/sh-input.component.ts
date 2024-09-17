@@ -86,8 +86,6 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
         this.shIconTheme = [this.shIconTheme, this.shIconTheme];
       }
 
-      console.log(this.shIcon, this.shIconTheme);
-
       if (this.shIcon[0]) {
         let _icon = getIconList(this.shIcon[0], this.shIconTheme[0]);
         let attributes = `fill="currentColor" height="1em" width="1em"`;

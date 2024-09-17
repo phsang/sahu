@@ -1,0 +1,24 @@
+<div class="sh-modal md-{{shMdType}} md-{{shMdSize}} {{shMdClass}} {{shVisible ? 'md-visible' : ''}}">
+  <div class="md-backdrop" (click)="handleCancel($event)"></div>
+  <div class="md-content">
+
+    <ng-container *ngIf="shHead">
+      <div class="md-head" [ngClass]="shHeadClass">
+        <ng-container *ngIf="iconElement">
+          <span [innerHTML]="iconElement"></span>
+        </ng-container>
+        {{ shTitle }}
+      </div>
+    </ng-container>
+
+    <ng-content></ng-content>
+
+    <ng-container *ngIf="shFoot">
+      <div class="md-foot" [ngClass]="shFootClass">
+        <sh-button (click)="handleCancel($event)" [shClass]="'btn-cancel'">Đóng</sh-button>
+        <sh-button (click)="handleOk($event)" [shClass]="'btn-primary'">Ok</sh-button>
+      </div>
+    </ng-container>
+
+  </div>
+</div>
