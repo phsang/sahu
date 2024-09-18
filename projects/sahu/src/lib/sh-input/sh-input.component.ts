@@ -21,16 +21,18 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
   @ViewChild('shInput') shInput!: ElementRef;
   @Input() shType: 'text' | 'radio' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shIcon?: any;
-  // @Input() shIconTheme: 'light' | 'regular' | 'solid' | 'duotone' = 'light';
   @Input() shIconTheme?: any;
   @Input() shName?: string;
   @Input() shId?: string;
   @Input() shClass?: string;
   @Input() shValue?: string;
+
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
   @Input() shPlaceholder?: string;
   @Input() shChecked: boolean = false;
+  @Input() shAutocomplete?: string;
+
   @Input() shDataVali?: string;
   @Input() shDataLength?: string;
   inputClass: string = '';

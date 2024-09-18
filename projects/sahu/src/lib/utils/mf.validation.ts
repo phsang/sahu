@@ -350,13 +350,23 @@ export class mfValidation {
     let _val: string | null = input.value || null;
 
     if (_val) {
-      _val = _val.trimStart().replace(/\D/g, '');
+      _val = _val.trimStart().replace(/\D|\./g, '');
       if (_val.length > 10) {
         _val = _val.substring(0, 10);
       }
       input.value = _val;
       let vnf = vnf_regex.test(_val);
       this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Số điện thoại không đúng định dạng!' : 'Trường không được trống!');
+
+      // format số điện thoại
+      if (_val.length > 4 && _val.length < 8) {
+        _val = _val.substring(0, 4) + '.' + _val.substring(4);
+      } else if (_val.length >= 8) {
+        _val = _val.substring(0, 4) + '.' + _val.substring(4, 7) + '.' + _val.substring(7);
+      }
+
+      input.value = _val;
+
       return vnf;
     }
 
@@ -456,7 +466,7 @@ export class mfValidation {
       if (input instanceof HTMLInputElement || input instanceof HTMLSelectElement || input instanceof HTMLTextAreaElement) {
 
         fromEvent(input, 'input').pipe(
-          debounceTime(100)
+          debounceTime(0)
         ).subscribe(() => {
           let _dataVali = input.getAttribute('data-vali')?.trim() || null;
           let isValid = true;
