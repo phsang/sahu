@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class ShButtonComponent {
   @Input() shRouterLink?: string = '';
   @Input() shType?: 'button' | 'submit' | 'reset' = 'button';
+  @Input() shTitle?: string = '';
   @Input() shClass: string = '';
   @Input() disabled = false;
 
