@@ -2,54 +2,17 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
   selector: 'sh-select',
-  template: `<div class="sh-select" [class.open]="dropdownOpen">
-              <div class="sh-select-overlay" (click)="closeDropdown()"></div>
-              <div class="sh-select-selection" (click)="toggleDropdown()">
-                <span *ngIf="!shMultiple && selectedValue">{{ selectedValue }}</span>
-                <span *ngIf="shMultiple" class="tags">
-                  <span *ngFor="let tag of selectedTags" class="tag">{{ tag }}<i class="remove-tag" (click)="removeTag(tag)">×</i></span>
-                </span>
-                <input *ngIf="shShowSearch" [(ngModel)]="searchQuery" (input)="onSearchChange()" [placeholder]="shPlaceHolder" />
-                <span *ngIf="!shShowSearch">{{ shPlaceHolder }}</span>
-                <i class="dropdown-icon"></i>
-              </div>
-
-              <div class="sh-select-dropdown" *ngIf="dropdownOpen">
-                <ng-container *ngIf="_sData != {}">
-                  <div class="option-group" *ngFor="let item of _sData | keyvalue">
-                    <span>{{item.key}}</span>
-                    <div class="option-group">
-                      <div *ngFor="let option of item.value" class="sh-select-option" (click)="selectOption(option)">
-                        <label for="sh-option-checked">
-                          <input type="{{shMultiple ? 'checkbox' : 'radio'}}" value="{{ option.value }}">
-                          <span class="text">{{ option.label }}</span>
-                          <span class="remark"></span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="_sData == {}">
-                  <div *ngFor="let item of shData" class="sh-select-option" (click)="selectOption(item)">
-                    <label for="sh-option-checked">
-                      <input type="{{shMultiple ? 'checkbox' : 'radio'}}" value="{{ item.value }}">
-                      <span class="text">{{ item.label }}</span>
-                      <span class="remark"></span>
-                    </label>
-                  </div>
-                </ng-container>
-              </div>
-            </div>`,
+  templateUrl: './sh-select.component.html',
   styleUrls: ['./sh-select.component.scss']
 })
 export class ShSelectComponent implements OnInit {
   @Input() shData: any[] = [];
-  _sData: { [key: string]: any } = {};
+  _sData: { [key: string]: any[] } = {};
 
   @Input() shPlaceHolder: string = 'Select';
   @Input() shMultiple: boolean = false;
   @Input() shShowSearch: boolean = false;
-  @Input() shOptions: any[] = []; // To handle groups or simple options
+  @Input() shOptions: any[] = []; // Để xử lý nhóm hoặc tùy chọn đơn giản
   @Input() shApiCall!: (query: string) => Promise<any[]>;
 
   @Output() ngModelChange = new EventEmitter<any>();
@@ -60,11 +23,16 @@ export class ShSelectComponent implements OnInit {
   searchQuery: string = '';
   filteredOptions: any[] = [];
   loading: boolean = false;
+  searchTimeout: any;
 
   ngOnInit(): void {
+    this.initializeOptions();
+  }
+
+  initializeOptions(): void {
     this.filteredOptions = this.shOptions;
 
-    this.shData.map(data => {
+    this.shData.forEach(data => {
       if (data.group) {
         if (this._sData[data.group]) {
           this._sData[data.group].push(data);
@@ -73,9 +41,6 @@ export class ShSelectComponent implements OnInit {
         }
       }
     });
-
-    console.log(this.shData);
-    console.log(this._sData);
   }
 
   toggleDropdown(): void {
@@ -86,11 +51,19 @@ export class ShSelectComponent implements OnInit {
     this.dropdownOpen = false;
   }
 
+  debounceOnSearchChange(): void {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => this.onSearchChange(), 300); // Đặt độ trễ tìm kiếm 300ms
+  }
+
   onSearchChange(): void {
     if (this.shApiCall) {
       this.loading = true;
       this.shApiCall(this.searchQuery).then(options => {
         this.filteredOptions = options;
+        this.loading = false;
+      }).catch(() => {
+        this.filteredOptions = [];
         this.loading = false;
       });
     } else {
@@ -110,6 +83,8 @@ export class ShSelectComponent implements OnInit {
       if (!this.selectedTags.includes(option.label)) {
         this.selectedTags.push(option.label);
         this.ngModelChange.emit(this.selectedTags);
+      } else {
+        this.removeTag(option.label); // Loại bỏ tag nếu đã chọn
       }
     } else {
       this.selectedValue = option.label;
@@ -121,5 +96,9 @@ export class ShSelectComponent implements OnInit {
   removeTag(tag: string): void {
     this.selectedTags = this.selectedTags.filter(t => t !== tag);
     this.ngModelChange.emit(this.selectedTags);
+  }
+
+  isSelected(option: any): boolean {
+    return this.shMultiple ? this.selectedTags.includes(option.label) : this.selectedValue === option.label;
   }
 }
