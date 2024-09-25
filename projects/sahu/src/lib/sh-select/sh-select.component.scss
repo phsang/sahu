@@ -1,0 +1,109 @@
+.sh-select-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  transition: .3s;
+  visibility: hidden;
+  width: 100%;
+  z-index: 999;
+}
+
+.sh-select.open .sh-select-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sh-select {
+  position: relative;
+  width: 100%;
+
+  .sh-select-selection {
+    align-items: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+
+    input {
+      border: none;
+      flex-grow: 1;
+      outline: none;
+    }
+
+    .tags {
+      display: flex;
+      gap: 5px;
+    }
+
+    .tag {
+      align-items: center;
+      background: #e0e0e0;
+      border-radius: 3px;
+      display: inline-flex;
+      padding: 5px;
+
+      .remove-tag {
+        cursor: pointer;
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .sh-select-dropdown {
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+
+    .sh-select-option {
+      cursor: pointer;
+      position: relative;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+
+      label {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      input {
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        padding: 0;
+        position: absolute;
+        width: 100%;
+        z-index: 9;
+      }
+
+      .remark {
+        background-color: #fcfcfc;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    .option-group {
+      background-color: #f7f7f7;
+      font-weight: bold;
+      padding: 10px;
+    }
+
+    .loading {
+      padding: 20px;
+      text-align: center;
+    }
+  }
+}

@@ -1,22 +1,38 @@
-<div class="sh-select-container">
-  <input type="text" [placeholder]="shPlaceHolder" [formControl]="searchControl" (focus)="toggleDropdown(true)" />
-  <div *ngIf="shMultiple && selectedTags.length > 0">
-    <span *ngFor="let tag of selectedTags" class="sh-tag">
-      {{ tag }}
-      <span class="remove-tag" (click)="removeTag(tag)">x</span>
+<div class="sh-select" [class.open]="dropdownOpen">
+  <div class="sh-select-overlay" (click)="closeDropdown()"></div>
+  <div class="sh-select-selection" (click)="toggleDropdown()">
+    <span *ngIf="!shMultiple && selectedValue">{{ selectedValue }}</span>
+    <span *ngIf="shMultiple" class="tags">
+      <span *ngFor="let tag of selectedTags" class="tag">{{ tag }}<i class="remove-tag" (click)="removeTag(tag)">×</i></span>
     </span>
+    <input *ngIf="shShowSearch" [(ngModel)]="searchQuery" (input)="onSearchChange()" [placeholder]="shPlaceHolder" />
+    <span *ngIf="!shShowSearch">{{ shPlaceHolder }}</span>
+    <i class="dropdown-icon"></i>
   </div>
-  <div *ngIf="dropdownOpen" class="sh-dropdown">
-    <ng-container *ngIf="loading">
-      <div class="sh-loading">Loading...</div>
-    </ng-container>
-    <ng-container *ngIf="!loading">
-      <ng-container *ngFor="let group of groupedOptions">
-        <div *ngIf="group.label" class="sh-option-group-label">{{ group.label }}</div>
-        <div *ngFor="let option of group.options" (click)="selectOption(option)">
-          {{ option.label }}
+
+  <div class="sh-select-dropdown" *ngIf="dropdownOpen">
+    <ng-container *ngIf="_sData != {}">
+      <div class="option-group" *ngFor="let item of _sData | keyvalue">
+        <span>{{item.key}}</span>
+        <div class="option-group">
+          <div *ngFor="let option of item.value" class="sh-select-option" (click)="selectOption(option)">
+            <label for="sh-option-checked">
+              <input type="{{shMultiple ? 'checkbox' : 'radio'}}" value="{{ option.value }}">
+              <span class="text">{{ option.label }}</span>
+              <span class="remark"></span>
+            </label>
+          </div>
         </div>
-      </ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="_sData == {}">
+      <div *ngFor="let item of shData" class="sh-select-option" (click)="selectOption(item)">
+        <label for="sh-option-checked">
+          <input type="{{shMultiple ? 'checkbox' : 'radio'}}" value="{{ item.value }}">
+          <span class="text">{{ item.label }}</span>
+          <span class="remark"></span>
+        </label>
+      </div>
     </ng-container>
   </div>
 </div>
