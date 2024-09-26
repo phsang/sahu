@@ -1,19 +1,19 @@
 <div class="sh-select" [class.open]="dropdownOpen">
   <div class="sh-select-overlay" (click)="closeDropdown()"></div>
   <div class="sh-select-selection" (click)="toggleDropdown()">
-    <span *ngIf="!shMultiple && selectedValue">{{ selectedValue }}</span>
+    <span *ngIf="!shMultiple && ngModel">{{ ngModel }}</span>
     <span *ngIf="shMultiple" class="tags">
       <span *ngFor="let tag of selectedTags" class="tag">
         {{ tag }}<i class="remove-tag" (click)="removeTag(tag)">×</i>
       </span>
     </span>
-    <input *ngIf="shShowSearch" [(ngModel)]="searchQuery" (input)="debounceOnSearchChange()" [placeholder]="shPlaceHolder" />
-    <span *ngIf="!shShowSearch && !selectedValue">{{ shPlaceHolder }}</span>
+    <input *ngIf="shShowSearch" [placeholder]="shPlaceHolder" />
+    <span *ngIf="!shShowSearch && !ngModel">{{ shPlaceHolder }}</span>
     <i class="dropdown-icon"></i>
   </div>
 
   <div class="sh-select-dropdown" *ngIf="dropdownOpen">
-    <ng-container *ngIf="_sData != {}">
+    <ng-container *ngIf="(_sData | json) != ({} | json)">
       <div class="option-group" *ngFor="let group of _sData | keyvalue">
         <span>{{ group.key }}</span>
         <div class="option-group">
@@ -27,16 +27,13 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="_sData == {}">
-      <div *ngFor="let option of filteredOptions" class="sh-select-option" (click)="selectOption(option)">
+    <ng-container *ngIf="(_sData | json) == ({} | json)">
+      <div *ngFor="let option of shData" class="sh-select-option" (click)="selectOption(option)">
         <label>
           <input type="{{ shMultiple ? 'checkbox' : 'radio' }}" [checked]="isSelected(option)" />
           <span class="text">{{ option.label }}</span>
         </label>
       </div>
     </ng-container>
-
-    <div *ngIf="!filteredOptions.length && !loading" class="no-options">No options found</div>
-    <div *ngIf="loading" class="loading">Loading...</div>
   </div>
 </div>
