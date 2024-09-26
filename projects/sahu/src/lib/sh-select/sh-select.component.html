@@ -4,7 +4,7 @@
     <span *ngIf="!shMultiple">{{ selectedOptions[0] ? selectedOptions[0].label : shPlaceHolder }}</span>
     <span *ngIf="shMultiple" class="tags">
       <span *ngFor="let option of selectedOptions" class="tag">
-        {{ option.label }}<i class="remove-tag" (click)="removeTag(option)">×</i>
+        {{ option.label }}<i class="remove-tag" (click)="removeTag(option, $event)">×</i>
       </span>
     </span>
     <i class="dropdown-icon"></i>

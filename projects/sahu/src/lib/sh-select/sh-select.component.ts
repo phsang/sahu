@@ -1,11 +1,19 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'sh-select',
   templateUrl: './sh-select.component.html',
-  styleUrls: ['./sh-select.component.scss']
+  styleUrls: ['./sh-select.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ShSelectComponent),
+      multi: true
+    }
+  ]
 })
-export class ShSelectComponent implements OnInit {
+export class ShSelectComponent implements OnInit, ControlValueAccessor {
   @Input() shData: any[] = [];
   _sData: { [key: string]: any[] } = {};
 
@@ -15,15 +23,16 @@ export class ShSelectComponent implements OnInit {
   @Input() shSearchPlaceHolder: string = '';
   @Input() shShowSearch: boolean = false;
 
-  @Input() ngModel: any[] = [];
-  @Output() ngModelChange = new EventEmitter<any>();
-
-  dropdownOpen = false;
   selectedOptions: any[] = [];
+  dropdownOpen = false;
+
+  // ControlValueAccessor methods
+  private onChange: any = () => { };
+  private onTouched: any = () => { };
 
   ngOnInit(): void {
     this.initializeOptions();
-    this.selectedOptions = this.ngModel || [];
+    this.selectedOptions = [];
   }
 
   initializeOptions(): void {
@@ -47,15 +56,15 @@ export class ShSelectComponent implements OnInit {
   }
 
   modelChangeEmit() {
-    let _model = [];
+    let _model: any[] = [];
     if (this.shMultiple) {
       this.selectedOptions.forEach(option => {
         _model.push(option.value);
-      })
+      });
     } else {
-      _model = this.selectedOptions[0].value;
+      _model = this.selectedOptions[0]?.value;
     }
-    this.ngModelChange.emit(_model);
+    this.onChange(_model);
   }
 
   selectOption(option: any, event: any): void {
@@ -72,9 +81,30 @@ export class ShSelectComponent implements OnInit {
     this.modelChangeEmit();
   }
 
-  removeTag(option: any): void {
+  removeTag(option: any, event: MouseEvent): void {
+    event.stopPropagation();
     this.selectedOptions = this.selectedOptions.filter(o => o !== option);
-    this.dropdownOpen = false;
     this.modelChangeEmit();
+  }
+
+  // ControlValueAccessor methods
+  writeValue(value: any): void {
+    if (value) {
+      this.selectedOptions = this.shMultiple ? this.shData.filter(option => value.includes(option.value)) : [this.shData.find(option => option.value === value)];
+    } else {
+      this.selectedOptions = [];
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    // Nếu cần thêm logic để quản lý disabled state
   }
 }
