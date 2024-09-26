@@ -47,18 +47,20 @@ export class ShSelectComponent implements OnInit {
   }
 
   modelChangeEmit() {
-    let _model;
+    let _model = [];
     if (this.shMultiple) {
-      _model = Object.values(this.selectedOptions);
+      this.selectedOptions.forEach(option => {
+        _model.push(option.value);
+      })
     } else {
       _model = this.selectedOptions[0].value;
     }
     this.ngModelChange.emit(_model);
   }
 
-  selectOption(option: any): void {
+  selectOption(option: any, event: any): void {
     if (this.shMultiple) {
-      if (!this.selectedOptions.includes(option)) {
+      if (event.target.checked) {
         this.selectedOptions.push(option);
       } else {
         this.selectedOptions = this.selectedOptions.filter(o => o !== option);
@@ -72,10 +74,7 @@ export class ShSelectComponent implements OnInit {
 
   removeTag(option: any): void {
     this.selectedOptions = this.selectedOptions.filter(o => o !== option);
+    this.dropdownOpen = false;
     this.modelChangeEmit();
-  }
-
-  isSelected(option: any): boolean {
-    return this.shMultiple ? this.selectedOptions.includes(option) : this.selectedOptions === option;
   }
 }
