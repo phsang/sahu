@@ -9,24 +9,21 @@ export class ShSelectComponent implements OnInit {
   @Input() shData: any[] = [];
   _sData: { [key: string]: any[] } = {};
 
-  @Input() shPlaceHolder: string = 'Select';
   @Input() shMultiple: boolean = false;
+  @Input() shPlaceHolder: string = 'Select';
+
+  @Input() shSearchPlaceHolder: string = '';
   @Input() shShowSearch: boolean = false;
 
-  @Input() ngModel: any;
+  @Input() ngModel: any[] = [];
   @Output() ngModelChange = new EventEmitter<any>();
 
   dropdownOpen = false;
-  selectedValue: string | null = null;
-  selectedTags: string[] = [];
+  selectedOptions: any[] = [];
 
   ngOnInit(): void {
     this.initializeOptions();
-    if (this.shMultiple) {
-      this.selectedTags = this.ngModel || [];
-    } else {
-      this.selectedValue = this.ngModel;
-    }
+    this.selectedOptions = this.ngModel || [];
   }
 
   initializeOptions(): void {
@@ -49,28 +46,36 @@ export class ShSelectComponent implements OnInit {
     this.dropdownOpen = false;
   }
 
-  selectOption(option: any): void {
+  modelChangeEmit() {
+    let _model;
     if (this.shMultiple) {
-      if (!this.selectedTags.includes(option.label)) {
-        this.selectedTags.push(option.label);
-      } else {
-        this.removeTag(option.label); // Loại bỏ tag nếu đã chọn
-      }
-      this.ngModelChange.emit(this.selectedTags); // Phát giá trị sau khi thay đổi
+      _model = Object.values(this.selectedOptions);
     } else {
-      this.selectedValue = option.label;
-      this.ngModel = option.value;
-      this.ngModelChange.emit(this.selectedValue); // Phát giá trị sau khi thay đổi
-      this.toggleDropdown();
+      _model = this.selectedOptions[0].value;
     }
+    this.ngModelChange.emit(_model);
   }
 
-  removeTag(tag: string): void {
-    this.selectedTags = this.selectedTags.filter(t => t !== tag);
-    this.ngModelChange.emit(this.selectedTags);
+  selectOption(option: any): void {
+    if (this.shMultiple) {
+      if (!this.selectedOptions.includes(option)) {
+        this.selectedOptions.push(option);
+      } else {
+        this.selectedOptions = this.selectedOptions.filter(o => o !== option);
+      }
+    } else {
+      this.selectedOptions = [option];
+      this.toggleDropdown();
+    }
+    this.modelChangeEmit();
+  }
+
+  removeTag(option: any): void {
+    this.selectedOptions = this.selectedOptions.filter(o => o !== option);
+    this.modelChangeEmit();
   }
 
   isSelected(option: any): boolean {
-    return this.shMultiple ? this.selectedTags.includes(option.label) : this.selectedValue === option.label;
+    return this.shMultiple ? this.selectedOptions.includes(option) : this.selectedOptions === option;
   }
 }

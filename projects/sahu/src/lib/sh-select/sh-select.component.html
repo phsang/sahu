@@ -1,18 +1,17 @@
 <div class="sh-select" [class.open]="dropdownOpen">
   <div class="sh-select-overlay" (click)="closeDropdown()"></div>
   <div class="sh-select-selection" (click)="toggleDropdown()">
-    <span *ngIf="!shMultiple && ngModel">{{ ngModel }}</span>
+    <span *ngIf="!shMultiple">{{ selectedOptions[0] ? selectedOptions[0].label : shPlaceHolder }}</span>
     <span *ngIf="shMultiple" class="tags">
-      <span *ngFor="let tag of selectedTags" class="tag">
-        {{ tag }}<i class="remove-tag" (click)="removeTag(tag)">×</i>
+      <span *ngFor="let option of selectedOptions" class="tag">
+        {{ option.label }}<i class="remove-tag" (click)="removeTag(option)">×</i>
       </span>
     </span>
-    <input *ngIf="shShowSearch" [placeholder]="shPlaceHolder" />
-    <span *ngIf="!shShowSearch && !ngModel">{{ shPlaceHolder }}</span>
     <i class="dropdown-icon"></i>
   </div>
 
   <div class="sh-select-dropdown" *ngIf="dropdownOpen">
+    <input *ngIf="shShowSearch" [placeholder]="shSearchPlaceHolder" />
     <ng-container *ngIf="(_sData | json) != ({} | json)">
       <div class="option-group" *ngFor="let group of _sData | keyvalue">
         <span>{{ group.key }}</span>
