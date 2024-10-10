@@ -5,7 +5,7 @@ import { debounceTime } from 'rxjs/operators';
 
 export class mfValidation {
 
-  generateError(element: HTMLElement, status: boolean = true, msg: string = 'Trường không được trống!'): void {
+  generateError(element: HTMLElement, status: boolean = true, msg: string = 'Vui lòng điền vào trường này!'): void {
     const parent = element.closest('.field-validation');
     const msgError = parent?.querySelector('.msg_error');
     msg = '<i class="fal fa-exclamation-triangle"></i>' + msg;
@@ -356,7 +356,7 @@ export class mfValidation {
       }
       input.value = _val;
       let vnf = vnf_regex.test(_val);
-      this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Số điện thoại không đúng định dạng!' : 'Trường không được trống!');
+      this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Số điện thoại không đúng định dạng!' : 'Không bỏ trống số điện thoại!');
 
       // format số điện thoại
       if (_val.length > 4 && _val.length < 8) {
