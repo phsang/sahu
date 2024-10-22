@@ -14,6 +14,8 @@ export class ShImageComponent implements AfterViewInit, OnChanges {
   @Input() shAnimated: boolean = true;
   @Input() shHeight: number = 56;
   @Input() shWidth: number = 56;
+  @Input() shObjectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down' = 'cover';
+  @Input() shBradius: number = 3;
   @Input() shOnload?: () => void;
 
   imageClass = '';
