@@ -9,14 +9,19 @@
         [(ngModel)]="inputValue"
         [attr.data-vali]="shDataVali ? shDataVali : null"
         #inputHidden />
-      <span *ngIf="!shMultiple">{{ selectedOptions[0] ? selectedOptions[0].label : shPlaceHolder }}</span>
-      <span *ngIf="shMultiple" class="tags">
-        <span *ngFor="let option of selectedOptions" class="tag">
-          {{ option.label }}<i class="remove-tag" (click)="removeTag(option, $event)">×</i>
+
+      <div class="results-zone">
+        <span *ngIf="!shMultiple">{{ selectedOptions[0] ? selectedOptions[0].label : shPlaceHolder }}</span>
+        <span *ngIf="shMultiple" class="tags">
+          <span *ngFor="let option of selectedOptions" class="tag">
+            {{ option.label }}<i class="remove-tag" (click)="removeTag(option, $event)">×</i>
+          </span>
         </span>
-      </span>
-      <span *ngIf="shMultiple">{{ shPlaceHolder }}</span>
+        <span *ngIf="shMultiple">{{ shPlaceHolder }}</span>
+      </div>
       <i class="dropdown-icon"></i>
+
+      <button *ngIf="inputValue" type="button" class="sh-select-reset" (click)="reset($event)" class="sh-select-reset"></button>
     </div>
   </div>
 

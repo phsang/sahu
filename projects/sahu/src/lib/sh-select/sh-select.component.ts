@@ -22,7 +22,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
 
-  @Input() shSearchPlaceHolder: string = '';
+  @Input() shSearchPlaceHolder: string = 'Filter';
   @Input() shShowSearch: boolean = false;
 
   @Output() shChange = new EventEmitter<any>();
@@ -94,6 +94,14 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
     event.stopPropagation();
     this.selectedOptions = this.selectedOptions.filter(o => o !== option);
     this.modelChangeEmit();
+    this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
+  }
+
+  reset(event: Event): void {
+    event.stopPropagation();
+    this.selectedOptions = [];
+    this.modelChangeEmit();
+    this.onChange(null);
     this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
   }
 

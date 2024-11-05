@@ -58,6 +58,13 @@
     }
   }
 
+  .results-zone {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
   .sh-select-dropdown {
     background: white;
     border: 1px solid #ccc;
@@ -109,6 +116,47 @@
     .loading {
       padding: 20px;
       text-align: center;
+    }
+  }
+
+  .dropdown-icon {
+    border: 1px solid;
+    border-color: #ccc #ccc transparent transparent;
+    height: 20px;
+    position: relative;
+    right: 11px;
+    top: calc(50% - 10px);
+    transform: rotate(135deg);
+    width: 20px;
+  }
+
+  .sh-select-reset {
+    background-color: #D52A2A;
+    border: none;
+    border-radius: 99px;
+    cursor: pointer;
+    height: 25px;
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    transform: translateY(-50%) scale(.65);
+    width: 25px;
+
+    &:before,
+    &:after {
+      background-color: #fff;
+      border-radius: 99px;
+      content: "";
+      height: 2px;
+      left: 16%;
+      position: absolute;
+      top: calc(50% - 1px);
+      transform: rotate(45deg);
+      width: 68%;
+    }
+
+    &:after {
+      transform: rotate(-45deg);
     }
   }
 }
