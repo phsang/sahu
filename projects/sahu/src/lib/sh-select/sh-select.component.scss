@@ -120,14 +120,11 @@
   }
 
   .dropdown-icon {
-    border: 1px solid;
-    border-color: #ccc #ccc transparent transparent;
-    height: 20px;
+    height: 18px;
     position: relative;
-    right: 11px;
-    top: calc(50% - 10px);
-    transform: rotate(135deg);
-    width: 20px;
+    right: -19px;
+    top: -2px;
+    width: 18px;
   }
 
   .sh-select-reset {

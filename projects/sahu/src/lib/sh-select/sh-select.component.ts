@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, forwardRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -108,7 +108,17 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
   // ControlValueAccessor methods
   writeValue(value: any): void {
     if (value) {
+      let _model: any[] = [];
       this.selectedOptions = this.shMultiple ? this.shData.filter(option => value.includes(option.value)) : [this.shData.find(option => option.value === value)];
+
+      if (this.shMultiple) {
+        this.selectedOptions.forEach(option => {
+          _model.push(option.value);
+        });
+      } else {
+        _model = this.selectedOptions[0]?.value;
+      }
+      this.inputValue = _model;
     } else {
       this.selectedOptions = [];
     }
