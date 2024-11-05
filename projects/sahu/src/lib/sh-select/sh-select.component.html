@@ -6,8 +6,9 @@
       <input
         type="text"
         class="input-hidden"
-        [(ngModel)]="selectedOptions"
-        [attr.data-vali]="shDataVali ? shDataVali : null">
+        [(ngModel)]="inputValue"
+        [attr.data-vali]="shDataVali ? shDataVali : null"
+        #inputHidden />
       <span *ngIf="!shMultiple">{{ selectedOptions[0] ? selectedOptions[0].label : shPlaceHolder }}</span>
       <span *ngIf="shMultiple" class="tags">
         <span *ngFor="let option of selectedOptions" class="tag">
@@ -27,7 +28,11 @@
         <div class="option-group">
           <div *ngFor="let option of group.value" class="sh-select-option">
             <label>
-              <input type="{{ shMultiple ? 'checkbox' : 'radio' }}" value="{{option.value}}" (click)="selectOption(option, $event)" />
+              <input
+                [type]="shMultiple ? 'checkbox' : 'radio'"
+                [value]="option.value"
+                (click)="selectOption(option, $event)"
+                [checked]="selectedOptions.includes(option)" />
               <span class="text">{{ option.label }}</span>
               <span class="remark"></span>
             </label>
@@ -39,7 +44,11 @@
     <ng-container *ngIf="(_sData | json) == ({} | json)">
       <div *ngFor="let option of shData" class="sh-select-option">
         <label>
-          <input type="{{ shMultiple ? 'checkbox' : 'radio' }}" value="{{option.value}}" (click)="selectOption(option, $event)" />
+          <input
+            [type]="shMultiple ? 'checkbox' : 'radio'"
+            [value]="option.value"
+            (click)="selectOption(option, $event)"
+            [checked]="selectedOptions.includes(option)" />
           <span class="text">{{ option.label }}</span>
           <span class="remark"></span>
         </label>

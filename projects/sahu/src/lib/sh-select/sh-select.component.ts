@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, forwardRef, ViewChild, ElementRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -14,6 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class ShSelectComponent implements OnInit, ControlValueAccessor {
+  @ViewChild('inputHidden') inputHidden!: ElementRef;
   @Input() shData: any[] = [];
   _sData: { [key: string]: any[] } = {};
 
@@ -25,6 +26,8 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
   @Input() shShowSearch: boolean = false;
 
   @Output() shChange = new EventEmitter<any>();
+
+  inputValue: any = null;
 
   selectedOptions: any[] = [];
   dropdownOpen = false;
@@ -67,6 +70,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
     } else {
       _model = this.selectedOptions[0]?.value;
     }
+    this.inputValue = _model;
     this.onChange(_model);
     this.shChange.emit(_model); // Emit the model change to the parent
   }
@@ -83,12 +87,14 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
       this.toggleDropdown();
     }
     this.modelChangeEmit();
+    this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
   }
 
   removeTag(option: any, event: MouseEvent): void {
     event.stopPropagation();
     this.selectedOptions = this.selectedOptions.filter(o => o !== option);
     this.modelChangeEmit();
+    this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
   }
 
   // ControlValueAccessor methods
