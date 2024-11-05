@@ -1,13 +1,22 @@
 <div class="sh-select" [class.open]="dropdownOpen">
   <div class="sh-select-overlay" (click)="closeDropdown()"></div>
-  <div class="sh-select-selection" (click)="toggleDropdown()">
-    <span *ngIf="!shMultiple">{{ selectedOptions[0] ? selectedOptions[0].label : shPlaceHolder }}</span>
-    <span *ngIf="shMultiple" class="tags">
-      <span *ngFor="let option of selectedOptions" class="tag">
-        {{ option.label }}<i class="remove-tag" (click)="removeTag(option, $event)">×</i>
+
+  <div class="field-validation">
+    <div class="sh-select-selection" (click)="toggleDropdown()">
+      <input
+        type="text"
+        class="input-hidden"
+        [(ngModel)]="selectedOptions"
+        [attr.data-vali]="shDataVali ? shDataVali : null">
+      <span *ngIf="!shMultiple">{{ selectedOptions[0] ? selectedOptions[0].label : shPlaceHolder }}</span>
+      <span *ngIf="shMultiple" class="tags">
+        <span *ngFor="let option of selectedOptions" class="tag">
+          {{ option.label }}<i class="remove-tag" (click)="removeTag(option, $event)">×</i>
+        </span>
       </span>
-    </span>
-    <i class="dropdown-icon"></i>
+      <span *ngIf="shMultiple">{{ shPlaceHolder }}</span>
+      <i class="dropdown-icon"></i>
+    </div>
   </div>
 
   <div class="sh-select-dropdown" *ngIf="dropdownOpen">

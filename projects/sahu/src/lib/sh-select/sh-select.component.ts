@@ -19,9 +19,12 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
 
   @Input() shMultiple: boolean = false;
   @Input() shPlaceHolder: string = 'Select';
+  @Input() shDataVali?: string = '';
 
   @Input() shSearchPlaceHolder: string = '';
   @Input() shShowSearch: boolean = false;
+
+  @Output() shChange = new EventEmitter<any>();
 
   selectedOptions: any[] = [];
   dropdownOpen = false;
@@ -65,6 +68,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
       _model = this.selectedOptions[0]?.value;
     }
     this.onChange(_model);
+    this.shChange.emit(_model); // Emit the model change to the parent
   }
 
   selectOption(option: any, event: any): void {
@@ -105,6 +109,6 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    // Nếu cần thêm logic để quản lý disabled state
+    // Add logic to manage the disabled state if needed
   }
 }
