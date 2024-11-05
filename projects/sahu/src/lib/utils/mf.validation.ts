@@ -31,43 +31,50 @@ export class mfValidation {
     }
   }
 
+  lengthValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement, _dataLength: string, _val: string): boolean {
+    let [_dataMin, _dataMax] = _dataLength.split(',');
+    _dataMin = _dataMin.trim();
+    _dataMax = _dataMax.trim();
+
+    if (_dataMin != '*' && _dataMax != '*') {
+      if (
+        parseInt(_dataMin) > _val.length ||
+        parseInt(_dataMax) < _val.length
+      ) {
+        this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)} và lớn hơn ${formatNumber(_dataMax)}`);
+        return false;
+      }
+    }
+    if (_dataMin != '*') {
+      if (parseInt(_dataMin) > _val.length) {
+        this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)}`);
+        return false;
+      }
+    }
+    if (_dataMax != '*') {
+      if (parseInt(_dataMax) < _val.length) {
+        _val = _val.slice(0, parseInt(_dataMax));
+        input.value = _val;
+
+        this.generateError(input, false, `Giá trị có độ dài không được lớn hơn ${formatNumber(_dataMax)}`);
+        setTimeout(() => {
+          this.generateError(input, true);
+        }, 5000);
+        return true;
+      }
+    }
+
+    this.generateError(input, true);
+    return true;
+  }
+
   validValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
     let _val: string | null = input.value || null;
     let _dataLength = input.getAttribute('data-length')?.trim() || null;
 
     if (_val) {
       if (_dataLength) {
-        let [_dataMin, _dataMax] = _dataLength.split(',');
-        _dataMin = _dataMin.trim();
-        _dataMax = _dataMax.trim();
-
-        if (_dataMin != '*' && _dataMax != '*') {
-          if (
-            parseInt(_dataMin) > _val.length ||
-            parseInt(_dataMax) < _val.length
-          ) {
-            this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)} và lớn hơn ${formatNumber(_dataMax)}`);
-            return false;
-          }
-        }
-        if (_dataMin != '*') {
-          if (parseInt(_dataMin) > _val.length) {
-            this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)}`);
-            return false;
-          }
-        }
-        if (_dataMax != '*') {
-          if (parseInt(_dataMax) < _val.length) {
-            _val = _val.slice(0, parseInt(_dataMax));
-            input.value = _val;
-
-            this.generateError(input, false, `Giá trị có độ dài không được lớn hơn ${formatNumber(_dataMax)}`);
-            setTimeout(() => {
-              this.generateError(input, true);
-            }, 5000);
-            return true;
-          }
-        }
+        return this.lengthValidation(input, _dataLength, _val);
       }
     }
 
@@ -83,37 +90,7 @@ export class mfValidation {
       input.value = _val.trimStart();
 
       if (_dataLength) {
-        let [_dataMin, _dataMax] = _dataLength.split(',');
-        _dataMin = _dataMin.trim();
-        _dataMax = _dataMax.trim();
-
-        if (_dataMin != '*' && _dataMax != '*') {
-          if (
-            parseInt(_dataMin) > _val.length ||
-            parseInt(_dataMax) < _val.length
-          ) {
-            this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)} và lớn hơn ${formatNumber(_dataMax)}`);
-            return false;
-          }
-        }
-        if (_dataMin != '*') {
-          if (parseInt(_dataMin) > _val.length) {
-            this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)}`);
-            return false;
-          }
-        }
-        if (_dataMax != '*') {
-          if (parseInt(_dataMax) < _val.length) {
-            _val = _val.slice(0, parseInt(_dataMax));
-            input.value = _val;
-
-            this.generateError(input, false, `Giá trị có độ dài không được lớn hơn ${formatNumber(_dataMax)}`);
-            setTimeout(() => {
-              this.generateError(input, true);
-            }, 5000);
-            return true;
-          }
-        }
+        return this.lengthValidation(input, _dataLength, _val);
       }
 
       this.generateError(input, true);
@@ -135,37 +112,7 @@ export class mfValidation {
       input.value = _val;
 
       if (_dataLength) {
-        let [_dataMin, _dataMax] = _dataLength.split(',');
-        _dataMin = _dataMin.trim();
-        _dataMax = _dataMax.trim();
-
-        if (_dataMin != '*' && _dataMax != '*') {
-          if (
-            parseInt(_dataMin) > _val.length ||
-            parseInt(_dataMax) < _val.length
-          ) {
-            this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)} và lớn hơn ${formatNumber(_dataMax)}`);
-            return false;
-          }
-        }
-        if (_dataMin != '*') {
-          if (parseInt(_dataMin) > _val.length) {
-            this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)}`);
-            return false;
-          }
-        }
-        if (_dataMax != '*') {
-          if (parseInt(_dataMax) < _val.length) {
-            _val = _val.slice(0, parseInt(_dataMax));
-            input.value = _val;
-
-            this.generateError(input, false, `Giá trị có độ dài không được lớn hơn ${formatNumber(_dataMax)}`);
-            setTimeout(() => {
-              this.generateError(input, true);
-            }, 5000);
-            return true;
-          }
-        }
+        return this.lengthValidation(input, _dataLength, _val);
       }
     }
 
@@ -191,37 +138,7 @@ export class mfValidation {
 
       if (isValidUrl(_val)) {
         if (_dataLength) {
-          let [_dataMin, _dataMax] = _dataLength.split(',');
-          _dataMin = _dataMin.trim();
-          _dataMax = _dataMax.trim();
-
-          if (_dataMin != '*' && _dataMax != '*') {
-            if (
-              parseInt(_dataMin) > _val.length ||
-              parseInt(_dataMax) < _val.length
-            ) {
-              this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)} và lớn hơn ${formatNumber(_dataMax)}`);
-              return false;
-            }
-          }
-          if (_dataMin != '*') {
-            if (parseInt(_dataMin) > _val.length) {
-              this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)}`);
-              return false;
-            }
-          }
-          if (_dataMax != '*') {
-            if (parseInt(_dataMax) < _val.length) {
-              _val = _val.slice(0, parseInt(_dataMax));
-              input.value = _val;
-
-              this.generateError(input, false, `Giá trị có độ dài không được lớn hơn ${formatNumber(_dataMax)}`);
-              setTimeout(() => {
-                this.generateError(input, true);
-              }, 5000);
-              return true;
-            }
-          }
+          return this.lengthValidation(input, _dataLength, _val);
         }
 
         this.generateError(input, true);
@@ -259,37 +176,7 @@ export class mfValidation {
 
       if (isValidUrl(_val)) {
         if (_dataLength) {
-          let [_dataMin, _dataMax] = _dataLength.split(',');
-          _dataMin = _dataMin.trim();
-          _dataMax = _dataMax.trim();
-
-          if (_dataMin != '*' && _dataMax != '*') {
-            if (
-              parseInt(_dataMin) > _val.length ||
-              parseInt(_dataMax) < _val.length
-            ) {
-              this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)} và lớn hơn ${formatNumber(_dataMax)}`);
-              return false;
-            }
-          }
-          if (_dataMin != '*') {
-            if (parseInt(_dataMin) > _val.length) {
-              this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)}`);
-              return false;
-            }
-          }
-          if (_dataMax != '*') {
-            if (parseInt(_dataMax) < _val.length) {
-              _val = _val.slice(0, parseInt(_dataMax));
-              input.value = _val;
-
-              this.generateError(input, false, `Giá trị có độ dài không được lớn hơn ${formatNumber(_dataMax)}`);
-              setTimeout(() => {
-                this.generateError(input, true);
-              }, 5000);
-              return true;
-            }
-          }
+          return this.lengthValidation(input, _dataLength, _val);
         }
 
         this.generateError(input, true);
