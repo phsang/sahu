@@ -1,6 +1,6 @@
 import { slideDown, slideUp } from './mf.animation';
 import { formatNumber } from './mf.app';
-import { fromEvent } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 export class mfValidation {
@@ -83,18 +83,29 @@ export class mfValidation {
   }
 
   nullValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
-    let _val: string | null = input.value || null;
-    let _dataLength = input.getAttribute('data-length')?.trim() || null;
+    let _type = input.getAttribute('type');
 
-    if (_val?.trim()) {
-      input.value = _val.trimStart();
-
-      if (_dataLength) {
-        return this.lengthValidation(input, _dataLength, _val);
+    if (_type === 'file') {
+      if (!input.value || input.value === '') {
+        this.generateError(input, false, 'Vui lòng chọn file');
+        return false;
       }
-
       this.generateError(input, true);
       return true;
+    }
+
+    if (_type === 'text') {
+      let _val: string | null = input.value.trim() || null;
+      let _dataLength = input.getAttribute('data-length')?.trim() || null;
+      if (_val) {
+        input.value = _val.trimStart();
+        if (_dataLength) {
+          return this.lengthValidation(input, _dataLength, _val);
+        }
+
+        this.generateError(input, true);
+        return true;
+      }
     }
     this.generateError(input, false);
     return false;
@@ -352,9 +363,13 @@ export class mfValidation {
     inputs.forEach((input) => {
       if (input instanceof HTMLInputElement || input instanceof HTMLSelectElement || input instanceof HTMLTextAreaElement) {
 
-        fromEvent(input, 'input').pipe(
+        merge(
+          fromEvent(input, 'input'),
+          fromEvent(input, 'change')
+        ).pipe(
           debounceTime(0)
         ).subscribe(() => {
+          // Xử lý logic của bạn ở đây
           let _dataVali = input.getAttribute('data-vali')?.trim() || null;
           let isValid = true;
           if (_dataVali) {
