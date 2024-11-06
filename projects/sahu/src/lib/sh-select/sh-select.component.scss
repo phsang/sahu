@@ -40,8 +40,7 @@
     }
 
     .tags {
-      display: flex;
-      gap: 5px;
+      padding-right: 10px;
     }
 
     .tag {
@@ -49,6 +48,7 @@
       background: #e0e0e0;
       border-radius: 3px;
       display: inline-flex;
+      margin: 2px 3px;
       padding: 5px;
 
       .remove-tag {
@@ -58,19 +58,15 @@
     }
   }
 
-  .results-zone {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
   .sh-select-dropdown {
     background: white;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14), 0 9px 46px 8px rgba(0, 0, 0, .12);
     max-height: 200px;
     overflow-y: auto;
     position: absolute;
+    top: calc(100% + 8px);
     width: 100%;
     z-index: 1000;
 
@@ -117,6 +113,12 @@
       padding: 20px;
       text-align: center;
     }
+  }
+
+  .sh-select-dropdown.top {
+    bottom: calc(100% + 8px);
+    box-shadow: 0 -11px 15px -7px rgba(0, 0, 0, .2), 0 -24px 38px 3px rgba(0, 0, 0, .14), 0 -9px 46px 8px rgba(0, 0, 0, .12);
+    top: auto;
   }
 
   .dropdown-icon {

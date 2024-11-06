@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -11,10 +12,24 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: forwardRef(() => ShSelectComponent),
       multi: true
     }
+  ],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0,
+        transform: 'scale(0.7)'
+      })),
+      transition(':enter, :leave', [
+        animate(100)
+      ])
+    ])
   ]
 })
+
 export class ShSelectComponent implements OnInit, ControlValueAccessor {
   @ViewChild('inputHidden') inputHidden!: ElementRef;
+  @ViewChild('selectSelection') selectSelection!: ElementRef;
+
   @Input() shData: any[] = [];
   _sData: { [key: string]: any[] } = {};
 
@@ -28,6 +43,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
   @Output() shChange = new EventEmitter<any>();
 
   inputValue: any = null;
+  dropdownPosition: string = 'bottom';
 
   selectedOptions: any[] = [];
   dropdownOpen = false;
@@ -55,6 +71,18 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
 
   toggleDropdown(): void {
     this.dropdownOpen = !this.dropdownOpen;
+
+    // thêm class để hiển thị popup phía trên, nếu popup vượt qua khỏi màn hình
+    if (this.dropdownOpen) {
+      let dropdownTop = this.selectSelection.nativeElement.getBoundingClientRect().top + this.selectSelection.nativeElement.getBoundingClientRect().height;
+      let windowHeight = window.innerHeight;
+
+      if (dropdownTop + 220 > windowHeight) {
+        this.dropdownPosition = 'top';
+      } else {
+        this.dropdownPosition = 'bottom';
+      }
+    }
   }
 
   closeDropdown(): void {

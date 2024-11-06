@@ -2,7 +2,7 @@
   <div class="sh-select-overlay" (click)="closeDropdown()"></div>
 
   <div class="field-validation">
-    <div class="sh-select-selection" (click)="toggleDropdown()">
+    <div class="sh-select-selection" (click)="toggleDropdown()" #selectSelection>
       <input
         type="text"
         class="input-hidden"
@@ -11,21 +11,25 @@
         #inputHidden />
 
       <div class="results-zone">
-        <span *ngIf="!shMultiple">{{ selectedOptions[0] ? selectedOptions[0].label : shPlaceHolder }}</span>
-        <span *ngIf="shMultiple" class="tags">
+        <span
+          *ngIf="!shMultiple"
+          [ngClass]="selectedOptions[0] ? '' : 'placeholder-text'">
+          {{ selectedOptions[0]?.label || shPlaceHolder }}
+        </span>
+        <span *ngIf="shMultiple && selectedOptions.length" class="tags">
           <span *ngFor="let option of selectedOptions" class="tag">
             {{ option.label }}<i class="remove-tag" (click)="removeTag(option, $event)">×</i>
           </span>
         </span>
-        <span *ngIf="shMultiple">{{ shPlaceHolder }}</span>
+        <span *ngIf="shMultiple" class="placeholder-text">{{ shPlaceHolder }}</span>
       </div>
       <i class="dropdown-icon"></i>
 
-      <button *ngIf="inputValue" type="button" class="sh-select-reset" (click)="reset($event)" class="sh-select-reset"></button>
+      <button *ngIf="inputValue && !shMultiple" type="button" class="sh-select-reset" (click)="reset($event)" class="sh-select-reset"></button>
     </div>
   </div>
 
-  <div class="sh-select-dropdown" *ngIf="dropdownOpen">
+  <div class="sh-select-dropdown {{dropdownPosition}}" *ngIf="dropdownOpen" @fadeInOut>
     <input *ngIf="shShowSearch" [placeholder]="shSearchPlaceHolder" />
     <ng-container *ngIf="(_sData | json) != ({} | json)">
       <div class="option-group" *ngFor="let group of _sData | keyvalue">
