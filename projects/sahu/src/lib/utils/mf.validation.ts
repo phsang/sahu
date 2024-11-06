@@ -94,7 +94,10 @@ export class mfValidation {
       return true;
     }
 
-    if (_type === 'text') {
+    if (
+      (input.tagName.toUpperCase() === 'INPUT' && _type === 'text') ||
+      input.tagName.toUpperCase() === 'TEXTAREA'
+    ) {
       let _val: string | null = input.value.trim() || null;
       let _dataLength = input.getAttribute('data-length')?.trim() || null;
       if (_val) {
@@ -107,6 +110,7 @@ export class mfValidation {
         return true;
       }
     }
+
     this.generateError(input, false);
     return false;
   }
