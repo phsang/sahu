@@ -40,6 +40,7 @@
           <div *ngFor="let option of group.value" class="sh-select-option">
             <label>
               <input
+                name="item-select"
                 [type]="shMultiple ? 'checkbox' : 'radio'"
                 [value]="option.value"
                 (click)="selectOption(option, $event)"
@@ -56,6 +57,7 @@
       <div *ngFor="let option of shData" class="sh-select-option">
         <label>
           <input
+            name="item-select"
             [type]="shMultiple ? 'checkbox' : 'radio'"
             [value]="option.value"
             (click)="selectOption(option, $event)"
