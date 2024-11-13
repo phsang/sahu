@@ -276,6 +276,21 @@ export class mfValidation {
     return false;
   }
 
+  nullEmailValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    let _val: string | null = input.value || null;
+
+    if (_val?.trim) {
+      let vnf = emailRegex.test(_val);
+      this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Email không hợp lệ' : 'Vui lòng điền vào trường này');
+
+      return vnf;
+    }
+
+    this.generateError(input, false);
+    return false;
+  }
+
   validateWith3Rules(input: HTMLElement, rules: Array<string>): boolean {
     switch (true) {
     }
@@ -284,6 +299,10 @@ export class mfValidation {
 
   validateWith2Rules(input: HTMLElement, rules: Array<string>): boolean {
     switch (true) {
+      case (rules.includes('null') && rules.includes('email')): {
+        return this.nullEmailValidation(input as HTMLInputElement);
+        break;
+      }
       case (rules.includes('null') && rules.includes('phone')): {
         return this.nullPhoneValidation(input as HTMLInputElement);
         break;
