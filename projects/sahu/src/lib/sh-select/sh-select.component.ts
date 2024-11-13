@@ -33,6 +33,8 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
   @Input() shData: any[] = [];
   _sData: { [key: string]: any[] } = {};
 
+  @Input() shId?: string = '';
+  @Input() shName?: string = '';
   @Input() shMultiple: boolean = false;
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';

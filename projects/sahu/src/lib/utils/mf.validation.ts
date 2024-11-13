@@ -98,7 +98,7 @@ export class mfValidation {
       (input.tagName.toUpperCase() === 'INPUT' && _type === 'text') ||
       input.tagName.toUpperCase() === 'TEXTAREA'
     ) {
-      let _val: string | null = input.value.trim() || null;
+      let _val: string | null = input.value || null;
       let _dataLength = input.getAttribute('data-length')?.trim() || null;
       if (_val) {
         input.value = _val.trimStart();
