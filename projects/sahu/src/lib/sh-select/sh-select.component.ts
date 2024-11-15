@@ -151,6 +151,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
       this.inputValue = _model;
     } else {
       this.selectedOptions = [];
+      this.inputValue = null;
     }
   }
 
