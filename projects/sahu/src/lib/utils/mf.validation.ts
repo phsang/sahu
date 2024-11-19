@@ -257,8 +257,13 @@ export class mfValidation {
         _val = _val.substring(0, 10);
       }
       input.value = _val;
-      let vnf = vnf_regex.test(_val);
 
+      if (_val.length !== 10) {
+        this.generateError(input, false, 'Số điện thoại phải 10 số');
+        return false;
+      }
+
+      let vnf = vnf_regex.test(_val);
       this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Số điện thoại không đúng định dạng!' : 'Không bỏ trống số điện thoại!');
 
       // format số điện thoại
