@@ -258,6 +258,7 @@ export class mfValidation {
       }
       input.value = _val;
       let vnf = vnf_regex.test(_val);
+
       this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Số điện thoại không đúng định dạng!' : 'Không bỏ trống số điện thoại!');
 
       // format số điện thoại
@@ -283,8 +284,16 @@ export class mfValidation {
     if (_val?.trim) {
       let vnf = emailRegex.test(_val);
       this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Email không hợp lệ' : 'Vui lòng điền vào trường này');
+      if (!vnf) {
+        return false;
+      }
 
-      return vnf;
+      let _dataLength = input.getAttribute('data-length')?.trim() || null;
+      if (_val) {
+        if (_dataLength) {
+          return this.lengthValidation(input, _dataLength, _val);
+        }
+      }
     }
 
     this.generateError(input, false);
