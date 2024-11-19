@@ -60,14 +60,8 @@ export class mfValidation {
     }
     if (_dataMax != '*') {
       if (parseInt(_dataMax) < _val.length) {
-        _val = _val.slice(0, parseInt(_dataMax));
-        input.value = _val;
-
         this.generateError(input, false, `Giá trị có độ dài không được lớn hơn ${formatNumber(_dataMax)}`);
-        setTimeout(() => {
-          this.generateError(input, true);
-        }, 5000);
-        return true;
+        return false;
       }
     }
 
@@ -108,7 +102,9 @@ export class mfValidation {
       let _val: string | null = input.value || null;
       let _dataLength = input.getAttribute('data-length')?.trim() || null;
       if (_val) {
-        input.value = _val.trimStart();
+        _val = _val.trimStart();
+        input.value = _val;
+
         if (_dataLength) {
           return this.lengthValidation(input, _dataLength, _val);
         }
