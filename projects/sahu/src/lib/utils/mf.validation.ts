@@ -5,7 +5,14 @@ import { debounceTime } from 'rxjs/operators';
 
 export class mfValidation {
 
+  showError: boolean = false;
+
   generateError(element: HTMLElement, status: boolean = true, msg: string = 'Vui lòng điền vào trường này!'): void {
+
+    if (!this.showError) {
+      return;
+    }
+
     const parent = element.closest('.field-validation');
     const msgError = parent?.querySelector('.msg_error');
     msg = '<i class="fal fa-exclamation-triangle"></i>' + msg;
@@ -355,7 +362,10 @@ export class mfValidation {
     return true;
   }
 
-  detectAll(form: HTMLFormElement): boolean {
+  detectAll(form: HTMLFormElement, showError?: boolean): boolean {
+
+    this.showError = showError || false;
+
     const inputs = form.querySelectorAll('input, select, textarea');
     let isValid = true;
 
@@ -406,34 +416,31 @@ export class mfValidation {
         ).pipe(
           debounceTime(0)
         ).subscribe(() => {
+
+          this.detectAll(form, false);
+
           // Xử lý logic của bạn ở đây
           let _dataVali = input.getAttribute('data-vali')?.trim() || null;
-          let isValid = true;
           if (_dataVali) {
             let _dataValiArr = _dataVali.split(',');
             _dataValiArr = _dataValiArr.map((item) => item.trim());
 
             // gọi các hàm validate
+            this.showError = true;
             switch (_dataValiArr.length) {
               case 3: {
-                isValid = this.validateWith3Rules(input, _dataValiArr);
+                this.validateWith3Rules(input, _dataValiArr);
                 break;
               }
               case 2: {
-                isValid = this.validateWith2Rules(input, _dataValiArr);
+                this.validateWith2Rules(input, _dataValiArr);
                 break;
               }
               case 1: {
-                isValid = this.validateWith1Rules(input, _dataValiArr);
+                this.validateWith1Rules(input, _dataValiArr);
                 break;
               }
             }
-          }
-
-          if (!isValid) {
-            form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
-          } else {
-            form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
           }
         });
       }

@@ -31,7 +31,7 @@ export class ShFormComponent implements AfterViewInit, OnChanges {
 
   handleSubmit(event: Event): void {
     event.preventDefault();
-    if (this.validation.detectAll(this.shForm.nativeElement)) {
+    if (this.validation.detectAll(this.shForm.nativeElement, true)) {
       this.shSubmit.emit(event);
     }
   }
