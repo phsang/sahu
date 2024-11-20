@@ -1,6 +1,6 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
-import { mfValidation } from '../utils/mf.validation';
 import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnChanges, OnDestroy, Output, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
+import { mfValidation } from '../utils/mf.validation';
 
 @Component({
   selector: 'sh-form',
@@ -8,10 +8,11 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrls: ['./sh-form.component.scss'],
   providers: [mfValidation]
 })
-export class ShFormComponent implements AfterViewInit, OnChanges {
-  @ViewChild('shForm') shForm!: ElementRef;
+export class ShFormComponent implements AfterViewInit, OnChanges, OnDestroy {
+  @ViewChild('shForm', { static: true }) shForm!: ElementRef;
   @Input() shClass?: string;
   @Output() shSubmit = new EventEmitter<Event>();
+  private observer!: MutationObserver;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -23,6 +24,17 @@ export class ShFormComponent implements AfterViewInit, OnChanges {
     this.cdr.detectChanges();
     if (isPlatformBrowser(this.platformId)) {
       this.validation.init(this.shForm.nativeElement);
+
+      // Khởi tạo MutationObserver
+      this.observer = new MutationObserver(() => {
+        this.validation.init(this.shForm.nativeElement);
+      });
+
+      // Theo dõi các thay đổi trong form
+      this.observer.observe(this.shForm.nativeElement, {
+        childList: true, // Theo dõi thêm/xóa phần tử con
+        subtree: true    // Bao gồm cả các phần tử con cấp sâu hơn
+      });
     }
   }
 
@@ -33,6 +45,13 @@ export class ShFormComponent implements AfterViewInit, OnChanges {
     event.preventDefault();
     if (this.validation.detectAll(this.shForm.nativeElement, true)) {
       this.shSubmit.emit(event);
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Hủy MutationObserver khi component bị destroy
+    if (this.observer) {
+      this.observer.disconnect();
     }
   }
 }
