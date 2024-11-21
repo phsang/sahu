@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnChanges, OnDestroy, Output, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID, ViewChild } from '@angular/core';
 import { mfValidation } from '../utils/mf.validation';
 
 @Component({
@@ -8,7 +8,7 @@ import { mfValidation } from '../utils/mf.validation';
   styleUrls: ['./sh-form.component.scss'],
   providers: [mfValidation]
 })
-export class ShFormComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class ShFormComponent implements AfterViewInit, OnDestroy {
   @ViewChild('shForm', { static: true }) shForm!: ElementRef;
   @Input() shClass?: string;
   @Output() shSubmit = new EventEmitter<Event>();
@@ -33,12 +33,9 @@ export class ShFormComponent implements AfterViewInit, OnChanges, OnDestroy {
       // Theo dõi các thay đổi trong form
       this.observer.observe(this.shForm.nativeElement, {
         childList: true, // Theo dõi thêm/xóa phần tử con
-        subtree: true    // Bao gồm cả các phần tử con cấp sâu hơn
+        subtree: false    // Bao gồm cả các phần tử con cấp sâu hơn
       });
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
   }
 
   handleSubmit(event: Event): void {
