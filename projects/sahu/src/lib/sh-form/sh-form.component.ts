@@ -33,7 +33,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       // Theo dõi các thay đổi trong form
       this.observer.observe(this.shForm.nativeElement, {
         childList: true, // Theo dõi thêm/xóa phần tử con
-        subtree: false    // Bao gồm cả các phần tử con cấp sâu hơn
+        subtree: true    // Bao gồm cả các phần tử con cấp sâu hơn
       });
     }
   }

@@ -177,11 +177,11 @@ export class mfValidation {
   }
 
   nullUrlValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
-    let _val: string | null = input.value || null;
+    let _val: string | null = input.value?.trim() || null;
     let _dataLength = input.getAttribute('data-length')?.trim() || null;
 
-    if (_val?.trim()) {
-      input.value = _val.trimStart();
+    if (_val) {
+      input.value = _val;
 
       const isValidUrl = (urlString: string) => {
         try {
@@ -209,7 +209,10 @@ export class mfValidation {
         this.generateError(input, false, 'Đường dẫn không phải là một URL hợp lệ!');
         return false;
       }
+    } else {
+      input.value = '';
     }
+
     this.generateError(input, false);
     return false;
   }
