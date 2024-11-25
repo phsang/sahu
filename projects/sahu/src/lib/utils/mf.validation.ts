@@ -413,6 +413,7 @@ export class mfValidation {
 
           // Xử lý logic của bạn ở đây
           let _dataVali = input.getAttribute('data-vali')?.trim() || null;
+          let isValid = true;
           if (_dataVali) {
             let _dataValiArr = _dataVali.split(',');
             _dataValiArr = _dataValiArr.map((item) => item.trim());
@@ -421,19 +422,25 @@ export class mfValidation {
             this.showError = true;
             switch (_dataValiArr.length) {
               case 3: {
-                this.validateWith3Rules(input, _dataValiArr);
+                isValid = this.validateWith3Rules(input, _dataValiArr);
                 break;
               }
               case 2: {
-                this.validateWith2Rules(input, _dataValiArr);
+                isValid = this.validateWith2Rules(input, _dataValiArr);
                 break;
               }
               case 1: {
-                this.validateWith1Rules(input, _dataValiArr);
+                isValid = this.validateWith1Rules(input, _dataValiArr);
                 break;
               }
             }
           }
+
+          // if (!isValid) {
+          //   form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
+          // } else {
+          //   form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
+          // }
         });
       }
     });
