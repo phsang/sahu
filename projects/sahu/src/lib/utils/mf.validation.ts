@@ -234,15 +234,8 @@ export class mfValidation {
       }
       if (_dataMax) {
         if (parseInt(_dataMax) < parseInt(_val)) {
-          input.value = formatNumber(_dataMax);
-
           this.generateError(input, false, `Giá trị không được lớn hơn ${formatNumber(_dataMax)}`);
-
-          setTimeout(() => {
-            this.generateError(input, true);
-          }, 5000);
-
-          return true;
+          return false;
         }
       }
 
