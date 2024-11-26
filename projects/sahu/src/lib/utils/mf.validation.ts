@@ -120,7 +120,6 @@ export class mfValidation {
 
   otpValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
     let _val: string | null = input.value.trim() || null;
-    let _dataLength = input.getAttribute('data-length')?.trim() || null;
 
     if (!_val) {
       this.generateError(input, false, 'Không bỏ trống giá trị OTP');
@@ -129,8 +128,9 @@ export class mfValidation {
       _val = _val.replace(/\D/g, '');
       input.value = _val;
 
-      if (_dataLength) {
-        return this.lengthValidation(input, _dataLength, _val);
+      if (_val.length !== 4) {
+        this.generateError(input, false, 'Mã OTP bao gồm 4 chữ số');
+        return false;
       }
     }
 
@@ -248,22 +248,13 @@ export class mfValidation {
 
   nullPhoneValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
     const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-    let _val: string | null = input.value || null;
+    let _val: string | null = input.value.trim() || null;
 
     if (_val) {
-      _val = _val.trimStart().replace(/\D|\./g, '');
+      _val = _val.replace(/\D|\./g, '');
       if (_val.length > 10) {
         _val = _val.substring(0, 10);
       }
-      input.value = _val;
-
-      if (_val.length !== 10) {
-        this.generateError(input, false, 'Số điện thoại phải 10 số');
-        return false;
-      }
-
-      let vnf = vnf_regex.test(_val);
-      this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Số điện thoại không đúng định dạng!' : 'Không bỏ trống số điện thoại!');
 
       // format số điện thoại
       if (_val.length > 4 && _val.length < 8) {
@@ -271,13 +262,21 @@ export class mfValidation {
       } else if (_val.length >= 8) {
         _val = _val.substring(0, 4) + '.' + _val.substring(4, 7) + '.' + _val.substring(7);
       }
-
       input.value = _val;
+
+      _val = _val.replace(/\./g, '');
+      if (_val.length !== 10) {
+        this.generateError(input, false, 'Số điện thoại phải 10 số');
+        return false;
+      }
+
+      let vnf = vnf_regex.test(_val);
+      this.generateError(input, vnf, vnf ? '' : 'Số điện thoại không đúng định dạng!');
 
       return vnf;
     }
 
-    this.generateError(input, false);
+    this.generateError(input, false, 'Không bỏ trống số điện thoại');
     return false;
   }
 
