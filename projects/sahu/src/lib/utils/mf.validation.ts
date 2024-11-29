@@ -405,7 +405,7 @@ export class mfValidation {
           fromEvent(input, 'input'),
           fromEvent(input, 'change')
         ).pipe(
-          debounceTime(0)
+          debounceTime(100)
         ).subscribe(() => {
 
           this.detectAll(form, false);
@@ -413,7 +413,7 @@ export class mfValidation {
           // Xử lý logic của bạn ở đây
           let _dataVali = input.getAttribute('data-vali')?.trim() || null;
           let isValid = true;
-          if (_dataVali) {
+          if (_dataVali && _dataVali.length > 0) {
             let _dataValiArr = _dataVali.split(',');
             _dataValiArr = _dataValiArr.map((item) => item.trim());
 

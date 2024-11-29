@@ -13,5 +13,6 @@ export * from './lib/sh-image';
 export * from './lib/sh-input';
 export * from './lib/sh-modal';
 export * from './lib/sh-select';
+export * from './lib/sh-slideshow';
 export * from './lib/sh-tabs';
 
