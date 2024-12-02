@@ -251,7 +251,7 @@ export class mfValidation {
     let _val: string | null = input.value.trim() || null;
 
     if (_val) {
-      _val = _val.replace(/\D|\./g, '');
+      _val = _val.replace(/\D|\.|\s+/g, '');
       if (_val.length > 10) {
         _val = _val.substring(0, 10);
       }
@@ -263,6 +263,8 @@ export class mfValidation {
         _val = _val.substring(0, 4) + '.' + _val.substring(4, 7) + '.' + _val.substring(7);
       }
       input.value = _val;
+      const event = new Event('input', { bubbles: true });
+      input.dispatchEvent(event);
 
       _val = _val.replace(/\./g, '');
       if (_val.length !== 10) {
