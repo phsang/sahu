@@ -12,27 +12,26 @@
 </div>
 
 <div class="sh-slideshow" *ngIf="isPopupOpen" #popupContainer>
-  <div class="popup-overlay">
-    <div class="popup-loading"></div>
-    <div class="popup-content">
-      <div class="slide-header">
-        <h3>{{ shData[currentIndex].title }}</h3>
-        <p><span class="font600">{{currentIndex + 1}}</span> / <span>{{shData.length}} hình</span></p>
-        <button class="close-btn" (click)="closePopup()">&#10006;</button>
-      </div>
-      <div class="slideshow-container">
-        <div class="slide-item" *ngFor="let slide of shData; let i = index">
-          <div
-            class="slide"
-            [class.active]="i === currentIndex">
-            <img [src]="slide.src" alt="Slide {{ i + 1 }}" (load)="onSlideLoad(i)" />
-          </div>
+  <div class="popup-overlay"></div>
+  <div class="popup-loading"></div>
+  <div class="popup-content">
+    <div class="slide-header">
+      <h3>{{ shData[currentIndex].title }}</h3>
+      <p><span class="font600">{{currentIndex + 1}}</span> / <span>{{shData.length}} hình</span></p>
+      <button class="close-btn" (click)="closePopup()">&#10006;</button>
+    </div>
+    <div class="slideshow-container">
+      <div class="slide-item" *ngFor="let slide of shData; let i = index">
+        <div
+          class="slide"
+          [class.active]="i === currentIndex">
+          <img [src]="slide.src" alt="Slide {{ i + 1 }}" (load)="onSlideLoad(i)" />
         </div>
       </div>
-      <div class="controls">
-        <button class="prev" (click)="previousSlide()">&#10094;</button>
-        <button class="next" (click)="nextSlide()">&#10095;</button>
-      </div>
+    </div>
+    <div class="controls">
+      <button class="prev" (click)="previousSlide()">&#10094;</button>
+      <button class="next" (click)="nextSlide()">&#10095;</button>
     </div>
   </div>
 </div>

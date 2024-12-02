@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'sh-slideshow',
   templateUrl: './sh-slideshow.component.html',
-  styleUrls: ['./sh-slideshow.component.scss'],
+  styleUrls: ['./sh-slideshow.component.scss']
 })
 export class ShSlideshowComponent {
   @ViewChild('popupContainer', { static: false }) popupContainer!: ElementRef;
@@ -25,11 +25,16 @@ export class ShSlideshowComponent {
     setTimeout(() => {
       if (this.isPopupOpen && this.popupContainer) {
         this.renderer.appendChild(document.body, this.popupContainer.nativeElement);
+
+        setTimeout(() => {
+          this.popupContainer.nativeElement.classList.add('show');
+        }, 10);
       }
     }, 10);
   }
 
   closePopup() {
+    this.popupContainer.nativeElement.classList.remove('loaded');
     this.popupContainer.nativeElement.classList.remove('show');
 
     setTimeout(() => {
@@ -50,7 +55,7 @@ export class ShSlideshowComponent {
     this.slideLoaded[index] = true;
 
     if (this.slideLoaded.every(x => x)) {
-      this.popupContainer.nativeElement.classList.add('show');
+      this.popupContainer.nativeElement.classList.add('loaded');
     }
   }
 }
