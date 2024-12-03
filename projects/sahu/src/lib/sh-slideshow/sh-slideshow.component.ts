@@ -49,26 +49,14 @@ export class ShSlideshowComponent {
     this.currentIndex = (this.currentIndex + 1) % this.shData.length;
     this.popupContainer.nativeElement.classList.add('slide-next');
 
-    if (this.slideStyles[this.currentIndex]) {
-      this.applyStyle(this.currentIndex);
-    } else {
-      setTimeout(() => {
-        this.slideAnimation(this.currentIndex);
-      }, 200);
-    }
+    this.applyStyle(this.currentIndex);
   }
 
   previousSlide() {
     this.currentIndex = (this.currentIndex - 1 + this.shData.length) % this.shData.length;
     this.popupContainer.nativeElement.classList.remove('slide-next');
 
-    if (this.slideStyles[this.currentIndex]) {
-      this.applyStyle(this.currentIndex);
-    } else {
-      setTimeout(() => {
-        this.slideAnimation(this.currentIndex);
-      }, 200);
-    }
+    this.applyStyle(this.currentIndex);
   }
 
   onSlideLoad(event: Event, index: number) {
@@ -83,44 +71,40 @@ export class ShSlideshowComponent {
     if (this.slideLoaded.every(x => x)) {
       this.popupContainer.nativeElement.classList.add('loaded');
 
-      this.slideAnimation(this.currentIndex);
+      setTimeout(() => {
+        let currentSlide = this.popupContainer.nativeElement.querySelector('#slide-' + this.currentIndex);
+        for (let i = 0; i < this.slideStyles.length; i++) {
+          let percentZoom = 100;
+          let imgW = this.slideStyles[i].width;
+          let imgH = this.slideStyles[i].height;
+          let parW = currentSlide.offsetWidth;
+          let parH = currentSlide.offsetHeight;
+
+          if ((imgW > imgH) && (imgW >= parW)) {
+            percentZoom = (parW / imgW) * 100;
+          } else if ((imgH > imgW) && (imgH >= parH)) {
+            percentZoom = (parH / imgH) * 100;
+          } else if (imgH === imgW) {
+            percentZoom = 100;
+            if (imgW > parW) {
+              percentZoom = (parW / imgW) * 100;
+            }
+            if (imgH > parH) {
+              percentZoom = (parH / imgH) * 100;
+            }
+          }
+      
+          this.slideStyles[i] = {
+            zoom: percentZoom / 100,
+            rotate: 0,
+            left: (parW - imgW) / 2,
+            top: (parH - imgH) / 2,
+          }
+        }
+
+        this.applyStyle(this.currentIndex);
+      }, 10);
     }
-  }
-
-  slideAnimation(index: number) {
-    let currentSlide = this.popupContainer.nativeElement.querySelector('#slide-' + index);
-
-    let percentZoom = 100;
-    let imgW = currentSlide.querySelector('img').offsetWidth;
-    let imgH = currentSlide.querySelector('img').offsetHeight;
-    let parW = currentSlide.offsetWidth;
-    let parH = currentSlide.offsetHeight;
-    if ((imgW > imgH) && (imgW >= parW)) {
-      percentZoom = (parW / imgW) * 100;
-    } else if ((imgH > imgW) && (imgH >= parH)) {
-      percentZoom = (parH / imgH) * 100;
-    } else if (imgH === imgW) {
-      percentZoom = 100;
-      if (imgW > parW) {
-        percentZoom = (parW / imgW) * 100;
-      }
-      if (imgH > parH) {
-        percentZoom = (parH / imgH) * 100;
-      }
-    }
-
-    console.log(percentZoom, imgW, imgH, parW, parH);
-
-    this.slideStyles[index] = {
-      zoom: percentZoom / 100,
-      rotate: 0,
-      left: (parW - imgW) / 2,
-      top: (parH - imgH) / 2,
-    }
-
-    console.log(this.slideStyles);
-
-    this.applyStyle(index);
   }
 
   applyStyle(index: number) {
