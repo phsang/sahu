@@ -44,11 +44,12 @@ export class ShSlideshowComponent {
 
   nextSlide() {
     this.currentIndex = (this.currentIndex + 1) % this.shData.length;
+    this.popupContainer.nativeElement.classList.add('slide-next');
   }
 
   previousSlide() {
-    this.currentIndex =
-      (this.currentIndex - 1 + this.shData.length) % this.shData.length;
+    this.currentIndex = (this.currentIndex - 1 + this.shData.length) % this.shData.length;
+    this.popupContainer.nativeElement.classList.remove('slide-next');
   }
 
   onSlideLoad(index: number) {
