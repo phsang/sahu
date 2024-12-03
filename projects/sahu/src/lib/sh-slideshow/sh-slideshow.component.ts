@@ -48,15 +48,37 @@ export class ShSlideshowComponent {
   nextSlide() {
     this.currentIndex = (this.currentIndex + 1) % this.shData.length;
     this.popupContainer.nativeElement.classList.add('slide-next');
+
+    if (this.slideStyles[this.currentIndex]) {
+      this.applyStyle(this.currentIndex);
+    } else {
+      setTimeout(() => {
+        this.slideAnimation(this.currentIndex);
+      }, 200);
+    }
   }
 
   previousSlide() {
     this.currentIndex = (this.currentIndex - 1 + this.shData.length) % this.shData.length;
     this.popupContainer.nativeElement.classList.remove('slide-next');
+
+    if (this.slideStyles[this.currentIndex]) {
+      this.applyStyle(this.currentIndex);
+    } else {
+      setTimeout(() => {
+        this.slideAnimation(this.currentIndex);
+      }, 200);
+    }
   }
 
-  onSlideLoad(index: number) {
+  onSlideLoad(event: Event, index: number) {
     this.slideLoaded[index] = true;
+
+    const imgElement = event.target as HTMLImageElement;
+    this.slideStyles[index] = {
+      'width': imgElement.naturalWidth,
+      'height': imgElement.naturalHeight
+    }
 
     if (this.slideLoaded.every(x => x)) {
       this.popupContainer.nativeElement.classList.add('loaded');
@@ -87,22 +109,58 @@ export class ShSlideshowComponent {
       }
     }
 
-    // giá trị width, height sau khi zoom
-    let newWidth = imgW * (percentZoom / 100);
-    let newHeight = imgH * (percentZoom / 100);
+    console.log(percentZoom, imgW, imgH, parW, parH);
+
     this.slideStyles[index] = {
       zoom: percentZoom / 100,
       rotate: 0,
-      left: (parW - newWidth) / 2,
-      top: (parH - newHeight) / 2,
+      left: (parW - imgW) / 2,
+      top: (parH - imgH) / 2,
     }
 
-    console.log(index);
-    console.log(imgW, imgH, parW, parH, newWidth, newHeight);
     console.log(this.slideStyles);
 
-    this.popupContainer.nativeElement.querySelector('#slide-' + index + ' img').style.left = this.slideStyles[index].left + 'px';
-    this.popupContainer.nativeElement.querySelector('#slide-' + index + ' img').style.top = this.slideStyles[index].top + 'px';
-    this.popupContainer.nativeElement.querySelector('#slide-' + index + ' img').style.transform = `rotate(${this.slideStyles[index].rotate}deg) scale(${this.slideStyles[index].zoom})`;
+    this.applyStyle(index);
+  }
+
+  applyStyle(index: number) {
+    let currentImg = this.popupContainer.nativeElement.querySelector('#slide-' + index + ' img');
+
+    currentImg.style.left = this.slideStyles[index].left + 'px';
+    currentImg.style.top = this.slideStyles[index].top + 'px';
+    currentImg.style.transform = `rotate(${this.slideStyles[index].rotate}deg) scale(${this.slideStyles[index].zoom})`;
+  }
+
+  zoomIn() {
+    if (this.slideStyles[this.currentIndex].zoom >= 3) {
+      return;
+    }
+
+    this.slideStyles[this.currentIndex].zoom += 0.1;
+    this.applyStyle(this.currentIndex);
+  }
+
+  zoomOut() {
+    if (this.slideStyles[this.currentIndex].zoom <= 0.1) {
+      return;
+    }
+
+    this.slideStyles[this.currentIndex].zoom -= 0.1;
+    this.applyStyle(this.currentIndex);
+  }
+
+  zoomReset() {
+    this.slideStyles[this.currentIndex].zoom = 1;
+    this.applyStyle(this.currentIndex);
+  }
+
+  rotateLeft() {
+    this.slideStyles[this.currentIndex].rotate -= 90;
+    this.applyStyle(this.currentIndex);
+  }
+
+  rotateRight() {
+    this.slideStyles[this.currentIndex].rotate += 90;
+    this.applyStyle(this.currentIndex);
   }
 }

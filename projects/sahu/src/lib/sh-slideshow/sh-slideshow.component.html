@@ -24,13 +24,20 @@
       <ng-container *ngFor="let slide of shData; let i = index">
         <div class="slide-item" [class.active]="i === currentIndex">
           <div class="slide" id="slide-{{i}}">
-            <img [src]="slide.src" alt="Slide {{ i + 1 }}" (load)="onSlideLoad(i)" />
+            <img [src]="slide.src" alt="Slide {{ i + 1 }}" (load)="onSlideLoad($event, i)" />
           </div>
         </div>
       </ng-container>
     </div>
     <div class="controls">
       <button class="prev" (click)="previousSlide()">&#10094;</button>
+      <div class="progress">
+        <button type="button" class="progress-btn btn-zoom_in" (click)="zoomIn()"></button>
+        <button type="button" class="progress-btn btn-zoom_out" (click)="zoomOut()"></button>
+        <button type="button" class="progress-btn btn-zoom_reset" (click)="zoomReset()"></button>
+        <button type="button" class="progress-btn btn-rotate_left" (click)="rotateLeft()"></button>
+        <button type="button" class="progress-btn btn-rotate_right" (click)="rotateRight()"></button>
+      </div>
       <button class="next" (click)="nextSlide()">&#10095;</button>
     </div>
   </div>
