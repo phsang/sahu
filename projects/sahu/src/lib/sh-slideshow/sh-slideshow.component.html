@@ -23,7 +23,7 @@
     <div class="slideshow-container">
       <ng-container *ngFor="let slide of shData; let i = index">
         <div class="slide-item" [class.active]="i === currentIndex">
-          <div class="slide">
+          <div class="slide" id="slide-{{i}}">
             <img [src]="slide.src" alt="Slide {{ i + 1 }}" (load)="onSlideLoad(i)" />
           </div>
         </div>
