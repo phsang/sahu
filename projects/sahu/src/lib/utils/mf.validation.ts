@@ -5,14 +5,7 @@ import { debounceTime } from 'rxjs/operators';
 
 export class mfValidation {
 
-  showError: boolean = false;
-
   generateError(element: HTMLElement, status: boolean = true, msg: string = 'Vui lòng điền vào trường này!'): void {
-
-    if (!this.showError) {
-      return;
-    }
-
     const parent = element.closest('.field-validation');
     const msgError = parent?.querySelector('.msg_error');
     msg = '<i class="fal fa-exclamation-triangle"></i>' + msg;
@@ -284,25 +277,30 @@ export class mfValidation {
 
   nullEmailValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    let _val: string | null = input.value || null;
 
-    if (_val?.trim) {
-      let vnf = emailRegex.test(_val);
-      this.generateError(input, vnf, vnf ? '' : _val.length > 0 ? 'Email không hợp lệ' : 'Vui lòng điền vào trường này');
-      if (!vnf) {
-        return false;
-      }
-
-      let _dataLength = input.getAttribute('data-length')?.trim() || null;
-      if (_val) {
-        if (_dataLength) {
-          return this.lengthValidation(input, _dataLength, _val);
-        }
-      }
+    // Lấy giá trị và trim để giảm thao tác lặp lại
+    const value = input.value?.trim() || null;
+    if (!value) {
+      this.generateError(input, false, 'Vui lòng điền vào trường này');
+      return false;
     }
 
-    this.generateError(input, false);
-    return false;
+    // Kiểm tra email hợp lệ
+    const isEmailValid = emailRegex.test(value);
+    if (!isEmailValid) {
+      this.generateError(input, false, 'Email không hợp lệ');
+      return false;
+    }
+
+    // Kiểm tra độ dài (nếu có thuộc tính data-length)
+    const dataLength = input.getAttribute('data-length')?.trim();
+    if (dataLength) {
+      return this.lengthValidation(input, dataLength, value);
+    }
+
+    // Mặc định không có lỗi
+    this.generateError(input, true);
+    return true;
   }
 
   validateWith3Rules(input: HTMLElement, rules: Array<string>): boolean {
@@ -355,10 +353,7 @@ export class mfValidation {
     return true;
   }
 
-  detectAll(form: HTMLFormElement, showError?: boolean): boolean {
-
-    this.showError = showError || false;
-
+  detectAll(form: HTMLFormElement): boolean {
     const inputs = form.querySelectorAll('input, select, textarea');
     let isValid = true;
 
@@ -409,9 +404,6 @@ export class mfValidation {
         ).pipe(
           debounceTime(100)
         ).subscribe(() => {
-
-          this.detectAll(form, false);
-
           // Xử lý logic của bạn ở đây
           let _dataVali = input.getAttribute('data-vali')?.trim() || null;
           let isValid = true;
@@ -420,7 +412,6 @@ export class mfValidation {
             _dataValiArr = _dataValiArr.map((item) => item.trim());
 
             // gọi các hàm validate
-            this.showError = true;
             switch (_dataValiArr.length) {
               case 3: {
                 isValid = this.validateWith3Rules(input, _dataValiArr);
@@ -437,11 +428,11 @@ export class mfValidation {
             }
           }
 
-          // if (!isValid) {
-          //   form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
-          // } else {
-          //   form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
-          // }
+          if (!isValid) {
+            form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
+          } else {
+            form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
+          }
         });
       }
     });

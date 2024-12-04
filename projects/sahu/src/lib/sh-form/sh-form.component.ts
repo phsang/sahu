@@ -40,7 +40,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
 
   handleSubmit(event: Event): void {
     event.preventDefault();
-    if (this.validation.detectAll(this.shForm.nativeElement, true)) {
+    if (this.validation.detectAll(this.shForm.nativeElement)) {
       this.shSubmit.emit(event);
     }
   }

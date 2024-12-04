@@ -15,6 +15,9 @@ export class ShSlideshowComponent {
 
   // Mảng chứa giá trị style cho riêng mỗi slide
   slideStyles: any[] = [];
+  slideMove = false;
+  positionX = 0;
+  positionY = 0;
 
   constructor(private renderer: Renderer2) { }
 
@@ -93,7 +96,7 @@ export class ShSlideshowComponent {
               percentZoom = (parH / imgH) * 100;
             }
           }
-      
+
           this.slideStyles[i] = {
             zoom: percentZoom / 100,
             rotate: 0,
@@ -146,5 +149,42 @@ export class ShSlideshowComponent {
   rotateRight() {
     this.slideStyles[this.currentIndex].rotate += 90;
     this.applyStyle(this.currentIndex);
+  }
+
+  onSlideMouseDown(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.popupContainer.nativeElement.classList.add('dragging');
+    this.slideMove = true;
+
+    this.positionX = event.clientX;
+    this.positionY = event.clientY;
+  }
+
+  onSlideMouseMove(event: MouseEvent, index: number) {
+    if (!this.slideMove) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    let _newX = event.clientX - this.positionX;
+    let _newY = event.clientY - this.positionY;
+
+    console.log(event.clientX, event.clientY, this.positionX, this.positionY, _newX, _newY);
+    console.log(this.slideStyles[index].left, this.slideStyles[index].top);
+
+    this.slideStyles[index].left += _newX;
+    this.slideStyles[index].top += _newY;
+
+    this.applyStyle(index);
+  }
+
+  onSlideMouseUp(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.popupContainer.nativeElement.classList.remove('dragging');
+    this.slideMove = false;
   }
 }
