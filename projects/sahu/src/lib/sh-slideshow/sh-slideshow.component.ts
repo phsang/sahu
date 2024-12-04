@@ -34,6 +34,7 @@ export class ShSlideshowComponent {
     setTimeout(() => {
       if (this.isPopupOpen && this.popupContainer) {
         this.renderer.appendChild(document.body, this.popupContainer.nativeElement);
+        this.popupContainer.nativeElement.focus();
 
         setTimeout(() => {
           this.popupContainer.nativeElement.classList.add('show');
@@ -127,15 +128,24 @@ export class ShSlideshowComponent {
     }
 
     this.slideStyles[this.currentIndex].zoom += 0.1;
+    if (this.slideStyles[this.currentIndex].zoom >= 3) {
+      this.slideStyles[this.currentIndex].zoom = 3;
+    }
     this.applyStyle(this.currentIndex);
   }
 
   zoomOut() {
-    if (this.slideStyles[this.currentIndex].zoom <= 0.1) {
+    let _zoom = parseFloat(this.slideStyles[this.currentIndex].zoom);
+    _zoom = Math.round(_zoom * 10) / 10;
+
+    if (_zoom <= 0.1) {
       return;
     }
 
     this.slideStyles[this.currentIndex].zoom -= 0.1;
+    if (this.slideStyles[this.currentIndex].zoom <= 0.1) {
+      this.slideStyles[this.currentIndex].zoom = 0.1;
+    }
     this.applyStyle(this.currentIndex);
   }
 
@@ -193,5 +203,27 @@ export class ShSlideshowComponent {
     this.popupContainer.nativeElement.classList.remove('dragging');
     this.slideMove = false;
     this.popupContainer.nativeElement.querySelector('#slide-' + this.currentIndex + ' img').style.transition = '0.3s';
+  }
+
+  keyEvent(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      this.closePopup();
+    }
+
+    if (event.key === 'ArrowLeft') {
+      this.previousSlide();
+    }
+
+    if (event.key === 'ArrowRight') {
+      this.nextSlide();
+    }
+
+    if (event.key === 'ArrowUp') {
+      this.zoomIn();
+    }
+
+    if (event.key === 'ArrowDown') {
+      this.zoomOut();
+    }
   }
 }

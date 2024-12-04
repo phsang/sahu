@@ -11,7 +11,7 @@
   </div>
 </div>
 
-<div class="sh-slideshow" *ngIf="isPopupOpen" #popupContainer>
+<div class="sh-slideshow" *ngIf="isPopupOpen" (keyup)="keyEvent($event)" #popupContainer tabindex="0">
   <div class="popup-overlay"></div>
   <div class="popup-loading"></div>
   <div class="popup-content">
