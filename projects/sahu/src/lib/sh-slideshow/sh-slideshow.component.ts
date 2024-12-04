@@ -16,6 +16,9 @@ export class ShSlideshowComponent {
   // Mảng chứa giá trị style cho riêng mỗi slide
   slideStyles: any[] = [];
   slideMove = false;
+
+  cursorX = 0;
+  cursorY = 0;
   positionX = 0;
   positionY = 0;
 
@@ -157,8 +160,12 @@ export class ShSlideshowComponent {
     this.popupContainer.nativeElement.classList.add('dragging');
     this.slideMove = true;
 
-    this.positionX = event.clientX;
-    this.positionY = event.clientY;
+    this.cursorX = event.clientX;
+    this.cursorY = event.clientY;
+    this.positionX = this.slideStyles[this.currentIndex].left;
+    this.positionY = this.slideStyles[this.currentIndex].top;
+
+    this.popupContainer.nativeElement.querySelector('#slide-' + this.currentIndex + ' img').style.transition = 'none';
   }
 
   onSlideMouseMove(event: MouseEvent, index: number) {
@@ -169,14 +176,13 @@ export class ShSlideshowComponent {
     event.preventDefault();
     event.stopPropagation();
 
-    let _newX = event.clientX - this.positionX;
-    let _newY = event.clientY - this.positionY;
+    let newCursorX = event.clientX - this.cursorX;
+    let newCursorY = event.clientY - this.cursorY;
+    let newX = this.positionX + newCursorX;
+    let newY = this.positionY + newCursorY;
 
-    console.log(event.clientX, event.clientY, this.positionX, this.positionY, _newX, _newY);
-    console.log(this.slideStyles[index].left, this.slideStyles[index].top);
-
-    this.slideStyles[index].left += _newX;
-    this.slideStyles[index].top += _newY;
+    this.slideStyles[index].left = newX;
+    this.slideStyles[index].top = newY;
 
     this.applyStyle(index);
   }
@@ -186,5 +192,6 @@ export class ShSlideshowComponent {
     event.stopPropagation();
     this.popupContainer.nativeElement.classList.remove('dragging');
     this.slideMove = false;
+    this.popupContainer.nativeElement.querySelector('#slide-' + this.currentIndex + ' img').style.transition = '0.3s';
   }
 }

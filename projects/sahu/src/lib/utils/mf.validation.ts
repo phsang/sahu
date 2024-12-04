@@ -402,7 +402,7 @@ export class mfValidation {
           fromEvent(input, 'input'),
           fromEvent(input, 'change')
         ).pipe(
-          debounceTime(100)
+          debounceTime(200)
         ).subscribe(() => {
           // Xử lý logic của bạn ở đây
           let _dataVali = input.getAttribute('data-vali')?.trim() || null;

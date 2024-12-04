@@ -176,10 +176,15 @@
   }
 
   .slide {
+    cursor: grab;
     height: 100%;
     overflow: hidden;
     position: relative;
     width: 100%;
+  }
+
+  &.dragging .slide {
+    cursor: grabbing;
   }
 
   .slide img {
