@@ -1,5 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  // "dest": "../../../mfast-portal/node_modules/sahu",
   "dest": "../../dist/sahu",
   "lib": {
     "entryFile": "src/public-api.ts"

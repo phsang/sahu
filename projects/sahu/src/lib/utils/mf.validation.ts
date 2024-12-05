@@ -393,10 +393,10 @@ export class mfValidation {
   }
 
   init(form: HTMLFormElement): void {
-    const inputs = form.querySelectorAll('input, select, textarea');
+    const inputs = form.querySelectorAll('input, textarea');
 
     inputs.forEach((input) => {
-      if (input instanceof HTMLInputElement || input instanceof HTMLSelectElement || input instanceof HTMLTextAreaElement) {
+      if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
 
         merge(
           fromEvent(input, 'input'),
