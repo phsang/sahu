@@ -109,24 +109,14 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     let dataMin = rule.min;
     let dataMax = rule.max;
 
-    if (dataMin != '*' && dataMax != '*') {
-      if (
-        parseInt(dataMin) > val.length ||
-        parseInt(dataMax) < val.length
-      ) {
-        this.validItem.status = false;
-        this.validItem.message = `Giá trị có độ dài không được nhỏ hơn ${formatNumber(dataMin)} và lớn hơn ${formatNumber(dataMax)}`;
-        return false;
-      }
-    }
-    if (dataMin != '*') {
+    if (dataMin) {
       if (parseInt(dataMin) > val.length) {
         this.validItem.status = false;
         this.validItem.message = `Giá trị có độ dài không được nhỏ hơn ${formatNumber(dataMin)}`;
         return false;
       }
     }
-    if (dataMax != '*') {
+    if (dataMax) {
       if (parseInt(dataMax) < val.length) {
         this.validItem.status = false;
         this.validItem.message = `Giá trị có độ dài không được lớn hơn ${formatNumber(dataMax)}`;
@@ -339,7 +329,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
           return {
             type: 'length',
             min: match[1] === '*' ? null : +match[1],
-            max: +match[2],
+            max: match[2] === '*' ? null : +match[2]
           };
         }
       }
@@ -349,7 +339,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
           return {
             type: 'int',
             min: match[1] === '*' ? null : +match[1],
-            max: +match[2],
+            max: match[2] === '*' ? null : +match[2]
           };
         }
       }
