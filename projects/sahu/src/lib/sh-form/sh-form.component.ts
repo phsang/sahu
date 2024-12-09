@@ -65,11 +65,12 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     if (status) {
       parent?.classList.remove('field_error');
       if (msgError) {
-        slideUp(msgError, 250, () => {
+        slideUp(msgError, 200, () => {
           msgError.remove();
         });
       }
     } else {
+      parent?.classList.add('field_error');
       if (msgError) {
         msgError.innerHTML = msg;
       } else {
@@ -77,9 +78,8 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
         errorSpan.className = 'msg_error';
         errorSpan.innerHTML = msg;
         parent?.appendChild(errorSpan);
-        slideDown(errorSpan, 250);
+        slideDown(errorSpan, 200);
       }
-      parent?.classList.add('field_error');
     }
 
     // Khởi động lại MutationObserver

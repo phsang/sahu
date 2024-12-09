@@ -77,8 +77,8 @@ export function slideToggle(element: HTMLElement, duration = 300, callback?: () 
   let display = window.getComputedStyle(element).display;
 
   if (display === 'none') {
-    slideDown(element);
+    slideDown(element, duration, callback);
   } else {
-    slideUp(element);
+    slideUp(element, duration, callback);
   }
 }
