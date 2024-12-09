@@ -210,11 +210,6 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     if (val) {
       val = val.trimStart().replace(/\D/g, '');
 
-      if (val.length > 4) {
-        val = val.slice(0, 4);
-      }
-      input.value = val;
-
       if (val.length !== 4) {
         this.validItem.status = false;
         this.validItem.message = 'Mã OTP bao gồm 4 chữ số';
