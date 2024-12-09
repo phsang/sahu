@@ -144,6 +144,33 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       return true;
     }
 
+    if (_type === 'radio') {
+      let parent = input.closest('.field-validation');
+
+      if (parent) {
+        let radioNodes = parent.querySelectorAll('input[type="radio"]');
+        let msg = parent.getAttribute('data-msg');
+        let isCheck = false;
+
+        for (let i = 0; i < radioNodes.length; i++) {
+          if ((radioNodes[i] as HTMLInputElement).checked) {
+            isCheck = true;
+            break;
+          }
+        }
+
+        if (!isCheck) {
+          this.validItem.status = false;
+          this.validItem.message = msg || 'Vui này chọn trường này';
+          return false;
+        } else {
+          this.validItem.status = true;
+          this.validItem.message = '';
+          return true;
+        }
+      }
+    }
+
     if (
       (input.tagName.toUpperCase() === 'INPUT' && _type === 'text') ||
       input.tagName.toUpperCase() === 'TEXTAREA'
