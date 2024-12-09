@@ -37,10 +37,12 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
         this.init(this.shForm.nativeElement);
       });
 
-      // Theo dõi thêm/xóa phần tử con
+      // Theo dõi thêm/xóa phần tử con và thay đổi attribute
       this.observer.observe(this.shForm.nativeElement, {
-        childList: true,  // Theo dõi thêm/xóa phần tử con
-        subtree: true,    // Theo dõi các phần tử con cấp sâu hơn
+        childList: true,    // Theo dõi thêm/xóa phần tử con
+        subtree: true,      // Theo dõi các phần tử con cấp sâu hơn
+        attributes: true,   // Theo dõi sự thay đổi attribute
+        attributeFilter: ['data-vali'], // (Tùy chọn) Chỉ theo dõi các attribute cụ thể
       });
     }
   }
