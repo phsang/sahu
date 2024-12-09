@@ -349,13 +349,14 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
   }
 
   detectAll(form: HTMLFormElement): boolean {
-    const inputs = form.querySelectorAll('input, select, textarea');
-    let isValid = true;
+    const inputs = form.querySelectorAll('input, textarea');
+    let validAll = true;
 
     inputs.forEach((input) => {
       if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
         this.validItem.control = input;
         let dataVali = input.getAttribute('data-vali')?.trim()?.replace(/\s+/g, '') || null;
+        let isValid = true;
         if (dataVali) {
           let valiArr = this.parseDataVali(dataVali);
 
@@ -392,7 +393,9 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
             }
 
             this.generateError();
+
             if (!isValid) {
+              validAll = false;
               break;
             }
           }
@@ -400,13 +403,13 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    if (!isValid) {
+    if (!validAll) {
       form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
     } else {
       form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
     }
 
-    return isValid;
+    return validAll;
   }
 
   init(form: HTMLFormElement): void {
