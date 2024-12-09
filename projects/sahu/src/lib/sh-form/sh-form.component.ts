@@ -203,6 +203,34 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     return true;
   }
 
+  otpValidation(): boolean {
+    let input = this.validItem.control;
+    let val: string | null = input.value.trim() || null;
+
+    if (val) {
+      val = val.trimStart().replace(/\D/g, '');
+
+      if (val.length > 4) {
+        val = val.slice(0, 4);
+      }
+      input.value = val;
+
+      if (val.length !== 4) {
+        this.validItem.status = false;
+        this.validItem.message = 'Mã OTP bao gồm 4 chữ số';
+        return false;
+      }
+
+      this.validItem.status = true;
+      this.validItem.message = '';
+      return true;
+    } else {
+      this.validItem.status = false;
+      this.validItem.message = 'Vui lòng nhập mã OTP';
+      return false;
+    }
+  }
+
   intValidation(rule: any): boolean {
     let input = this.validItem.control;
     let val: string | null = input.value.trim() || null;
@@ -363,6 +391,10 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 isValid = this.urlValidation();
                 break;
               }
+              case 'otp': {
+                isValid = this.otpValidation();
+                break;
+              }
               case 'int': {
                 isValid = this.intValidation(valiArr[i]);
                 break;
@@ -410,8 +442,6 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
           if (dataVali) {
             let valiArr = this.parseDataVali(dataVali);
 
-            console.log(valiArr);
-
             for (let i = 0; i < valiArr.length; i++) {
               switch (valiArr[i].type) {
                 case 'null': {
@@ -428,6 +458,10 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 }
                 case 'url': {
                   isValid = this.urlValidation();
+                  break;
+                }
+                case 'otp': {
+                  isValid = this.otpValidation();
                   break;
                 }
                 case 'int': {
