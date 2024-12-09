@@ -160,7 +160,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     }
 
     this.validItem.status = false;
-    this.validItem.message = '';
+    this.validItem.message = 'Vui lòng điền vào trường này';
     return false;
   }
 
@@ -391,6 +391,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
               }
             }
 
+            this.generateError();
             if (!isValid) {
               break;
             }
@@ -399,7 +400,6 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    this.generateError();
     if (!isValid) {
       form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
     } else {
