@@ -18,7 +18,6 @@ interface validInterface {
 })
 export class ShFormComponent implements AfterViewInit, OnDestroy {
   @ViewChild('shForm', { static: true }) shForm!: ElementRef;
-  @Input() shClass?: string;
   @Output() shSubmit = new EventEmitter<Event>();
   private observer!: MutationObserver;
 
