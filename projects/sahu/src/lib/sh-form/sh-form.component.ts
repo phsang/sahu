@@ -5,6 +5,12 @@ import { formatNumber } from '../utils/mf.app';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
+interface validInterface {
+  control: HTMLInputElement | HTMLTextAreaElement,
+  status: boolean,
+  message: string
+}
+
 @Component({
   selector: 'sh-form',
   templateUrl: './sh-form.component.html',
@@ -53,16 +59,24 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  validItem: validInterface = {
+    control: {} as HTMLInputElement | HTMLTextAreaElement,
+    status: true,
+    message: '',
+  }
+
   // ~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.~
-  generateError(element: HTMLElement, status: boolean = true, msg: string = 'Vui lòng điền vào trường này!'): void {
+  generateError(): void {
     // Tạm dừng MutationObserver
     this.observer?.disconnect();
 
-    const parent = element.closest('.field-validation');
+    let msg = this.validItem.message || 'Vui lòng điền vào trường này';
+
+    const parent = this.validItem.control.closest('.field-validation');
     const msgError = parent?.querySelector('.msg_error') as HTMLElement;
     msg = '<i class="fal fa-exclamation-triangle"></i>' + msg;
 
-    if (status) {
+    if (this.validItem.status) {
       parent?.classList.remove('field_error');
       if (msgError) {
         slideUp(msgError, 200, () => {
@@ -89,60 +103,53 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  lengthValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement, _dataLength: string, _val: string): boolean {
-    let [_dataMin, _dataMax] = _dataLength.split(',');
-    _dataMin = _dataMin.trim();
-    _dataMax = _dataMax.trim();
+  lengthValidation(rule: any): boolean {
+    let input = this.validItem.control;
+    let val = input.value.trim() || '';
+    let dataMin = rule.min;
+    let dataMax = rule.max;
 
-    if (_dataMin != '*' && _dataMax != '*') {
+    if (dataMin != '*' && dataMax != '*') {
       if (
-        parseInt(_dataMin) > _val.length ||
-        parseInt(_dataMax) < _val.length
+        parseInt(dataMin) > val.length ||
+        parseInt(dataMax) < val.length
       ) {
-        this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)} và lớn hơn ${formatNumber(_dataMax)}`);
+        this.validItem.status = false;
+        this.validItem.message = `Giá trị có độ dài không được nhỏ hơn ${formatNumber(dataMin)} và lớn hơn ${formatNumber(dataMax)}`;
         return false;
       }
     }
-    if (_dataMin != '*') {
-      if (parseInt(_dataMin) > _val.length) {
-        this.generateError(input, false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(_dataMin)}`);
+    if (dataMin != '*') {
+      if (parseInt(dataMin) > val.length) {
+        this.validItem.status = false;
+        this.validItem.message = `Giá trị có độ dài không được nhỏ hơn ${formatNumber(dataMin)}`;
         return false;
       }
     }
-    if (_dataMax != '*') {
-      if (parseInt(_dataMax) < _val.length) {
-        this.generateError(input, false, `Giá trị có độ dài không được lớn hơn ${formatNumber(_dataMax)}`);
+    if (dataMax != '*') {
+      if (parseInt(dataMax) < val.length) {
+        this.validItem.status = false;
+        this.validItem.message = `Giá trị có độ dài không được lớn hơn ${formatNumber(dataMax)}`;
         return false;
       }
     }
 
-    this.generateError(input, true);
+    this.validItem.status = true;
     return true;
   }
 
-  validValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
-    let _val: string | null = input.value || null;
-    let _dataLength = input.getAttribute('data-length')?.trim() || null;
-
-    if (_val) {
-      if (_dataLength) {
-        return this.lengthValidation(input, _dataLength, _val);
-      }
-    }
-
-    this.generateError(input, true);
-    return true;
-  }
-
-  nullValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
+  nullValidation(): boolean {
+    let input = this.validItem.control;
     let _type = input.getAttribute('type');
 
     if (_type === 'file') {
       if (!input.value || input.value === '') {
-        this.generateError(input, false, 'Vui lòng chọn file');
+        this.validItem.status = false;
+        this.validItem.message = 'Vui lòng chọn file';
         return false;
       }
-      this.generateError(input, true);
+
+      this.validItem.status = true;
       return true;
     }
 
@@ -150,51 +157,28 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       (input.tagName.toUpperCase() === 'INPUT' && _type === 'text') ||
       input.tagName.toUpperCase() === 'TEXTAREA'
     ) {
-      let _val: string | null = input.value || null;
-      let _dataLength = input.getAttribute('data-length')?.trim() || null;
-      if (_val) {
-        _val = _val.trimStart();
-        input.value = _val;
+      let val: string | null = input.value.trim() || null;
 
-        if (_dataLength) {
-          return this.lengthValidation(input, _dataLength, _val);
-        }
+      if (val) {
+        val = val.trimStart();
+        input.value = val;
 
-        this.generateError(input, true);
+        this.validItem.status = true;
         return true;
       }
     }
 
-    this.generateError(input, false);
+    this.validItem.status = false;
+    this.validItem.message = '';
     return false;
   }
 
-  otpValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
-    let _val: string | null = input.value.trim() || null;
+  urlValidation(): boolean {
+    let input = this.validItem.control;
+    let val: string | null = input.value || null;
 
-    if (!_val) {
-      this.generateError(input, false, 'Không bỏ trống giá trị OTP');
-      return false;
-    } else {
-      _val = _val.replace(/\D/g, '');
-      input.value = _val;
-
-      if (_val.length !== 4) {
-        this.generateError(input, false, 'Mã OTP bao gồm 4 chữ số');
-        return false;
-      }
-    }
-
-    this.generateError(input, true);
-    return true;
-  }
-
-  urlValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
-    let _val: string | null = input.value || null;
-    let _dataLength = input.getAttribute('data-length')?.trim() || null;
-
-    if (_val?.trim()) {
-      input.value = _val.trimStart();
+    if (val?.trim()) {
+      input.value = val.trimStart();
 
       const isValidUrl = (urlString: string) => {
         try {
@@ -205,206 +189,149 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
         }
       }
 
-      if (isValidUrl(_val)) {
-        if (_dataLength) {
-          return this.lengthValidation(input, _dataLength, _val);
-        }
-
-        this.generateError(input, true);
+      if (isValidUrl(val)) {
+        this.validItem.status = true;
         return true;
       } else {
-        if (_dataLength) {
-          const _dataMax = _dataLength.split(',')[1].trim();
-          _val = _val.slice(0, parseInt(_dataMax));
-          input.value = _val;
-        }
-
-        this.generateError(input, false, 'Đường dẫn không phải là một URL hợp lệ!');
+        this.validItem.status = false;
+        this.validItem.message = 'Đường dẫn không phải là một URL hợp lệ';
         return false;
       }
     }
-    this.generateError(input, true);
+
+    this.validItem.status = true;
     return true;
   }
 
-  nullUrlValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
-    let _val: string | null = input.value?.trim() || null;
-    let _dataLength = input.getAttribute('data-length')?.trim() || null;
+  intValidation(rule: any): boolean {
+    let input = this.validItem.control;
+    let val: string | null = input.value.trim() || null;
 
-    if (_val) {
-      input.value = _val;
+    if (val) {
+      val = val.trimStart().replace(/\D/g, '');
+      input.value = formatNumber(val);
+      let dataMin = rule.min;
+      let dataMax = rule.max;
 
-      const isValidUrl = (urlString: string) => {
-        try {
-          new URL(urlString);
-          return true;
-        } catch (_) {
+      if (dataMin) {
+        if (parseInt(dataMin) > parseInt(val)) {
+          this.validItem.status = false;
+          this.validItem.message = `Giá trị không được nhỏ hơn ${formatNumber(dataMin)}`;
+          return false;
+        }
+      }
+      if (dataMax) {
+        if (parseInt(dataMax) < parseInt(val)) {
+          this.validItem.status = false;
+          this.validItem.message = `Giá trị không được lớn hơn ${formatNumber(dataMax)}`;
           return false;
         }
       }
 
-      if (isValidUrl(_val)) {
-        if (_dataLength) {
-          return this.lengthValidation(input, _dataLength, _val);
-        }
-
-        this.generateError(input, true);
-        return true;
-      } else {
-        if (_dataLength) {
-          const _dataMax = _dataLength.split(',')[1].trim();
-          _val = _val.slice(0, parseInt(_dataMax));
-          input.value = _val;
-        }
-
-        this.generateError(input, false, 'Đường dẫn không phải là một URL hợp lệ!');
-        return false;
-      }
-    } else {
-      input.value = '';
-    }
-
-    this.generateError(input, false);
-    return false;
-  }
-
-  nullIntValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
-    let _val: string | null = input.value || null;
-
-    if (_val) {
-      _val = _val.trimStart().replace(/\D/g, '');
-      input.value = formatNumber(_val);
-      let _dataMin = input.getAttribute('data-min')?.trim() || null;
-      let _dataMax = input.getAttribute('data-max')?.trim() || null;
-
-      if (_dataMin) {
-        if (parseInt(_dataMin) > parseInt(_val)) {
-          this.generateError(input, false, `Giá trị không được nhỏ hơn ${formatNumber(_dataMin)}`);
-          return false;
-        }
-      }
-      if (_dataMax) {
-        if (parseInt(_dataMax) < parseInt(_val)) {
-          this.generateError(input, false, `Giá trị không được lớn hơn ${formatNumber(_dataMax)}`);
-          return false;
-        }
-      }
-
-      this.generateError(input, true);
+      this.validItem.status = true;
       return true;
     }
-    this.generateError(input, false);
-    return false;
+
+    this.validItem.status = true;
+    return true;
   }
 
-  nullPhoneValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
+  phoneValidation(): boolean {
+    let input = this.validItem.control;
     const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-    let _val: string | null = input.value.trim() || null;
+    let val: string | null = input.value.trim() || null;
 
-    if (_val) {
-      _val = _val.replace(/\D|\.|\s+/g, '');
-      if (_val.length > 10) {
-        _val = _val.substring(0, 10);
+    if (val) {
+      val = val.replace(/\D|\.|\s+/g, '');
+      if (val.length > 10) {
+        val = val.substring(0, 10);
       }
 
       // format số điện thoại
-      if (_val.length > 4 && _val.length < 8) {
-        _val = _val.substring(0, 4) + '.' + _val.substring(4);
-      } else if (_val.length >= 8) {
-        _val = _val.substring(0, 4) + '.' + _val.substring(4, 7) + '.' + _val.substring(7);
+      if (val.length > 4 && val.length < 8) {
+        val = val.substring(0, 4) + '.' + val.substring(4);
+      } else if (val.length >= 8) {
+        val = val.substring(0, 4) + '.' + val.substring(4, 7) + '.' + val.substring(7);
       }
-      input.value = _val;
+      input.value = val;
 
-      _val = _val.replace(/\./g, '');
-      if (_val.length !== 10) {
-        this.generateError(input, false, 'Số điện thoại phải 10 số');
+      val = val.replace(/\./g, '');
+      if (val.length !== 10) {
+        this.validItem.status = false;
+        this.validItem.message = 'Số điện thoại phải 10 số';
         return false;
       }
 
-      let vnf = vnf_regex.test(_val);
-      this.generateError(input, vnf, vnf ? '' : 'Số điện thoại không đúng định dạng!');
+      let vnf = vnf_regex.test(val);
 
-      return vnf;
+      if (!vnf) {
+        this.validItem.status = false;
+        this.validItem.message = 'Số điện thoại không đúng định dạng';
+        return false;
+      } else {
+        this.validItem.status = true;
+        return true;
+      }
     }
 
-    this.generateError(input, false, 'Không bỏ trống số điện thoại');
-    return false;
+    this.validItem.status = true;
+    return true;
   }
 
-  nullEmailValidation(input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): boolean {
+  emailValidation(): boolean {
+    let input = this.validItem.control;
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     // Lấy giá trị và trim để giảm thao tác lặp lại
     const value = input.value?.trim() || null;
-    if (!value) {
-      this.generateError(input, false, 'Vui lòng điền vào trường này');
-      return false;
-    }
-
-    // Kiểm tra email hợp lệ
-    const isEmailValid = emailRegex.test(value);
-    if (!isEmailValid) {
-      this.generateError(input, false, 'Email không hợp lệ');
-      return false;
-    }
-
-    // Kiểm tra độ dài (nếu có thuộc tính data-length)
-    const dataLength = input.getAttribute('data-length')?.trim();
-    if (dataLength) {
-      return this.lengthValidation(input, dataLength, value);
+    if (value) {
+      // Kiểm tra email hợp lệ
+      const isEmailValid = emailRegex.test(value);
+      if (!isEmailValid) {
+        this.validItem.status = false;
+        this.validItem.message = 'Email không hợp lệ';
+        return false;
+      }
     }
 
     // Mặc định không có lỗi
-    this.generateError(input, true);
+    this.validItem.status = true;
     return true;
   }
 
-  validateWith3Rules(input: HTMLElement, rules: Array<string>): boolean {
-    switch (true) {
-    }
-    return true;
-  }
+  parseDataVali(dataVali: string): any {
+    // Loại bỏ ký tự bao quanh nếu có (dấu ngoặc vuông [])
+    const trimmedData = dataVali.trim().replace(/^\[|\]$/g, '');
 
-  validateWith2Rules(input: HTMLElement, rules: Array<string>): boolean {
-    const validations: { [key: string]: (input: HTMLInputElement) => boolean } = {
-      'null:email': this.nullEmailValidation.bind(this),
-      'null:phone': this.nullPhoneValidation.bind(this),
-      'null:url': this.nullUrlValidation.bind(this),
-      'null:int': this.nullIntValidation.bind(this),
-    };
+    // Tạo một regex để nhận diện từng phần tử
+    const regex = /(\w+\([^\)]+\)|\w+)/g;
+    const matches = trimmedData.match(regex);
 
-    // Kết hợp các key từ rules để tìm hàm phù hợp
-    const ruleKey = Object.keys(validations).find(key =>
-      key.split(':').every(r => rules.includes(r))
-    );
+    if (!matches) return []; // Trả về mảng rỗng nếu không có match
 
-    if (ruleKey) {
-      return validations[ruleKey](input as HTMLInputElement);
-    }
-
-    return true;
-  }
-
-  validateWith1Rules(input: HTMLElement, rules: Array<string>): boolean {
-    switch (true) {
-      case (rules.includes('valid')): {
-        return this.validValidation(input as HTMLInputElement);
-        break;
+    return matches.map(item => {
+      if (item.includes('length')) {
+        const match = /length\(([^,]*?),\s*(.*?)\)/.exec(item);
+        if (match) {
+          return {
+            type: 'length',
+            min: match[1] === '*' ? null : +match[1],
+            max: +match[2],
+          };
+        }
       }
-      case (rules.includes('null')): {
-        return this.nullValidation(input as HTMLInputElement);
-        break;
+      if (item.includes('int')) {
+        const match = /int\(([^,]*?),\s*(.*?)\)/.exec(item);
+        if (match) {
+          return {
+            type: 'int',
+            min: match[1] === '*' ? null : +match[1],
+            max: +match[2],
+          };
+        }
       }
-      case (rules.includes('otp')): {
-        return this.otpValidation(input as HTMLInputElement);
-        break;
-      }
-      case (rules.includes('url')): {
-        return this.urlValidation(input as HTMLInputElement);
-        break;
-      }
-    }
-    return true;
+      return { type: item }; // Trả về phần tử thông thường
+    });
   }
 
   detectAll(form: HTMLFormElement): boolean {
@@ -412,23 +339,41 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     let isValid = true;
 
     inputs.forEach((input) => {
-      if (input instanceof HTMLInputElement || input instanceof HTMLSelectElement || input instanceof HTMLTextAreaElement) {
+      if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
+        this.validItem.control = input;
         let dataVali = input.getAttribute('data-vali')?.trim()?.replace(/\s+/g, '') || null;
         if (dataVali) {
-          let dataValiArr = dataVali.split(',');
+          let valiArr = this.parseDataVali(dataVali);
 
-          // gọi các hàm validate
-          switch (dataValiArr.length) {
-            case 3: {
-              isValid = this.validateWith3Rules(input, dataValiArr) && isValid;
-              break;
+          for (let i = 0; i < valiArr.length; i++) {
+            switch (valiArr[i].type) {
+              case 'null': {
+                isValid = this.nullValidation();
+                break;
+              }
+              case 'email': {
+                isValid = this.emailValidation();
+                break;
+              }
+              case 'phone': {
+                isValid = this.phoneValidation();
+                break;
+              }
+              case 'url': {
+                isValid = this.urlValidation();
+                break;
+              }
+              case 'int': {
+                isValid = this.intValidation(valiArr[i]);
+                break;
+              }
+              case 'length': {
+                isValid = this.lengthValidation(valiArr[i]);
+                break;
+              }
             }
-            case 2: {
-              isValid = this.validateWith2Rules(input, dataValiArr) && isValid;
-              break;
-            }
-            case 1: {
-              isValid = this.validateWith1Rules(input, dataValiArr) && isValid;
+
+            if (!isValid) {
               break;
             }
           }
@@ -436,6 +381,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    this.generateError();
     if (!isValid) {
       form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
     } else {
@@ -457,29 +403,50 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
         ).pipe(
           debounceTime(0)
         ).subscribe(() => {
+          this.validItem.control = input;
           // Xử lý logic của bạn ở đây
           let dataVali = input.getAttribute('data-vali')?.trim()?.replace(/\s+/g, '') || null;
           let isValid = true;
           if (dataVali) {
-            let dataValiArr = dataVali.split(',');
+            let valiArr = this.parseDataVali(dataVali);
 
-            // gọi các hàm validate
-            switch (dataValiArr.length) {
-              case 3: {
-                isValid = this.validateWith3Rules(input, dataValiArr);
-                break;
+            console.log(valiArr);
+
+            for (let i = 0; i < valiArr.length; i++) {
+              switch (valiArr[i].type) {
+                case 'null': {
+                  isValid = this.nullValidation();
+                  break;
+                }
+                case 'email': {
+                  isValid = this.emailValidation();
+                  break;
+                }
+                case 'phone': {
+                  isValid = this.phoneValidation();
+                  break;
+                }
+                case 'url': {
+                  isValid = this.urlValidation();
+                  break;
+                }
+                case 'int': {
+                  isValid = this.intValidation(valiArr[i]);
+                  break;
+                }
+                case 'length': {
+                  isValid = this.lengthValidation(valiArr[i]);
+                  break;
+                }
               }
-              case 2: {
-                isValid = this.validateWith2Rules(input, dataValiArr);
-                break;
-              }
-              case 1: {
-                isValid = this.validateWith1Rules(input, dataValiArr);
+
+              if (!isValid) {
                 break;
               }
             }
           }
 
+          this.generateError();
           if (!isValid) {
             form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
           } else {
