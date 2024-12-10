@@ -4,18 +4,18 @@ $color-primary: #005fff;
   transition: .3s;
 }
 
+input {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+}
+
 .sh-input-icon {
   align-items: center;
   background-color: #fbfbfb;
   border: 1px solid #cfcfcf;
   border-radius: 3px;
   display: flex;
-}
-
-.sh-input-icon input {
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
 }
 
 .sh-input-icon .icon {

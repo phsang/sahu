@@ -6,7 +6,8 @@ import {
   Renderer2,
   ViewChild,
   ChangeDetectorRef,
-  OnInit
+  OnInit,
+  AfterViewInit
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -24,7 +25,7 @@ import { getIconList } from '../utils/icon-list';
     }
   ]
 })
-export class ShInputComponent implements OnInit, ControlValueAccessor {
+export class ShInputComponent implements ControlValueAccessor {
   @ViewChild('shInput') shInput!: ElementRef;
   @Input() shType: 'text' | 'radio' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shIcon?: any;
@@ -53,23 +54,17 @@ export class ShInputComponent implements OnInit, ControlValueAccessor {
     private sanitizer: DomSanitizer
   ) { }
 
-  ngOnInit(): void {
+  writeValue(value: string): void {
+    this.value = value;
+
     this.updateInputClass();
   }
 
-  writeValue(value: string): void {
-    this.value = value;
-    if (this.shInput) {
-      this.renderer.setProperty(this.shInput.nativeElement, 'value', value);
-    }
-  }
-
   private updateInputClass(): void {
-    this.renderer.addClass(this.shInput.nativeElement, `sh-input`);
-    this.renderer.addClass(this.shInput.nativeElement, `sh-input-${this.shType}`);
+    this.shClass += ` sh-input-${this.shType}`;
 
     if (this.shIcon) {
-      this.renderer.addClass(this.shInput.nativeElement, `sh-input-icon`);
+      this.shClass += ' sh-input-icon';
       if (!this.shIconTheme) {
         this.shIconTheme = 'light';
       }
@@ -122,13 +117,6 @@ export class ShInputComponent implements OnInit, ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.shDisabled = isDisabled;
-    if (this.shInput) {
-      this.renderer.setProperty(this.shInput.nativeElement, 'disabled', isDisabled);
-    }
   }
 
   handleInput(event: Event): void {
