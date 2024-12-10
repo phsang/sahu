@@ -31,15 +31,15 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shIconTheme?: any;
   @Input() shName?: string;
   @Input() shId?: string;
-  @Input() shClass: string = 'sh-input';
   @Input() shValue?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
   @Input() shPlaceholder?: string;
   @Input() shChecked: boolean = false;
   @Input() shAutocomplete?: string;
-
+  
   @Input() shDataVali?: string;
+  shClass: string = 'sh-input';
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
 
@@ -130,7 +130,16 @@ export class ShInputComponent implements ControlValueAccessor {
     this.onChange(this.value);
   }
 
+  handleFocus(): void {
+    if (!this.shClass.includes('input-focus')) {
+      this.shClass += ' input-focus';
+    }
+  }
+
   handleBlur(): void {
+    if (this.shClass.includes('input-focus')) {
+      this.shClass.replace('input-focus', '');
+    }
     this.onTouched();
   }
 }

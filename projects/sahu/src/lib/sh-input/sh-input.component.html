@@ -1,5 +1,5 @@
 <div class="field-validation">
-  <div [attr.class]="shClass ? shClass : null">
+  <div class="{{shClass}}">
     <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
     <input
       value="{{value}}"
@@ -13,6 +13,7 @@
       [attr.checked]="shChecked ? true : null"
       [attr.autocomplete]="shAutocomplete ?? null"
       [attr.data-vali]="shDataVali ?? null"
+      (focus)="handleFocus()"
       (input)="handleInput($event)"
       (blur)="handleBlur()">
     <span class="icon" *ngIf="iconRight" [innerHTML]="iconRight"></span>
