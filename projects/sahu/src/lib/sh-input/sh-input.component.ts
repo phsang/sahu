@@ -60,10 +60,16 @@ export class ShInputComponent implements ControlValueAccessor {
   }
 
   private updateInputClass(): void {
-    this.shClass += ` sh-input-${this.shType}`;
+    let classType = `sh-input-${this.shType}`;
+    if (!this.shClass.includes(classType)) {
+      this.shClass += ' ' + classType;
+    }
 
     if (this.shIcon) {
-      this.shClass += ' sh-input-icon';
+      let classIcon = 'sh-input-icon';
+      if (!this.shClass.includes(classIcon)) {
+        this.shClass += ' ' + classIcon;
+      }
       if (!this.shIconTheme) {
         this.shIconTheme = 'light';
       }
