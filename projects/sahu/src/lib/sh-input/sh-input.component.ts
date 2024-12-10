@@ -1,23 +1,29 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ElementRef,
+  forwardRef,
   Input,
-  OnChanges,
   Renderer2,
-  SimpleChanges,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
-import { getIconList } from '../utils/icon-list';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { getIconList } from '../utils/icon-list';
 
 @Component({
   selector: 'sh-input',
   templateUrl: './sh-input.component.html',
-  styleUrls: ['./sh-input.component.scss']
+  styleUrls: ['./sh-input.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ShInputComponent),
+      multi: true
+    }
+  ]
 })
-export class ShInputComponent implements AfterViewInit, OnChanges {
+export class ShInputComponent implements ControlValueAccessor {
   @ViewChild('shInput') shInput!: ElementRef;
   @Input() shType: 'text' | 'radio' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shIcon?: any;
@@ -26,7 +32,6 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
   @Input() shId?: string;
   @Input() shClass?: string;
   @Input() shValue?: string;
-
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
   @Input() shPlaceholder?: string;
@@ -39,21 +44,20 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
 
+  value: string = '';
+  onChange = (_: any) => { };
+  onTouched = () => { };
+
   constructor(
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer
   ) { }
 
-  ngAfterViewInit(): void {
-    this.updateInputClass();
-    this.cdr.detectChanges();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['shSrc'] || changes['shText']) {
-      this.resetInputClass();
-      this.updateInputClass();
+  writeValue(value: string): void {
+    this.value = value;
+    if (this.shInput) {
+      this.renderer.setProperty(this.shInput.nativeElement, 'value', value);
     }
   }
 
@@ -109,15 +113,28 @@ export class ShInputComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  resetInputClass(): void {
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.shDisabled = isDisabled;
     if (this.shInput) {
-      this.renderer.removeClass(this.shInput.nativeElement, 'input-focus');
+      this.renderer.setProperty(this.shInput.nativeElement, 'disabled', isDisabled);
     }
   }
 
-  handleFocus(event: FocusEvent): void {
-    if (this.shInput) {
-      this.renderer.addClass(this.shInput.nativeElement, 'input-focus');
-    }
+  handleInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.value = input.value;
+    this.onChange(this.value);
+  }
+
+  handleBlur(): void {
+    this.onTouched();
   }
 }
