@@ -1,6 +1,11 @@
 $color-primary: #005fff;
 
 .sh-input {
+  align-items: center;
+  background-color: #f2f2f2;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
   transition: .3s;
 }
 
@@ -8,14 +13,6 @@ input {
   background-color: transparent;
   border: none;
   border-radius: 0;
-}
-
-.sh-input-icon {
-  align-items: center;
-  background-color: #fbfbfb;
-  border: 1px solid #cfcfcf;
-  border-radius: 3px;
-  display: flex;
 }
 
 .sh-input-icon .icon {

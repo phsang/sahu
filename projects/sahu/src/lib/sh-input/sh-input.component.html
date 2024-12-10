@@ -4,15 +4,15 @@
     <input
       value="{{value}}"
       [attr.type]="shType"
-      [attr.name]="shName ? shName : null"
-      [attr.id]="shId ? shId : null"
-      [attr.value]="shValue ? shValue : null"
+      [attr.name]="shName ?? null"
+      [attr.id]="shId ?? null"
+      [attr.value]="shValue ?? null"
       [attr.readonly]="shReadonly ? true : null"
       [attr.disabled]="shDisabled ? true : null"
-      [attr.placeholder]="shPlaceholder ? shPlaceholder : null"
+      [attr.placeholder]="shPlaceholder ?? null"
       [attr.checked]="shChecked ? true : null"
-      [attr.autocomplete]="shAutocomplete ? shAutocomplete : null"
-      [attr.data-vali]="shDataVali ? shDataVali : null"
+      [attr.autocomplete]="shAutocomplete ?? null"
+      [attr.data-vali]="shDataVali ?? null"
       (input)="handleInput($event)"
       (blur)="handleBlur()">
     <span class="icon" *ngIf="iconRight" [innerHTML]="iconRight"></span>
