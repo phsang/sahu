@@ -5,7 +5,8 @@ import {
   Input,
   Renderer2,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnInit
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -23,7 +24,7 @@ import { getIconList } from '../utils/icon-list';
     }
   ]
 })
-export class ShInputComponent implements ControlValueAccessor {
+export class ShInputComponent implements OnInit, ControlValueAccessor {
   @ViewChild('shInput') shInput!: ElementRef;
   @Input() shType: 'text' | 'radio' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shIcon?: any;
@@ -39,7 +40,6 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shAutocomplete?: string;
 
   @Input() shDataVali?: string;
-  inputClass: string = '';
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
 
@@ -52,6 +52,10 @@ export class ShInputComponent implements ControlValueAccessor {
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer
   ) { }
+
+  ngOnInit(): void {
+    this.updateInputClass();
+  }
 
   writeValue(value: string): void {
     this.value = value;
