@@ -4,6 +4,7 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   display: flex;
+  height: 40px;
   transition: .3s;
 }
 
@@ -11,6 +12,7 @@ input {
   background-color: transparent;
   border: none;
   border-radius: 0;
+  height: 38px;
 }
 
 .sh-input-icon .icon {
