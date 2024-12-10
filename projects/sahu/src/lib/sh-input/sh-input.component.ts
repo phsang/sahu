@@ -39,7 +39,6 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shAutocomplete?: string;
 
   @Input() shDataVali?: string;
-  @Input() shDataLength?: string;
   inputClass: string = '';
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
