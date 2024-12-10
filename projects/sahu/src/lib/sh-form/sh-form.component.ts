@@ -175,9 +175,9 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       (input.tagName.toUpperCase() === 'INPUT' && _type === 'text') ||
       input.tagName.toUpperCase() === 'TEXTAREA'
     ) {
-      let val: string | null = input.value.trim() || null;
+      let val: string | null = input.value || null;
 
-      if (val) {
+      if (val?.trim()) {
         val = val.trimStart();
         input.value = val;
 
