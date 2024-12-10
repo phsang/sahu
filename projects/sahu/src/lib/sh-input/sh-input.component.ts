@@ -26,13 +26,12 @@ import { getIconList } from '../utils/icon-list';
   ]
 })
 export class ShInputComponent implements ControlValueAccessor {
-  @ViewChild('shInput') shInput!: ElementRef;
   @Input() shType: 'text' | 'radio' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shIcon?: any;
   @Input() shIconTheme?: any;
   @Input() shName?: string;
   @Input() shId?: string;
-  @Input() shClass?: string;
+  @Input() shClass: string = 'sh-input';
   @Input() shValue?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;

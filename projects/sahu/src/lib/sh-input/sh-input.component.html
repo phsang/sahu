@@ -1,8 +1,5 @@
 <div class="field-validation">
-  <div
-    class="sh-input"
-    [attr.class]="shClass ? shClass : null"
-    #shInput>
+  <div [attr.class]="shClass ? shClass : null">
     <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
     <input
       value="{{value}}"
