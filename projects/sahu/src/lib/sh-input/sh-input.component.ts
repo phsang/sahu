@@ -138,7 +138,7 @@ export class ShInputComponent implements ControlValueAccessor {
 
   handleBlur(): void {
     if (this.shClass.includes('input-focus')) {
-      this.shClass.replace('input-focus', '');
+      this.shClass = this.shClass.replace('input-focus', '').trim();
     }
     this.onTouched();
   }

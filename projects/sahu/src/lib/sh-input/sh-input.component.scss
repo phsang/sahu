@@ -1,5 +1,3 @@
-$color-primary: #005fff;
-
 .sh-input {
   align-items: center;
   background-color: #f2f2f2;
@@ -28,11 +26,10 @@ input {
   padding: 5px 10px 5px 0;
 }
 
-.input-focus input,
-.sh-input-icon.input-focus {
-  border-color: $color-primary;
+.input-focus {
+  border-color: #f9cc28;
 }
 
 .input-focus .icon {
-  color: $color-primary;
+  color: #f9cc28;
 }
