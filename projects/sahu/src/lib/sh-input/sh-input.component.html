@@ -28,7 +28,7 @@
       [attr.value]="shValue ?? null"
       [attr.checked]="shChecked ? true : null"
       [attr.data-vali]="shDataVali ?? null"
-      (change)="handleChange($event)">
+      (change)="handleInput($event)">
     <span class="remark"></span>
     <span class="text">{{shLabel}}</span>
   </label>

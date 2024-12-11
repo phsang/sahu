@@ -37,7 +37,6 @@ export class ShInputComponent implements ControlValueAccessor {
   // input file
   @Input() shAccept?: string;
   @Input() shReview?: boolean = false;
-  @Output() shChange = new EventEmitter<Event>();
 
   value: string = '';
   onChange = (_: any) => { };
@@ -139,7 +138,4 @@ export class ShInputComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  handleChange(event: Event): void {
-    this.shChange.emit(event);
-  }
 }

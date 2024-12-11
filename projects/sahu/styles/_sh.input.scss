@@ -47,6 +47,7 @@
   position: relative;
 
   input {
+    cursor: pointer;
     height: 100%;
     left: 0;
     opacity: 0;
@@ -87,5 +88,13 @@
   input:checked~.remark::before {
     height: 70%;
     width: 70%;
+  }
+
+  .text {
+    font-weight: 400;
+  }
+
+  input:checked~.text {
+    font-weight: 500;
   }
 }
