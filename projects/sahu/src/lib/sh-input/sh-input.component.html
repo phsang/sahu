@@ -10,7 +10,6 @@
       [attr.readonly]="shReadonly ? true : null"
       [attr.disabled]="shDisabled ? true : null"
       [attr.placeholder]="shPlaceholder ?? null"
-      [attr.checked]="shChecked ? true : null"
       [attr.autocomplete]="shAutocomplete ?? null"
       [attr.data-vali]="shDataVali ?? null"
       (focus)="handleFocus()"
@@ -18,6 +17,21 @@
       (blur)="handleBlur()">
     <span class="icon" *ngIf="iconRight" [innerHTML]="iconRight"></span>
   </div>
+</div>
+
+<div *ngIf="shType === 'radio'" class="field-validation">
+  <label class="sh-radio">
+    <input
+      [attr.type]="shType"
+      [attr.name]="shName ?? null"
+      [attr.id]="shId ?? null"
+      [attr.value]="shValue ?? null"
+      [attr.checked]="shChecked ? true : null"
+      [attr.data-vali]="shDataVali ?? null"
+      (change)="handleChange($event)">
+    <span class="remark"></span>
+    <span class="text">{{shLabel}}</span>
+  </label>
 </div>
 
 <div *ngIf="shType === 'file'" class="field-validation">

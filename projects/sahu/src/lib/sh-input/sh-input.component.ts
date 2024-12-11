@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, Renderer2, ChangeDetectorRef, EventEmitter } from '@angular/core';
+import { Component, forwardRef, Input, Renderer2, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getIconList } from '../utils/icon-list';
@@ -24,6 +24,7 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shValue?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
+  @Input() shLabel?: string;
   @Input() shPlaceholder?: string;
   @Input() shChecked: boolean = false;
   @Input() shAutocomplete?: string;
@@ -36,7 +37,7 @@ export class ShInputComponent implements ControlValueAccessor {
   // input file
   @Input() shAccept?: string;
   @Input() shReview?: boolean = false;
-  @Input() shOnChange?: EventEmitter<any>;
+  @Output() shChange = new EventEmitter<Event>();
 
   value: string = '';
   onChange = (_: any) => { };
@@ -136,5 +137,9 @@ export class ShInputComponent implements ControlValueAccessor {
       this.shClass = this.shClass.replace('input-focus', '').trim();
     }
     this.onTouched();
+  }
+
+  handleChange(event: Event): void {
+    this.shChange.emit(event);
   }
 }
