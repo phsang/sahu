@@ -27,17 +27,17 @@
   }
 
   .thumbnail {
-    border: 2px solid transparent;
+    border: 0px solid #007bff;
     border-radius: 8px;
     cursor: pointer;
     height: 96px;
     object-fit: cover;
-    transition: 0.3s;
+    transition: linear 0.2s;
     width: 148px;
   }
 
   .thumbnail:hover {
-    border-color: #007bff;
+    border-width: 2px;
   }
 
   /* Popup Overlay */

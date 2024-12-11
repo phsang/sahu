@@ -1,4 +1,4 @@
-<div class="field-validation">
+<div *ngIf="shType === 'text'" class="field-validation">
   <div class="{{shClass}}">
     <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
     <input
@@ -17,5 +17,10 @@
       (input)="handleInput($event)"
       (blur)="handleBlur()">
     <span class="icon" *ngIf="iconRight" [innerHTML]="iconRight"></span>
+  </div>
+</div>
+
+<div *ngIf="shType === 'file'" class="field-validation">
+  <div class="{{shClass}}">
   </div>
 </div>

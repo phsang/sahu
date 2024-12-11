@@ -1,14 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  forwardRef,
-  Input,
-  Renderer2,
-  ViewChild,
-  ChangeDetectorRef,
-  OnInit,
-  AfterViewInit
-} from '@angular/core';
+import { Component, forwardRef, Input, Renderer2, ChangeDetectorRef, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getIconList } from '../utils/icon-list';
@@ -37,11 +27,16 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shPlaceholder?: string;
   @Input() shChecked: boolean = false;
   @Input() shAutocomplete?: string;
-  
+
   @Input() shDataVali?: string;
   shClass: string = 'sh-input';
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
+
+  // input file
+  @Input() shAccept?: string;
+  @Input() shReview?: boolean = false;
+  @Input() shOnChange?: EventEmitter<any>;
 
   value: string = '';
   onChange = (_: any) => { };
