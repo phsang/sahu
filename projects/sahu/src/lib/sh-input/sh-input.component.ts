@@ -219,11 +219,37 @@ export class ShInputComponent implements ControlValueAccessor {
         }
 
         if (isValid) {
+          this.classLoading = 'loading';
           this.shChange.emit(file);
+        } else {
+          this.classLoading = '';
         }
 
       }
+    } else {
+      this.classLoading = '';
     }
+  }
+
+  fileActive() {
+    this.classLoading = 'active';
+  }
+
+  fileReset(event: Event) {
+    this.classLoading = '';
+    setTimeout(() => {
+      let btn = event.target as HTMLElement;
+
+      if (btn) {
+        let input = btn.closest('.sh-file')?.querySelector('input');
+        if (input) {
+          input.value = '';
+          input.files = null;
+
+          input.dispatchEvent(new Event('change'));
+        }
+      }
+    }, 300);
   }
 
   handleFocus(): void {

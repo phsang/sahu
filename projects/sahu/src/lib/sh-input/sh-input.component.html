@@ -38,7 +38,7 @@
 
 <div *ngIf="shType === 'file'" class="field-validation" #dropZone>
   <div class="{{shClass}}">
-    <label class="sh-file">
+    <label class="sh-file" ngClass="{{classLoading}}">
       <input
         [attr.type]="shType"
         [attr.name]="shName ?? null"
@@ -49,8 +49,8 @@
       <div class="remark">
         <p><span class="gamboge_2 font600">Chọn</span> hoặc <span class="gamboge_2 font600">kéo thả ảnh</span> để tải lên</p>
       </div>
-      <img src="{{shValue}}" alt="input file">
-      <button type="button">
+      <img src="{{shValue}}" alt="input file" (load)="fileActive()">
+      <button type="button" (click)="fileReset($event)">
         <img src="assets/images/icons/ico-times.svg" alt="icon times">
       </button>
     </label>
