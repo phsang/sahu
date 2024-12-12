@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, Output, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, Output, Renderer2, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getIconList } from '../utils/icon-list';
@@ -17,6 +17,8 @@ import { slideDown, slideUp } from '../utils/mf.animation';
   ]
 })
 export class ShInputComponent implements ControlValueAccessor {
+  @ViewChild('dropZone') dropZone!: ElementRef;
+
   @Input() shType: 'text' | 'radio' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shIcon?: any;
   @Input() shIconTheme?: any;
@@ -53,6 +55,7 @@ export class ShInputComponent implements ControlValueAccessor {
     this.value = value;
 
     this.updateInputClass();
+    this.dropFile();
   }
 
   private updateInputClass(): void {
@@ -124,6 +127,32 @@ export class ShInputComponent implements ControlValueAccessor {
     const input = event.target as HTMLInputElement;
     this.value = input.value;
     this.onChange(this.value);
+  }
+
+  dropFile() {
+    let dropZone = this.dropZone.nativeElement;
+
+    // Ngăn trình duyệt xử lý hành vi mặc định khi kéo thả
+    dropZone.addEventListener('dragover', (event: any) => {
+      event.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    // Hoàn tác kiểu dáng khi rời khỏi khu vực
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (event: any) => {
+      event.preventDefault(); // Ngăn hành vi mặc định
+      dropZone.classList.remove('dragover'); // Hoàn tác kiểu dáng khi thả
+      const files = event.dataTransfer?.files; // Lấy danh sách các file
+
+      // Xử lý file tại đây
+      if (files && files.length > 0) {
+        this.shChange.emit(files[0]);
+      }
+    });
   }
 
   parseDataVali(dataVali: string): any {
