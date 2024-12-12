@@ -46,6 +46,13 @@
         [attr.checked]="shChecked ? true : null"
         [attr.data-vali]="shDataVali ?? null"
         (change)="handleFileInput($event)">
+      <div class="remark">
+        <p><span class="gamboge_2 font600">Chọn</span> hoặc <span class="gamboge_2 font600">kéo thả ảnh</span> để tải lên</p>
+      </div>
+      <img src="{{shValue}}" alt="input file">
+      <button type="button">
+        <img src="assets/images/icons/ico-times.svg" alt="icon times">
+      </button>
     </label>
   </div>
 </div>

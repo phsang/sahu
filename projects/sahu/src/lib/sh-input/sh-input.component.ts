@@ -40,6 +40,7 @@ export class ShInputComponent implements ControlValueAccessor {
   // input file
   @Input() shReview?: boolean = false;
   @Output() shChange = new EventEmitter<File>();
+  classLoading = '';
 
   value: string = '';
   onChange = (_: any) => { };
@@ -49,13 +50,16 @@ export class ShInputComponent implements ControlValueAccessor {
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer
-  ) { }
+  ) {
+    if (this.shType === 'file') {
+      this.dropFile();
+    }
+  }
 
   writeValue(value: string): void {
     this.value = value;
 
     this.updateInputClass();
-    this.dropFile();
   }
 
   private updateInputClass(): void {
