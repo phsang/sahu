@@ -1,7 +1,8 @@
-import { Component, forwardRef, Input, Renderer2, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, Output, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getIconList } from '../utils/icon-list';
+import { slideDown, slideUp } from '../utils/mf.animation';
 
 @Component({
   selector: 'sh-input',
@@ -35,8 +36,8 @@ export class ShInputComponent implements ControlValueAccessor {
   iconRight: SafeHtml = '';
 
   // input file
-  @Input() shAccept?: string;
   @Input() shReview?: boolean = false;
+  @Output() shChange = new EventEmitter<File>();
 
   value: string = '';
   onChange = (_: any) => { };
@@ -123,6 +124,81 @@ export class ShInputComponent implements ControlValueAccessor {
     const input = event.target as HTMLInputElement;
     this.value = input.value;
     this.onChange(this.value);
+  }
+
+  parseDataVali(dataVali: string): any {
+    // Loại bỏ ký tự bao quanh nếu có (dấu ngoặc vuông [])
+    const trimmedData = dataVali.trim().replace(/^\[|\]$/g, '');
+
+    // Tạo một regex để nhận diện từng phần tử
+    const regex = /(\w+\([^\)]+\)|\w+)/g;
+    const matches = trimmedData.match(regex);
+
+    if (!matches) return []; // Trả về mảng rỗng nếu không có match
+
+    return matches.map(item => {
+      if (item.includes('file')) {
+        const match = /file\(([^,]*?),\s*(.*?)\)/.exec(item);
+        if (match) {
+          return {
+            key: 'file',
+            type: match[1],
+            size: match[2]
+          };
+        }
+      }
+
+      return { key: item }; // Trả về phần tử thông thường
+    });
+  }
+
+  handleFileInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let valid = this.shDataVali ? this.parseDataVali(this.shDataVali) : null;
+    let rule = null;
+
+    if (valid?.length > 0) {
+      rule = valid[0].key === 'file' ? valid[0] : (valid[1]?.key === 'file' ? valid[1] : null);
+    }
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      if (rule) {
+        const { type: allowedTypes, maxSize } = { type: rule.type, maxSize: rule.size };
+
+        let isValid = true;
+        const errors: string[] = [];
+
+        // Kiểm tra loại file
+        if (allowedTypes) {
+          const allowedTypesArray = allowedTypes.split(':').map((type: string) => type.trim().toLowerCase());
+          const fileType = file.type.split('/').pop()?.toLowerCase() || '';
+          if (!allowedTypesArray.includes(fileType)) {
+            isValid = false;
+            errors.push(`Invalid file type. Allowed types are: ${allowedTypesArray.join(', ')}`);
+          }
+        }
+
+        // Kiểm tra kích thước file
+        if (maxSize) {
+          const maxSizeInBytes = parseInt(maxSize) * 1024; // Giả định maxSize là KB
+          if (file.size > maxSizeInBytes) {
+            isValid = false;
+            errors.push(`File size exceeds the limit of ${maxSize} KB.`);
+          }
+        }
+
+        if (isValid) {
+          this.shChange.emit(file);
+        } else {
+          console.warn('File validation failed:', errors);
+          input.value = '';
+          input.files = null;
+        }
+
+        input.dispatchEvent(new Event('change'));
+      }
+    }
   }
 
   handleFocus(): void {
