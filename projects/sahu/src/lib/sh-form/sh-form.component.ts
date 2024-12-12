@@ -191,6 +191,49 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     return false;
   }
 
+  fileValidation(rule: any): boolean {
+    const { type: allowedTypes, maxSize } = { type: rule.typex, maxSize: rule.size };
+    let isValid = true;
+    const errors: string[] = [];
+    let file: any = (this.validItem.control as HTMLInputElement).files;
+
+    if (!file || file.length === 0) {
+      this.validItem.status = true;
+      return true;
+    }
+    file = file[0];
+
+    // Kiểm tra loại file
+    if (allowedTypes) {
+      const allowedTypesArray = allowedTypes.split(':').map((type: string) => type.trim().toLowerCase());
+      const fileType = file.type.split('/').pop()?.toLowerCase() || '';
+      if (!allowedTypesArray.includes(fileType)) {
+        isValid = false;
+        errors.push(`Invalid file type. Allowed types are: ${allowedTypesArray.join(', ')}`);
+      }
+    }
+
+    // Kiểm tra kích thước file
+    if (maxSize) {
+      const maxSizeInBytes = parseInt(maxSize) * 1024; // Giả định maxSize là KB
+      if (file.size > maxSizeInBytes) {
+        isValid = false;
+        errors.push(`File size exceeds the limit of ${maxSize} KB.`);
+      }
+    }
+
+    if (isValid) {
+      this.validItem.status = true;
+      return true;
+    } else {
+      this.validItem.status = false;
+      this.validItem.message = errors.join(', ');
+      this.validItem.control.value = '';
+      (this.validItem.control as HTMLInputElement).files = null;
+      return false;
+    }
+  }
+
   urlValidation(): boolean {
     let input = this.validItem.control;
     let val: string | null = input.value || null;
@@ -351,6 +394,16 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     if (!matches) return []; // Trả về mảng rỗng nếu không có match
 
     return matches.map(item => {
+      if (item.includes('file')) {
+        const match = /file\(([^,]*?),\s*(.*?)\)/.exec(item);
+        if (match) {
+          return {
+            type: 'file',
+            typex: match[1],
+            size: match[2]
+          };
+        }
+      }
       if (item.includes('length')) {
         const match = /length\(([^,]*?),\s*(.*?)\)/.exec(item);
         if (match) {
@@ -415,6 +468,10 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
               }
               case 'length': {
                 isValid = this.lengthValidation(valiArr[i]);
+                break;
+              }
+              case 'file': {
+                isValid = this.fileValidation(valiArr[i]);
                 break;
               }
             }
@@ -486,6 +543,10 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 }
                 case 'length': {
                   isValid = this.lengthValidation(valiArr[i]);
+                  break;
+                }
+                case 'file': {
+                  isValid = this.fileValidation(valiArr[i]);
                   break;
                 }
               }

@@ -167,7 +167,6 @@ export class ShInputComponent implements ControlValueAccessor {
         const { type: allowedTypes, maxSize } = { type: rule.type, maxSize: rule.size };
 
         let isValid = true;
-        const errors: string[] = [];
 
         // Kiểm tra loại file
         if (allowedTypes) {
@@ -175,7 +174,6 @@ export class ShInputComponent implements ControlValueAccessor {
           const fileType = file.type.split('/').pop()?.toLowerCase() || '';
           if (!allowedTypesArray.includes(fileType)) {
             isValid = false;
-            errors.push(`Invalid file type. Allowed types are: ${allowedTypesArray.join(', ')}`);
           }
         }
 
@@ -184,19 +182,13 @@ export class ShInputComponent implements ControlValueAccessor {
           const maxSizeInBytes = parseInt(maxSize) * 1024; // Giả định maxSize là KB
           if (file.size > maxSizeInBytes) {
             isValid = false;
-            errors.push(`File size exceeds the limit of ${maxSize} KB.`);
           }
         }
 
         if (isValid) {
           this.shChange.emit(file);
-        } else {
-          console.warn('File validation failed:', errors);
-          input.value = '';
-          input.files = null;
         }
 
-        input.dispatchEvent(new Event('change'));
       }
     }
   }
