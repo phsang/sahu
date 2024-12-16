@@ -7,6 +7,7 @@
   border-radius: 8px;
   display: flex;
   height: 40px;
+  overflow: hidden;
   transition: .3s;
 
   input {
@@ -38,7 +39,7 @@
   }
 }
 
-.bg_lightgray .sh-input-text input {
+.bg_lightgray .sh-input-text {
   background-color: #fff;
 }
 
