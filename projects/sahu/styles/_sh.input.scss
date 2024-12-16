@@ -64,7 +64,8 @@
 /*~.~.~.~.~.~.~.~.~.~.~.~.~.~.~. radio ~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.*/
 
 .sh-radio,
-.sh-switch {
+.sh-switch,
+.sh-checkbox {
   align-items: center;
   display: flex;
   gap: 6px;
@@ -150,6 +151,42 @@
     height: 30px;
     left: 26px;
     width: 30px;
+  }
+}
+
+.sh-checkbox {
+  .remark {
+    background-color: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 2px;
+    flex: 24px 0 0;
+    height: 24px;
+    transform: scale(1);
+    width: 24px;
+  }
+
+  .remark::before {
+    background-color: transparent;
+    border: 2px solid;
+    border-color: transparent transparent #fff #fff;
+    border-radius: 0;
+    content: "";
+    height: 8px;
+    left: 4px;
+    position: absolute;
+    top: 5px;
+    transform: rotate(-45deg);
+    transition: 0.3s;
+    width: 14px;
+  }
+
+  input:checked~.remark {
+    background-color: #f9cc28;
+  }
+
+  input:checked~.remark::before {
+    height: 8px;
+    width: 14px;
   }
 }
 
