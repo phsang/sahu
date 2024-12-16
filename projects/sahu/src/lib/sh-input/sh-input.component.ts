@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Inp
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getIconList } from '../utils/icon-list';
-import { slideDown, slideUp } from '../utils/mf.animation';
 
 @Component({
   selector: 'sh-input',
@@ -156,8 +155,7 @@ export class ShInputComponent implements ControlValueAccessor {
 
     if (
       this.shType === 'checkbox' ||
-      this.shType === 'switch' ||
-      this.shType === 'radio'
+      this.shType === 'switch'
     ) {
       // Lấy giá trị từ thuộc tính checked
       this.value = input.checked.toString(); // Đảm bảo value là chuỗi để phù hợp với FormControl
