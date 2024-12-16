@@ -161,7 +161,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
 
         if (!isCheck) {
           this.validItem.status = false;
-          this.validItem.message = msg || 'Vui này chọn trường này';
+          this.validItem.message = msg || 'Vui lòng chọn trường này';
           return false;
         } else {
           this.validItem.status = true;
@@ -555,14 +555,15 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 break;
               }
             }
+
+            this.generateError();
+            if (!isValid) {
+              form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
+            } else {
+              form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
+            }
           }
 
-          this.generateError();
-          if (!isValid) {
-            form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
-          } else {
-            form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
-          }
         });
       }
     });
