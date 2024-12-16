@@ -56,8 +56,31 @@ export class ShInputComponent implements ControlValueAccessor {
     }
   }
 
+  createFakeFile() {
+    // Tạo một đối tượng File với nội dung giả
+    let ext = this.value.split('.').pop();
+    if (ext === 'jpg') {
+      ext = 'jpeg';
+    }
+    const fakeFile = new File(["This is a fake file content"], "fake." + ext, {
+      type: "image/" + ext,
+    });
+
+    // Sử dụng DataTransfer để gắn file
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(fakeFile);
+
+    // Gán file giả vào input
+    this.dropZone.nativeElement.querySelector('input').files = dataTransfer.files;
+    this.onChange(this.value);
+  }
+
   writeValue(value: string): void {
     this.value = value;
+
+    if (this.value && this.shType === 'file') {
+      this.createFakeFile();
+    }
 
     this.updateInputClass();
   }

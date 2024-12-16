@@ -209,7 +209,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       const fileType = file.type.split('/').pop()?.toLowerCase() || '';
       if (!allowedTypesArray.includes(fileType)) {
         isValid = false;
-        errors.push(`Invalid file type. Allowed types are: ${allowedTypesArray.join(', ')}`);
+        errors.push(`Chỉ chấp nhận file có định dạng: ${allowedTypesArray.join(', ')}.`);
       }
     }
 
@@ -218,7 +218,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       const maxSizeInBytes = parseInt(maxSize) * 1024; // Giả định maxSize là KB
       if (file.size > maxSizeInBytes) {
         isValid = false;
-        errors.push(`File size exceeds the limit of ${maxSize} KB.`);
+        errors.push(`Kích thước file không vượt quá ${maxSize} KB.`);
       }
     }
 
@@ -227,7 +227,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       return true;
     } else {
       this.validItem.status = false;
-      this.validItem.message = errors.join(', ');
+      this.validItem.message = errors.join('<br>');
       this.validItem.control.value = '';
       (this.validItem.control as HTMLInputElement).files = null;
       return false;
