@@ -19,7 +19,7 @@ import { slideDown, slideUp } from '../utils/mf.animation';
 export class ShInputComponent implements ControlValueAccessor {
   @ViewChild('dropZone') dropZone!: ElementRef;
 
-  @Input() shType: 'text' | 'radio' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
+  @Input() shType: 'text' | 'radio' | 'switch' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shIcon?: any;
   @Input() shIconTheme?: any;
   @Input() shName?: string;
@@ -40,6 +40,7 @@ export class ShInputComponent implements ControlValueAccessor {
   // input file
   @Input() shReview?: boolean = false;
   @Output() shChange = new EventEmitter<File>();
+
   classLoading = '';
 
   value: string = '';
@@ -152,8 +153,20 @@ export class ShInputComponent implements ControlValueAccessor {
 
   handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.value = input.value;
-    this.onChange(this.value);
+
+    if (
+      this.shType === 'checkbox' ||
+      this.shType === 'switch' ||
+      this.shType === 'radio'
+    ) {
+      // Lấy giá trị từ thuộc tính checked
+      this.value = input.checked.toString(); // Đảm bảo value là chuỗi để phù hợp với FormControl
+      this.onChange(input.checked); // Phát sự kiện thay đổi với giá trị boolean
+    } else {
+      // Mặc định lấy giá trị từ value
+      this.value = input.value;
+      this.onChange(this.value);
+    }
   }
 
   dropFile() {

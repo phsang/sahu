@@ -40,7 +40,8 @@
 
 /*~.~.~.~.~.~.~.~.~.~.~.~.~.~.~. radio ~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.*/
 
-.sh-radio {
+.sh-radio,
+.sh-switch {
   align-items: center;
   display: flex;
   gap: 6px;
@@ -96,6 +97,36 @@
 
   input:checked~.text {
     font-weight: 500;
+  }
+}
+
+.sh-switch {
+  .remark {
+    background-color: #e0e0e0;
+    border: none;
+    flex: 60px 0 0;
+    height: 36px;
+    transform: scale(1);
+    width: 60px;
+  }
+
+  .remark::before {
+    background-color: #fff;
+    height: 30px;
+    left: 3px;
+    position: absolute;
+    top: 3px;
+    width: 30px;
+  }
+
+  input:checked~.remark {
+    background-color: #f9cc28;
+  }
+
+  input:checked~.remark::before {
+    height: 30px;
+    left: 26px;
+    width: 30px;
   }
 }
 

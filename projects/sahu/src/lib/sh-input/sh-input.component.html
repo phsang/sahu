@@ -36,6 +36,22 @@
   </div>
 </div>
 
+<div *ngIf="shType === 'switch'" class="field-validation">
+  <div class="{{shClass}}">
+    <label class="sh-switch">
+      <input
+        type="checkbox"
+        [attr.name]="shName ?? null"
+        [attr.id]="shId ?? null"
+        [attr.value]="shValue ?? null"
+        [attr.checked]="shChecked ? true : null"
+        [attr.data-vali]="shDataVali ?? null"
+        (change)="handleInput($event)">
+      <span class="remark"></span>
+    </label>
+  </div>
+</div>
+
 <div *ngIf="shType === 'file'" class="field-validation" #dropZone>
   <div class="{{shClass}}">
     <label class="sh-file" ngClass="{{classLoading}}">
