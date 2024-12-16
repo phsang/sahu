@@ -1,5 +1,5 @@
 <div *ngIf="shType === 'text'" class="field-validation">
-  <div class="{{shClass}}">
+  <div class="sh-input" ngClass="{{shClass}}">
     <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
     <input
       value="{{value}}"
@@ -15,7 +15,8 @@
       (focus)="handleFocus()"
       (input)="handleInput($event)"
       (blur)="handleBlur()">
-    <span class="icon" *ngIf="iconRight" [innerHTML]="iconRight"></span>
+    <span class="icon" *ngIf="iconRight && !shLoading" [innerHTML]="iconRight"></span>
+    <span class="input-loading" *ngIf="shLoading">loading...</span>
   </div>
 </div>
 

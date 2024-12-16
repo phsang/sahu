@@ -21,6 +21,7 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shType: 'text' | 'radio' | 'switch' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shIcon: string | null = '';
   @Input() shName?: string;
+  @Input() shClass: string = '';
   @Input() shId?: string;
   @Input() shValue?: string;
   @Input() shReadonly: boolean = false;
@@ -29,9 +30,9 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shPlaceholder?: string;
   @Input() shChecked: boolean = false;
   @Input() shAutocomplete?: string;
+  @Input() shLoading: boolean = false;
 
   @Input() shDataVali?: string;
-  shClass: string = 'sh-input';
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
 
