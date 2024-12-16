@@ -19,8 +19,7 @@ export class ShInputComponent implements ControlValueAccessor {
   @ViewChild('dropZone') dropZone!: ElementRef;
 
   @Input() shType: 'text' | 'radio' | 'switch' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
-  @Input() shIcon?: any;
-  @Input() shIconTheme?: any;
+  @Input() shIcon: string | null = '';
   @Input() shName?: string;
   @Input() shId?: string;
   @Input() shValue?: string;
@@ -85,44 +84,46 @@ export class ShInputComponent implements ControlValueAccessor {
     this.updateInputClass();
   }
 
+  iconArr(iconRule: string): any {
+    if (iconRule.includes(',')) {
+      return iconRule.split(',');
+    } else {
+      return [iconRule];
+    }
+  }
+
+  iconTheme(iconRule: string): any {
+    if (iconRule.includes(':')) {
+      const [icon, type] = iconRule.split(':');
+      return {
+        icon: icon,
+        type: type
+      };
+    } else {
+      return {
+        icon: iconRule,
+        type: 'light'
+      };
+    }
+  }
+
   private updateInputClass(): void {
     let classType = `sh-input-${this.shType}`;
     if (!this.shClass.includes(classType)) {
       this.shClass += ' ' + classType;
     }
+    this.shIcon = this.shIcon?.trim().replace(/\s+/g, '') || null;
 
     if (this.shIcon) {
       let classIcon = 'sh-input-icon';
       if (!this.shClass.includes(classIcon)) {
         this.shClass += ' ' + classIcon;
       }
-      if (!this.shIconTheme) {
-        this.shIconTheme = 'light';
-      }
+      let iconArray = this.iconArr(this.shIcon);
+      if (iconArray[0] !== '*') {
+        let leftIco = this.iconTheme(iconArray[0]);
 
-      if (this.shIcon?.includes(',')) {
-        this.shIcon = this.shIcon.trim().split(',');
-        this.shIcon = this.shIcon.map((ico: any) => {
-          const trimmedIcon = ico.trim();
-          return trimmedIcon === '*' ? null : trimmedIcon;
-        });
-
-        if (this.shIconTheme?.includes(',')) {
-          this.shIconTheme = this.shIconTheme.trim().split(',');
-          this.shIconTheme = this.shIconTheme.map((ico: any) => {
-            const trimmedIcon = ico.trim();
-            return trimmedIcon === '*' ? null : trimmedIcon;
-          });
-        } else {
-          this.shIconTheme = [this.shIconTheme, this.shIconTheme];
-        }
-      } else {
-        this.shIcon = [this.shIcon, null];
-        this.shIconTheme = [this.shIconTheme, this.shIconTheme];
-      }
-
-      if (this.shIcon[0]) {
-        let _icon = getIconList(this.shIcon[0], this.shIconTheme[0]);
+        let _icon = getIconList(leftIco.icon, leftIco.type);
         let attributes = `fill="currentColor" height="1em" width="1em"`;
 
         if (_icon) {
@@ -130,8 +131,10 @@ export class ShInputComponent implements ControlValueAccessor {
           this.iconLeft = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
         }
       }
-      if (this.shIcon[1]) {
-        let _icon = getIconList(this.shIcon[1], this.shIconTheme[1]);
+      if (iconArray[1] && iconArray[1] !== '*') {
+        let rightIco = this.iconTheme(iconArray[1]);
+
+        let _icon = getIconList(rightIco.icon, rightIco.type);
         let attributes = `fill="currentColor" height="1em" width="1em"`;
 
         if (_icon) {
