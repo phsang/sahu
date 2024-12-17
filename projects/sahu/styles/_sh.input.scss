@@ -305,6 +305,7 @@
   .file_content {
     flex: 1 0 0;
     height: 100%;
+    max-width: calc(100% - 154px);
     position: relative;
   }
 
@@ -316,8 +317,33 @@
     z-index: 9;
   }
 
+  .remark {
+    background-color: transparent;
+    font-weight: 400;
+    height: 100%;
+    justify-content: flex-start;
+
+    p {
+      font-size: 14px;
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
   .file_action {
-    flex: auto 0 0;
+    flex: 1 0 0;
+    justify-content: flex-end;
     padding-left: 12px;
+  }
+
+  .btn-primary {
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 34px;
+    padding: 1px 16px 2px;
+    white-space: nowrap;
   }
 }

@@ -111,7 +111,7 @@
         <a *ngIf="shValue" href="{{shValue}}" class="btn_download" download>
           <img src="assets/images/icons/ico-download.svg" width="20" alt="icon download">
         </a>
-        <button type="button" class="btn_upload" [attr.for]="shId">{{shValue ? 'Thay đổi' : 'Tải lên'}}</button>
+        <label class="btn-primary" for="{{shId}}">{{shValue ? 'Thay đổi' : 'Tải lên'}}</label>
       </div>
     </label>
   </div>

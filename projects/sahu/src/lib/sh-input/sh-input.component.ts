@@ -266,6 +266,8 @@ export class ShInputComponent implements ControlValueAccessor {
       }
     } else {
       this.classLoading = '';
+      this.shValue = '';
+      input.files = null;
     }
   }
 
@@ -275,11 +277,13 @@ export class ShInputComponent implements ControlValueAccessor {
 
   fileReset(event: Event) {
     this.classLoading = '';
+    this.shValue = '';
+
     setTimeout(() => {
       let btn = event.target as HTMLElement;
 
       if (btn) {
-        let input = btn.closest('.sh-file')?.querySelector('input');
+        let input = btn.closest('.sh-file, .sh-file_unview')?.querySelector('input');
         if (input) {
           input.value = '';
           input.files = null;
