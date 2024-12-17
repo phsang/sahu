@@ -91,7 +91,7 @@
   </div>
 
   <div class="{{shClass}}" *ngIf="!shReview">
-    <label class="sh-file_unview" ngClass="{{classLoading}}">
+    <label class="sh-file_unview" ngClass="{{shLoading ? 'loading' : ''}}">
       <div class="file_content">
         <input
           [attr.type]="shType"
