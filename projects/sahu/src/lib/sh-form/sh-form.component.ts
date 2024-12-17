@@ -2,8 +2,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID, ViewChild } from '@angular/core';
 import { slideDown, slideUp } from '../utils/mf.animation';
 import { formatNumber } from '../utils/mf.app';
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { fromEvent, merge, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 interface validInterface {
   control: HTMLInputElement | HTMLTextAreaElement,
@@ -496,19 +496,25 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     return validAll;
   }
 
+  private destroy$ = new Subject<void>();
+
   init(form: HTMLFormElement): void {
+    // Hủy tất cả các sự kiện trước đó
+    this.destroy$.next();
+
     const inputs = form.querySelectorAll('input, textarea');
 
     inputs.forEach((input) => {
       if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
-
         merge(
           fromEvent(input, 'input'),
           fromEvent(input, 'change')
         ).pipe(
+          takeUntil(this.destroy$), // Dừng subscription khi destroy$ phát ra giá trị
           debounceTime(0)
         ).subscribe(() => {
           this.validItem.control = input;
+
           // Xử lý logic của bạn ở đây
           let dataVali = input.getAttribute('data-vali')?.trim()?.replace(/\s+/g, '') || null;
           let isValid = true;
@@ -563,9 +569,14 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
               form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
             }
           }
-
         });
       }
     });
+  }
+
+  // Gọi hàm này khi component bị hủy hoặc trước khi init lại
+  destroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
