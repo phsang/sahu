@@ -248,7 +248,7 @@ export class ShInputComponent implements ControlValueAccessor {
     return true;
   }
 
-  handleFileInput(event: Event): void {
+  async handleFileInput(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     let valid = this.shDataVali ? this.parseDataVali(this.shDataVali) : null;
     let rule = null;
@@ -262,7 +262,7 @@ export class ShInputComponent implements ControlValueAccessor {
       if (rule) {
         const { type: allowedTypes, maxSize } = { type: rule.type, maxSize: rule.size };
 
-        let isValid: any = true;
+        let isValid = true;
 
         // Kiểm tra loại file
         if (allowedTypes) {
@@ -273,7 +273,7 @@ export class ShInputComponent implements ControlValueAccessor {
           } else {
             // kiểm tra tính hợp lệ của file excel nếu chỉ chấp nhận file excel
             if (fileType === 'xlsx') {
-              isValid = this.excelValid(rule, file);
+              isValid = await this.excelValid(rule, file);
             }
           }
         }

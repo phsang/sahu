@@ -4,6 +4,7 @@ import { slideDown, slideUp } from '../utils/mf.animation';
 import { formatNumber } from '../utils/mf.app';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { ExcelService } from '../utils/excel.service';
 
 interface validInterface {
   control: HTMLInputElement | HTMLTextAreaElement,
@@ -23,6 +24,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private cdr: ChangeDetectorRef,
+    private excelService: ExcelService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -191,9 +193,40 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     return false;
   }
 
-  fileValidation(rule: any): boolean {
+  async excelValid(rule: any, file: File): Promise<any> {
+    // đọc file excel và kiểm tra tính hợp lệ
+    let jsonData = await this.excelService.readFileExcelToJson(file);
+    let additional = jsonData[0].join(':');
+
+    if (additional !== rule.additional) {
+      return {
+        msg: 'File vừa tải lên không đúng định dạng',
+        status: false
+      }
+    }
+
+    if (jsonData.length <= 1) {
+      return {
+        msg: 'Vui lòng không Upload file rỗng',
+        status: false
+      }
+    }
+
+    if (jsonData.length > (rule.entries + 1)) {
+      return {
+        msg: `Kích thước danh sách không vượt quá ${formatNumber(rule.entries)}`,
+        status: false
+      }
+    }
+
+    return {
+      status: true
+    };
+  }
+
+  async fileValidation(rule: any): Promise<boolean> {
     const { type: allowedTypes, maxSize } = { type: rule.typex, maxSize: rule.size };
-    let isValid = true;
+    let isValid: any = true;
     const errors: string[] = [];
     let file: any = (this.validItem.control as HTMLInputElement).files;
 
@@ -211,6 +244,13 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       if (!allowedTypesArray.includes(fileType)) {
         isValid = false;
         errors.push(`Chỉ chấp nhận file có định dạng: ${allowedTypesArray.join(', ')}.`);
+      }
+
+      // kiểm tra nếu chỉ có duy nhất 1 file excel
+      if (fileType === 'xlsx') {
+        let xlsxStatus = await this.excelValid(rule, file);
+        isValid = xlsxStatus.status;
+        errors.push(xlsxStatus.msg);
       }
     }
 
@@ -396,12 +436,16 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
 
     return matches.map(item => {
       if (item.includes('file')) {
-        const match = /file\(([^,]*?),\s*(.*?)\)/.exec(item);
+        const fileRegex = /file\(([^,]+),\s*([^,]+)(?:,\s*([^,]+)(?:,\s*(.+))?)?\)/;
+        const match = fileRegex.exec(item);
+
         if (match) {
           return {
             type: 'file',
             typex: match[1],
-            size: match[2]
+            size: match[2],
+            additional: match[3] ? match[3] : null,
+            entries: match[4] ? parseInt(match[4]) : null
           };
         }
       }
@@ -433,7 +477,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     const inputs = form.querySelectorAll('input, textarea');
     let validAll = true;
 
-    inputs.forEach((input) => {
+    inputs.forEach(async (input) => {
       if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
         this.validItem.control = input;
         let dataVali = input.getAttribute('data-vali')?.trim()?.replace(/\s+/g, '') || null;
@@ -472,7 +516,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 break;
               }
               case 'file': {
-                isValid = this.fileValidation(valiArr[i]);
+                isValid = await this.fileValidation(valiArr[i]);
                 break;
               }
             }
@@ -513,7 +557,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
         ).pipe(
           takeUntil(this.destroy$), // Dừng subscription khi destroy$ phát ra giá trị
           debounceTime(0)
-        ).subscribe(() => {
+        ).subscribe(async () => {
           this.validItem.control = input;
 
           // Xử lý logic của bạn ở đây
@@ -553,7 +597,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                   break;
                 }
                 case 'file': {
-                  isValid = this.fileValidation(valiArr[i]);
+                  isValid = await this.fileValidation(valiArr[i]);
                   break;
                 }
               }
