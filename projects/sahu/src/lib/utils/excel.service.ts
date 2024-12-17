@@ -8,7 +8,7 @@ export class ExcelService {
 
   constructor() { }
 
-  async readFileExcelToJson(file: File): Promise<any> {
+  readFileExcelToJson(file: File): any {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 

@@ -193,9 +193,9 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     return false;
   }
 
-  async excelValid(rule: any, file: File): Promise<any> {
+  excelValid(rule: any, file: File): any {
     // đọc file excel và kiểm tra tính hợp lệ
-    let jsonData = await this.excelService.readFileExcelToJson(file);
+    let jsonData = this.excelService.readFileExcelToJson(file);
     let additional = jsonData[0].join(':');
 
     if (additional !== rule.additional) {
@@ -224,7 +224,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  async fileValidation(rule: any): Promise<boolean> {
+  fileValidation(rule: any): boolean {
     const { type: allowedTypes, maxSize } = { type: rule.typex, maxSize: rule.size };
     let isValid: any = true;
     const errors: string[] = [];
@@ -248,7 +248,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
 
       // kiểm tra nếu chỉ có duy nhất 1 file excel
       if (fileType === 'xlsx') {
-        let xlsxStatus = await this.excelValid(rule, file);
+        let xlsxStatus = this.excelValid(rule, file);
         isValid = xlsxStatus.status;
         errors.push(xlsxStatus.msg);
       }
@@ -477,7 +477,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     const inputs = form.querySelectorAll('input, textarea');
     let validAll = true;
 
-    inputs.forEach(async (input) => {
+    inputs.forEach((input) => {
       if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
         this.validItem.control = input;
         let dataVali = input.getAttribute('data-vali')?.trim()?.replace(/\s+/g, '') || null;
@@ -516,7 +516,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 break;
               }
               case 'file': {
-                isValid = await this.fileValidation(valiArr[i]);
+                isValid = this.fileValidation(valiArr[i]);
                 break;
               }
             }
@@ -557,7 +557,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
         ).pipe(
           takeUntil(this.destroy$), // Dừng subscription khi destroy$ phát ra giá trị
           debounceTime(0)
-        ).subscribe(async () => {
+        ).subscribe(() => {
           this.validItem.control = input;
 
           // Xử lý logic của bạn ở đây
@@ -597,7 +597,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                   break;
                 }
                 case 'file': {
-                  isValid = await this.fileValidation(valiArr[i]);
+                  isValid = this.fileValidation(valiArr[i]);
                   break;
                 }
               }
