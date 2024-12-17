@@ -37,7 +37,7 @@ export class ShInputComponent implements ControlValueAccessor {
   iconRight: SafeHtml = '';
 
   // input file
-  @Input() shReview?: boolean = false;
+  @Input() shReview: boolean = true;
   @Output() shChange = new EventEmitter<File>();
 
   classLoading = '';
@@ -242,7 +242,7 @@ export class ShInputComponent implements ControlValueAccessor {
         // Kiểm tra loại file
         if (allowedTypes) {
           const allowedTypesArray = allowedTypes.split(':').map((type: string) => type.trim().toLowerCase());
-          const fileType = file.type.split('/').pop()?.toLowerCase() || '';
+          const fileType = file.name.split('.').pop()?.toLowerCase() || '';
           if (!allowedTypesArray.includes(fileType)) {
             isValid = false;
           }

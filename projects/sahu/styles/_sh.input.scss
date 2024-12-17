@@ -290,3 +290,34 @@
     transform: scale(1);
   }
 }
+
+.sh-file_unview {
+  align-items: center;
+  background-color: #f2f2f2;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  height: 40px;
+  justify-content: stretch;
+  padding: 0 2px 0 12px;
+  width: 100%;
+
+  .file_content {
+    flex: 1 0 0;
+    height: 100%;
+    position: relative;
+  }
+
+  .file_content input {
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 9;
+  }
+
+  .file_action {
+    flex: auto 0 0;
+    padding-left: 12px;
+  }
+}

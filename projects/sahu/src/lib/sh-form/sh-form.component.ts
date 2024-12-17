@@ -206,7 +206,8 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     // Kiểm tra loại file
     if (allowedTypes) {
       const allowedTypesArray = allowedTypes.split(':').map((type: string) => type.trim().toLowerCase());
-      const fileType = file.type.split('/').pop()?.toLowerCase() || '';
+      const fileType = file.name.split('.').pop()?.toLowerCase() || '';
+
       if (!allowedTypesArray.includes(fileType)) {
         isValid = false;
         errors.push(`Chỉ chấp nhận file có định dạng: ${allowedTypesArray.join(', ')}.`);

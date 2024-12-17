@@ -71,7 +71,7 @@
 </div>
 
 <div *ngIf="shType === 'file'" class="field-validation" #dropZone>
-  <div class="{{shClass}}">
+  <div class="{{shClass}}" *ngIf="shReview">
     <label class="sh-file" ngClass="{{classLoading}}">
       <input
         [attr.type]="shType"
@@ -87,6 +87,32 @@
       <button type="button" (click)="fileReset($event)">
         <img src="assets/images/icons/ico-times.svg" alt="icon times">
       </button>
+    </label>
+  </div>
+
+  <div class="{{shClass}}" *ngIf="!shReview">
+    <label class="sh-file_unview" ngClass="{{classLoading}}">
+      <div class="file_content">
+        <input
+          [attr.type]="shType"
+          [attr.name]="shName ?? null"
+          [attr.id]="shId ?? null"
+          [attr.checked]="shChecked ? true : null"
+          [attr.data-vali]="shDataVali ?? null"
+          (change)="handleFileInput($event)">
+        <div class="remark">
+          <p>{{shValue || shLabel}}</p>
+        </div>
+      </div>
+      <div class="file_action">
+        <button *ngIf="shValue" type="button" class="btn_remove" (click)="fileReset($event)">
+          <i class="fad fa-times-circle"></i>
+        </button>
+        <a *ngIf="shValue" href="{{shValue}}" class="btn_download" download>
+          <img src="assets/images/icons/ico-download.svg" width="20" alt="icon download">
+        </a>
+        <button type="button" class="btn_upload" [attr.for]="shId">{{shValue ? 'Thay đổi' : 'Tải lên'}}</button>
+      </div>
     </label>
   </div>
 </div>
