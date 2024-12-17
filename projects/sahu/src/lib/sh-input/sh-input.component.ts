@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Inp
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getIconList } from '../utils/icon-list';
+import { ExcelService } from '../utils/excel.service';
 
 @Component({
   selector: 'sh-input',
@@ -49,7 +50,8 @@ export class ShInputComponent implements ControlValueAccessor {
   constructor(
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private excelService: ExcelService
   ) {
     if (this.shType === 'file') {
       this.dropFile();
@@ -199,28 +201,51 @@ export class ShInputComponent implements ControlValueAccessor {
 
   parseDataVali(dataVali: string): any {
     // Loại bỏ ký tự bao quanh nếu có (dấu ngoặc vuông [])
-    const trimmedData = dataVali.trim().replace(/^\[|\]$/g, '');
+    const trimmedData = dataVali?.trim().replace(/^\[|\]$/g, '');
+    if (!trimmedData) return [];
 
-    // Tạo một regex để nhận diện từng phần tử
-    const regex = /(\w+\([^\)]+\)|\w+)/g;
+    // Regex để nhận diện các phần tử như 'file(...)' hoặc từ khóa thông thường
+    const regex = /(\w+\([^)]*\)|\w+)/g;
     const matches = trimmedData.match(regex);
 
-    if (!matches) return []; // Trả về mảng rỗng nếu không có match
+    if (!matches) return [];
 
     return matches.map(item => {
-      if (item.includes('file')) {
-        const match = /file\(([^,]*?),\s*(.*?)\)/.exec(item);
+      // Xử lý phần tử dạng file(...)
+      if (item.startsWith('file')) {
+        const fileRegex = /file\(([^,]+),\s*([^,]+)(?:,\s*([^,]+)(?:,\s*(.+))?)?\)/;
+        const match = fileRegex.exec(item);
+
         if (match) {
           return {
             key: 'file',
             type: match[1],
-            size: match[2]
+            size: parseInt(match[2], 10),
+            additional: match[3] ? match[3] : null,
+            entries: match[4] ? parseInt(match[4]) : null
           };
         }
       }
 
-      return { key: item }; // Trả về phần tử thông thường
+      // Trả về phần tử thông thường
+      return { key: item };
     });
+  }
+
+  async excelValid(rule: any, file: File): Promise<boolean> {
+    // đọc file excel và kiểm tra tính hợp lệ
+    let jsonData = await this.excelService.readFileExcelToJson(file);
+    let additional = jsonData[0].join(':');
+
+    if (
+      additional !== rule.additional ||
+      jsonData.length <= 1 ||
+      jsonData.length > (rule.entries + 1)
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   handleFileInput(event: Event): void {
@@ -237,7 +262,7 @@ export class ShInputComponent implements ControlValueAccessor {
       if (rule) {
         const { type: allowedTypes, maxSize } = { type: rule.type, maxSize: rule.size };
 
-        let isValid = true;
+        let isValid: any = true;
 
         // Kiểm tra loại file
         if (allowedTypes) {
@@ -245,6 +270,11 @@ export class ShInputComponent implements ControlValueAccessor {
           const fileType = file.name.split('.').pop()?.toLowerCase() || '';
           if (!allowedTypesArray.includes(fileType)) {
             isValid = false;
+          } else {
+            // kiểm tra tính hợp lệ của file excel nếu chỉ chấp nhận file excel
+            if (fileType === 'xlsx') {
+              isValid = this.excelValid(rule, file);
+            }
           }
         }
 

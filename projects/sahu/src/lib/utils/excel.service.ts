@@ -8,14 +8,10 @@ export class ExcelService {
 
   constructor() { }
 
-  public onFileChange(evt: any): Promise<any> {
+  async readFileExcelToJson(file: File): Promise<any> {
     return new Promise((resolve, reject) => {
-      const target: DataTransfer = <DataTransfer>(evt.target);
-      if (target.files.length !== 1) {
-        reject('Cannot use multiple files');
-      }
+      const reader = new FileReader();
 
-      const reader: FileReader = new FileReader();
       reader.onload = (e: any) => {
         const binaryString: string = e.target.result;
         const wb: XLSX.WorkBook = XLSX.read(binaryString, { type: 'binary' });
@@ -33,8 +29,11 @@ export class ExcelService {
         resolve(filteredData);
       };
 
-      reader.onerror = (error) => reject(error);
-      reader.readAsBinaryString(target.files[0]);
+      reader.onerror = () => {
+        reject('File could not be read');
+      };
+
+      reader.readAsArrayBuffer(file);
     });
   }
 }
