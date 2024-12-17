@@ -225,7 +225,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
   }
 
   async fileValidation(rule: any): Promise<boolean> {
-    const { type: allowedTypes, maxSize } = { type: rule.typex, maxSize: rule.size };
+    let { type: allowedTypes, maxSize } = { type: rule.typex, maxSize: rule.size };
     let isValid: any = true;
     const errors: string[] = [];
     let file: any = (this.validItem.control as HTMLInputElement).files;
@@ -247,7 +247,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       }
 
       // kiểm tra nếu chỉ có duy nhất 1 file excel
-      if (fileType === 'xlsx') {
+      if (fileType === 'xlsx' && allowedTypesArray.includes('xlsx')) {
         let xlsxStatus = await this.excelValid(rule, file);
         isValid = xlsxStatus.status;
         errors.push(xlsxStatus.msg);
@@ -256,10 +256,12 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
 
     // Kiểm tra kích thước file
     if (maxSize) {
-      const maxSizeInBytes = parseInt(maxSize) * 1024; // Giả định maxSize là KB
+      maxSize = parseInt(maxSize);
+      const maxSizeInBytes = maxSize * 1024; // Giả định maxSize là KB
       if (file.size > maxSizeInBytes) {
         isValid = false;
-        errors.push(`Kích thước file không vượt quá ${maxSize} KB.`);
+        let size = maxSize >= 1024 ? ((maxSize / 1024).toFixed(2) + 'Mb') : maxSize + 'Kb';
+        errors.push(`Kích thước file không vượt quá ${size}.`);
       }
     }
 
@@ -523,13 +525,13 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
               }
             }
 
-            this.generateError();
-
             if (!isValid) {
               validAll = false;
               break;
             }
           }
+
+          this.generateError();
         }
       }
     }

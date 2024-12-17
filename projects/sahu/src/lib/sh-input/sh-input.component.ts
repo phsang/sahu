@@ -272,7 +272,7 @@ export class ShInputComponent implements ControlValueAccessor {
             isValid = false;
           } else {
             // kiểm tra tính hợp lệ của file excel nếu chỉ chấp nhận file excel
-            if (fileType === 'xlsx') {
+            if (fileType === 'xlsx' && allowedTypesArray.includes('xlsx')) {
               isValid = await this.excelValid(rule, file);
             }
           }
