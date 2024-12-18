@@ -39,7 +39,7 @@ export class ShInputComponent implements ControlValueAccessor {
 
   // input file
   @Input() shReview: boolean = true;
-  @Output() shChange = new EventEmitter<File>();
+  @Output() shChange = new EventEmitter<any>();
 
   classLoading = '';
 
@@ -194,7 +194,10 @@ export class ShInputComponent implements ControlValueAccessor {
 
       // Xử lý file tại đây
       if (files && files.length > 0) {
-        this.shChange.emit(files[0]);
+        this.shChange.emit({
+          file: files[0],
+          data: null
+        });
       }
     });
   }
@@ -232,7 +235,7 @@ export class ShInputComponent implements ControlValueAccessor {
     });
   }
 
-  async excelValid(rule: any, file: File): Promise<boolean> {
+  async excelValid(rule: any, file: File): Promise<any> {
     // đọc file excel và kiểm tra tính hợp lệ
     let jsonData = await this.excelService.readFileExcelToJson(file);
     let additional = jsonData[0].join(':');
@@ -242,10 +245,17 @@ export class ShInputComponent implements ControlValueAccessor {
       jsonData.length <= 1 ||
       jsonData.length > (rule.entries + 1)
     ) {
-      return false;
+      return {
+        data: null,
+        status: false
+      };
     }
 
-    return true;
+    jsonData.shift();
+    return {
+      data: jsonData,
+      status: true
+    };
   }
 
   async handleFileInput(event: Event): Promise<void> {
@@ -263,6 +273,7 @@ export class ShInputComponent implements ControlValueAccessor {
         const { type: allowedTypes, maxSize } = { type: rule.type, maxSize: rule.size };
 
         let isValid = true;
+        let excelData: any = null;
 
         // Kiểm tra loại file
         if (allowedTypes) {
@@ -273,7 +284,8 @@ export class ShInputComponent implements ControlValueAccessor {
           } else {
             // kiểm tra tính hợp lệ của file excel nếu chỉ chấp nhận file excel
             if (fileType === 'xlsx' && allowedTypesArray.includes('xlsx')) {
-              isValid = await this.excelValid(rule, file);
+              excelData = await this.excelValid(rule, file);
+              isValid = excelData.status;
             }
           }
         }
@@ -288,7 +300,10 @@ export class ShInputComponent implements ControlValueAccessor {
 
         if (isValid) {
           this.classLoading = 'loading';
-          this.shChange.emit(file);
+          this.shChange.emit({
+            file: file,
+            data: excelData?.data || null
+          });
         } else {
           this.classLoading = '';
         }
