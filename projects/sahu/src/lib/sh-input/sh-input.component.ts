@@ -58,22 +58,40 @@ export class ShInputComponent implements ControlValueAccessor {
     }
   }
 
-  createFakeFile() {
-    // Tạo một đối tượng File với nội dung giả
-    let ext = this.value.split('.').pop();
-    const type = ext === "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "image/" + ext;
+  async createFakeFile() {
+    // Lấy extension từ this.value
+    const url = this.value;
+    const ext = url.split('.').pop();
 
-    const fakeFile = new File(["This is a fake file content"], "fake." + ext, {
-      type: type,
-    });
+    try {
+      // Fetch file từ URL
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Không thể tải file từ URL");
+      }
 
-    // Sử dụng DataTransfer để gắn file
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(fakeFile);
+      // Chuyển đổi dữ liệu thành Blob
+      const blob = await response.blob();
 
-    // Gán file giả vào input
-    this.dropZone.nativeElement.querySelector('input').files = dataTransfer.files;
-    this.onChange(this.value);
+      // Tạo đối tượng File từ Blob
+      const type = blob.type || (ext === "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "image/" + ext);
+
+      const fakeFile = new File([blob], `fake.${ext}`, {
+        type: type,
+      });
+
+      // Sử dụng DataTransfer để gắn file
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(fakeFile);
+
+      // Gán file giả vào input
+      this.dropZone.nativeElement.querySelector('input').files = dataTransfer.files;
+
+      // Gọi onChange hoặc xử lý tiếp
+      this.onChange(this.value);
+    } catch (error) {
+      console.error("Lỗi khi tạo file giả:", error);
+    }
   }
 
   writeValue(value: string): void {
