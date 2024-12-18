@@ -60,8 +60,8 @@
         type="checkbox"
         [attr.name]="shName ?? null"
         [attr.id]="shId ?? null"
-        [attr.value]="shValue ?? null"
-        [attr.checked]="shChecked ? true : null"
+        [value]="shValue ?? null"
+        [checked]="value"
         [attr.data-vali]="shDataVali ?? null"
         (change)="handleInput($event)">
       <span class="remark"></span>
