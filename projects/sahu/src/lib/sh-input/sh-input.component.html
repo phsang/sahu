@@ -44,8 +44,7 @@
         type="checkbox"
         [attr.name]="shName ?? null"
         [attr.id]="shId ?? null"
-        [attr.value]="shValue ?? null"
-        [attr.checked]="shChecked ? true : null"
+        [checked]="shChecked"
         [attr.data-vali]="shDataVali ?? null"
         (change)="handleInput($event)">
       <span class="remark"></span>
@@ -60,8 +59,7 @@
         type="checkbox"
         [attr.name]="shName ?? null"
         [attr.id]="shId ?? null"
-        [value]="shValue ?? null"
-        [checked]="value"
+        [checked]="shChecked"
         [attr.data-vali]="shDataVali ?? null"
         (change)="handleInput($event)">
       <span class="remark"></span>
