@@ -61,11 +61,10 @@ export class ShInputComponent implements ControlValueAccessor {
   createFakeFile() {
     // Tạo một đối tượng File với nội dung giả
     let ext = this.value.split('.').pop();
-    if (ext === 'jpg') {
-      ext = 'jpeg';
-    }
+    const type = ext === "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "image/" + ext;
+
     const fakeFile = new File(["This is a fake file content"], "fake." + ext, {
-      type: "image/" + ext,
+      type: type,
     });
 
     // Sử dụng DataTransfer để gắn file
