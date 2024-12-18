@@ -2,7 +2,7 @@
 
 .sh-input-text {
   align-items: center;
-  background-color: #f2f2f2;
+  background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   display: flex;
@@ -55,6 +55,10 @@
   &.input-focus .icon {
     color: #f9cc28;
   }
+}
+
+.group_information .sh-input-text {
+  background-color: #f2f2f2;
 }
 
 .bg_lightgray .sh-input-text {
