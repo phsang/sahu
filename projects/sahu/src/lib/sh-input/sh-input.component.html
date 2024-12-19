@@ -76,6 +76,7 @@
         [attr.name]="shName ?? null"
         [attr.id]="shId ?? null"
         [attr.data-vali]="shDataVali ?? null"
+        [disabled]="shDisabled"
         (change)="handleFileInput($event)">
       <div class="remark">
         <p><span class="gamboge_2 font600">Chọn</span> hoặc <span class="gamboge_2 font600">kéo thả ảnh</span> để tải lên</p>
@@ -95,6 +96,7 @@
           [attr.name]="shName ?? null"
           [attr.id]="shId ?? null"
           [attr.data-vali]="shDataVali ?? null"
+          [disabled]="shDisabled"
           (change)="handleFileInput($event)">
         <div class="remark">
           <p>{{shValue || shLabel}}</p>
