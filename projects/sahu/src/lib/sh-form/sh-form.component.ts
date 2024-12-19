@@ -526,6 +526,8 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
             }
 
             if (!isValid) {
+              console.error(input.getAttribute('name') || input.getAttribute('id'));
+
               validAll = false;
               break;
             }

@@ -1,5 +1,5 @@
 <div *ngIf="shType === 'text'" class="field-validation">
-  <div class="sh-input" ngClass="{{shClass}}">
+  <div class="sh-input {{shDisabled ? 'disabled' : ''}}" ngClass="{{shClass}}">
     <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
     <input
       value="{{value}}"
@@ -8,7 +8,7 @@
       [attr.id]="shId ?? null"
       [attr.value]="shValue ?? null"
       [attr.readonly]="shReadonly ? true : null"
-      [attr.disabled]="shDisabled ? true : null"
+      [disabled]="shDisabled"
       [attr.placeholder]="shPlaceholder ?? null"
       [attr.autocomplete]="shAutocomplete ?? null"
       [attr.data-vali]="shDataVali ?? null"
