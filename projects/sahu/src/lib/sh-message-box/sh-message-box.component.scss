@@ -1,0 +1,69 @@
+.sh-message-box {
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  max-width: 300px;
+  padding: 15px;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 1000;
+}
+
+.sh-message-box.success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.sh-message-box.error {
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+.sh-message-box.info {
+  background-color: #d9edf7;
+  color: #31708f;
+}
+
+.sh-message-box.warning {
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+}
+
+.sh-message-box-header {
+  align-items: center;
+  display: flex;
+  font-weight: bold;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sh-message-box-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.sh-message-box-header button:hover {
+  color: #555;
+}
+
+.sh-message-box-footer {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.sh-message-box-footer button {
+  background-color: #007bff;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  padding: 5px 10px;
+}
+
+.sh-message-box-footer button:hover {
+  background-color: #0056b3;
+}

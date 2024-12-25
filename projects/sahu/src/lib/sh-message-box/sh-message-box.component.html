@@ -1,0 +1,10 @@
+<div *ngIf="messageBox?.visible" [class]="'sh-message-box ' + messageBox?.type">
+  <div class="sh-message-box-header">
+    <h3>{{ messageBox?.title }}</h3>
+    <button (click)="close()">&times;</button>
+  </div>
+  <p>{{ messageBox?.message }}</p>
+  <div class="sh-message-box-footer" *ngIf="messageBox?.okCallback">
+    <button (click)="onOkClick()">OK</button>
+  </div>
+</div>
