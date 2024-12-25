@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { getIconList } from '../utils/icon-list';
+import { getIconList } from '../../utils/icon-list';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({

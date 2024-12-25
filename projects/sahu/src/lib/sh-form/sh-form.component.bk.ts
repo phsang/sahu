@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID, ViewChild } from '@angular/core';
-import { slideDown, slideUp } from '../utils/mf.animation';
-import { formatNumber } from '../utils/mf.app';
+import { slideDown, slideUp } from '../../utils/mf.animation';
+import { formatNumber } from '../../utils/mf.app';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 

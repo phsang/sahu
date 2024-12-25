@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { getIconList } from '../utils/icon-list';
+import { getIconList } from '../../utils/icon-list';
 
 @Component({
   selector: 'sh-modal',

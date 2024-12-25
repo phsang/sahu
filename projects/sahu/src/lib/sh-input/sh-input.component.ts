@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, Output, Renderer2, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { getIconList } from '../utils/icon-list';
-import { ExcelService } from '../utils/excel.service';
+import { getIconList } from '../../utils/icon-list';
+import { ExcelService } from '../../utils/excel.service';
 
 @Component({
   selector: 'sh-input',

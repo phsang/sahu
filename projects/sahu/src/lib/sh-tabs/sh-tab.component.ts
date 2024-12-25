@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { getIconList } from '../utils/icon-list';
+import { getIconList } from '../../utils/icon-list';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
