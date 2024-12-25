@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ShMessageBoxService } from '../../services/sh-message-box.service';
 
@@ -11,6 +11,9 @@ import { ShMessageBoxService } from '../../services/sh-message-box.service';
         <button (click)="close()">&times;</button>
       </div>
       <p>{{ messageBox?.message }}</p>
+      <div class="sh-message-box-footer">
+        <button (click)="onOkClick()">OK</button>
+      </div>
     </div>
   `,
   styles: [
@@ -50,11 +53,38 @@ import { ShMessageBoxService } from '../../services/sh-message-box.service';
     .sh-message-box-header button:hover {
       color: #555;
     }
+
+    .sh-message-box-footer {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .sh-message-box-footer button {
+      padding: 5px 10px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      border-radius: 3px;
+      background-color: #007bff;
+      color: white;
+    }
+
+    .sh-message-box-footer button:hover {
+      background-color: #0056b3;
+    }
     `
   ]
 })
 export class ShMessageBoxComponent implements OnDestroy {
-  messageBox: { title: string, message: string, type: 'success' | 'error' | 'info' | 'warning', visible: boolean } | null = null;
+  @Output() okClick = new EventEmitter<void>();
+
+  messageBox: {
+    title: string,
+    message: string,
+    type: 'success' | 'error' | 'info' | 'warning',
+    visible: boolean,
+    okCallback?: () => void
+  } | null = null;
   private subscription: Subscription;
 
   constructor(private messageBoxService: ShMessageBoxService) {
@@ -65,6 +95,14 @@ export class ShMessageBoxComponent implements OnDestroy {
 
   close() {
     this.messageBoxService.closeMessage();
+  }
+
+  onOkClick() {
+    if (this.messageBox?.okCallback) {
+      this.messageBox.okCallback();
+    }
+    this.okClick.emit();
+    this.close();
   }
 
   ngOnDestroy() {
