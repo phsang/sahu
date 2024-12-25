@@ -11,7 +11,7 @@ import { ShMessageBoxService } from '../../services/sh-message-box.service';
         <button (click)="close()">&times;</button>
       </div>
       <p>{{ messageBox?.message }}</p>
-      <div class="sh-message-box-footer">
+      <div class="sh-message-box-footer" *ngIf="messageBox?.okCallback">
         <button (click)="onOkClick()">OK</button>
       </div>
     </div>
@@ -78,13 +78,7 @@ import { ShMessageBoxService } from '../../services/sh-message-box.service';
 export class ShMessageBoxComponent implements OnDestroy {
   @Output() okClick = new EventEmitter<void>();
 
-  messageBox: {
-    title: string,
-    message: string,
-    type: 'success' | 'error' | 'info' | 'warning',
-    visible: boolean,
-    okCallback?: () => void
-  } | null = null;
+  messageBox: { title: string, message: string, type: 'success' | 'error' | 'info' | 'warning', visible: boolean, okCallback?: () => void } | null = null;
   private subscription: Subscription;
 
   constructor(private messageBoxService: ShMessageBoxService) {
