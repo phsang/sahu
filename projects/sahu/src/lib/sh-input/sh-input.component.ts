@@ -65,7 +65,11 @@ export class ShInputComponent implements ControlValueAccessor {
 
     try {
       // Fetch file từ URL
+      this.classLoading = 'loading';
+      this.shLoading = true;
       const response = await fetch(url);
+      this.shLoading = false;
+
       if (!response.ok) {
         throw new Error("Không thể tải file từ URL");
       }
