@@ -1,5 +1,5 @@
 .sh-message-box-over {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(10, 10, 40, 0.88);
   bottom: 0;
   left: 0;
   position: fixed;
@@ -44,13 +44,15 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  gap: 5px;
   justify-content: center;
-  padding: 5px;
+  padding: 5px 5px 15px;
 }
 
 .sh-message-box-header h3 {
   font-size: 18px;
   font-weight: 600;
+  margin: 0;
 }
 
 .sh-message-box-header img {
@@ -59,7 +61,8 @@
 }
 
 .sh-message-box-body {
-  padding: 10px 16px;
+  margin: 0 16px;
+  padding: 15px 0 20px;
   position: relative;
 
   &:before {
@@ -79,20 +82,19 @@
 }
 
 .sh-message-box-footer {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
   margin-top: 10px;
-  text-align: right;
 }
 
 .sh-message-box-footer button {
-  background-color: #007bff;
-  border: none;
-  border-radius: 3px;
-  color: white;
-  cursor: pointer;
-  font-size: 1em;
-  padding: 5px 10px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
-.sh-message-box-footer button:hover {
-  background-color: #0056b3;
+.sh-message-box-footer .btn-cancel {
+  border-color: #fff;
+  color: #fff;
+  height: 48px;
 }
