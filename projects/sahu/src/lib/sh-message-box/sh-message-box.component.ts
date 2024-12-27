@@ -13,10 +13,11 @@ export class ShMessageBoxComponent implements OnDestroy {
 
   messageBox: {
     title: string,
-    message: string,
+    message?: string,
     type: 'success' | 'error' | 'info' | 'warning',
     visible: boolean,
     okCallback?: () => void,
+    closeText?: string,
     okText?: string
   } | null = null;
   private subscription: Subscription;

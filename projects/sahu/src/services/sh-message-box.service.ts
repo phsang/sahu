@@ -5,19 +5,21 @@ import { BehaviorSubject } from 'rxjs';
 export class ShMessageBoxService {
   private messageBoxSubject = new BehaviorSubject<{
     title: string,
-    message: string,
+    message?: string,
     type: 'success' | 'error' | 'info' | 'warning',
     visible: boolean,
+    closeText?: string,
     okCallback?: () => void,
     okText?: string
   } | null>(null);
   messageBox$ = this.messageBoxSubject.asObservable();
 
   showMessage(
-    { title, message, type = 'info', okCallback, okText }: {
+    { title, message, type = 'info', closeText, okCallback, okText }: {
       title: string,
-      message: string,
+      message?: string,
       type?: 'success' | 'error' | 'info' | 'warning',
+      closeText?: string,
       okCallback?: () => void,
       okText?: string
     }) {
@@ -26,6 +28,7 @@ export class ShMessageBoxService {
       message,
       type,
       visible: true,
+      closeText,
       okCallback,
       okText
     });
