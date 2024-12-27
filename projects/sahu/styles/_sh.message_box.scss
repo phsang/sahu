@@ -83,18 +83,18 @@
 
 .sh-message-box-footer {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 24px;
 }
 
 .sh-message-box-footer button {
   font-size: 16px;
   font-weight: 500;
+  height: 48px;
 }
 
 .sh-message-box-footer .btn-cancel {
   border-color: #fff;
   color: #fff;
-  height: 48px;
 }
