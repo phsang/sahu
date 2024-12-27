@@ -35,6 +35,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
 
   @Input() shId?: string = '';
   @Input() shName?: string = '';
+  @Input() shDisabled?: boolean = false;
   @Input() shMultiple: boolean = false;
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
@@ -72,6 +73,10 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
   }
 
   toggleDropdown(): void {
+    if (this.shDisabled) {
+      return;
+    }
+
     this.dropdownOpen = !this.dropdownOpen;
 
     // thêm class để hiển thị popup phía trên, nếu popup vượt qua khỏi màn hình
