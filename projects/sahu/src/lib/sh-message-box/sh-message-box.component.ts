@@ -8,6 +8,7 @@ import { ShMessageBoxService } from '../../services/sh-message-box.service';
   styleUrls: ['./sh-message-box.component.scss']
 })
 export class ShMessageBoxComponent implements OnDestroy {
+  msgIcon: string = '';
   @Output() okClick = new EventEmitter<void>();
 
   messageBox: { title: string, message: string, type: 'success' | 'error' | 'info' | 'warning', visible: boolean, okCallback?: () => void } | null = null;
@@ -16,6 +17,22 @@ export class ShMessageBoxComponent implements OnDestroy {
   constructor(private messageBoxService: ShMessageBoxService) {
     this.subscription = this.messageBoxService.messageBox$.subscribe(data => {
       this.messageBox = data;
+
+      this.msgIcon = '/assets/images/notifications/';
+      switch (this.messageBox?.type) {
+        case 'success': {
+          this.msgIcon += 'noti-success.svg';
+          break;
+        }
+        case 'warning': {
+          this.msgIcon += 'noti-warning.svg';
+          break;
+        }
+        case 'error': {
+          this.msgIcon += 'noti-error.svg';
+          break;
+        }
+      }
     });
   }
 

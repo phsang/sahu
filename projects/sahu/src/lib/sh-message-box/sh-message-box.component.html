@@ -1,10 +1,16 @@
 <div *ngIf="messageBox?.visible" [class]="'sh-message-box ' + messageBox?.type">
-  <div class="sh-message-box-header">
-    <h3>{{ messageBox?.title }}</h3>
-    <button (click)="close()">&times;</button>
-  </div>
-  <p>{{ messageBox?.message }}</p>
-  <div class="sh-message-box-footer" *ngIf="messageBox?.okCallback">
-    <button (click)="onOkClick()">OK</button>
+  <div class="sh-message-box-over"></div>
+  <div class="sh-message-box-content">
+    <div class="sh-message-box-header">
+      <img src="{{msgIcon}}" alt="message icon">
+      <h3>{{ messageBox?.title }}</h3>
+    </div>
+    <div class="sh-message-box-body">
+      <p>{{ messageBox?.message }}</p>
+    </div>
+    <div class="sh-message-box-footer">
+      <button class="btn-cancel" (click)="close()">&times;</button>
+      <button class="btn-primary" (click)="onOkClick()" *ngIf="messageBox?.okCallback">Đã hiểu</button>
+    </div>
   </div>
 </div>
