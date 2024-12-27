@@ -9,52 +9,73 @@
 }
 
 .sh-message-box-content {
-  background: #fff;
-  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
   left: 50%;
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
+  width: 343px;
   z-index: 999;
 }
 
-.sh-message-box.success {
-  background-color: #dff0d8;
-  color: #3c763d;
+.box-content {
+  background-color: #fff;
+  border-radius: 16px;
 }
 
-.sh-message-box.error {
-  background-color: #f2dede;
-  color: #a94442;
+.sh-message-box.success .sh-message-box-header h3 {
+  color: #0fa97f;
 }
 
-.sh-message-box.info {
-  background-color: #d9edf7;
+.sh-message-box.error .sh-message-box-header h3 {
+  color: #eb4747;
+}
+
+.sh-message-box.info .sh-message-box-header h3 {
   color: #31708f;
 }
 
-.sh-message-box.warning {
-  background-color: #fcf8e3;
-  color: #8a6d3b;
+.sh-message-box.warning .sh-message-box-header h3 {
+  color: #ed830b;
 }
 
 .sh-message-box-header {
   align-items: center;
   display: flex;
-  font-weight: bold;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
 }
 
-.sh-message-box-header button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2em;
+.sh-message-box-header h3 {
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.sh-message-box-header button:hover {
-  color: #555;
+.sh-message-box-header img {
+  height: 110px;
+  margin-top: -50px;
+}
+
+.sh-message-box-body {
+  padding: 10px 16px;
+  position: relative;
+
+  &:before {
+    background: repeating-linear-gradient(90deg, #ccc 0 6px, transparent 6px 12px);
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.sh-message-box-body p {
+  line-height: 1.43;
+  margin: 0;
 }
 
 .sh-message-box-footer {

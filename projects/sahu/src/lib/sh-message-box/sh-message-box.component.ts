@@ -11,7 +11,14 @@ export class ShMessageBoxComponent implements OnDestroy {
   msgIcon: string = '';
   @Output() okClick = new EventEmitter<void>();
 
-  messageBox: { title: string, message: string, type: 'success' | 'error' | 'info' | 'warning', visible: boolean, okCallback?: () => void } | null = null;
+  messageBox: {
+    title: string,
+    message: string,
+    type: 'success' | 'error' | 'info' | 'warning',
+    visible: boolean,
+    okCallback?: () => void,
+    okText?: string
+  } | null = null;
   private subscription: Subscription;
 
   constructor(private messageBoxService: ShMessageBoxService) {
