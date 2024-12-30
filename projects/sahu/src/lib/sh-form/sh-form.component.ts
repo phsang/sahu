@@ -260,8 +260,8 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       const maxSizeInBytes = maxSize * 1024; // Giả định maxSize là KB
       if (file.size > maxSizeInBytes) {
         isValid = false;
-        let size = maxSize >= 1024 ? ((maxSize / 1024).toFixed(2) + 'Mb') : maxSize + 'Kb';
-        errors.push(`Kích thước file không vượt quá ${size}.`);
+        let size = maxSize >= 1024 ? (Math.round((maxSize / 1024) * 100) / 100 + 'MB') : maxSize + 'KB';
+        errors.push(`Kích thước của tệp không thể vượt quá ${size}.`);
       }
     }
 
