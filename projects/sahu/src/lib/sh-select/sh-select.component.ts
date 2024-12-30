@@ -17,10 +17,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     trigger('fadeInOut', [
       state('void', style({
         opacity: 0,
-        transform: 'scale(0.7)'
+        transform: 'scaleY(0)',
       })),
       transition(':enter, :leave', [
-        animate(100)
+        animate(220)
       ])
     ])
   ]
