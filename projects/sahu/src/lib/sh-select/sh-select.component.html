@@ -13,9 +13,7 @@
         #inputHidden />
 
       <div class="results-zone">
-        <span
-          *ngIf="!shMultiple"
-          [ngClass]="selectedOptions[0] ? '' : 'placeholder-text'">
+        <span *ngIf="!shMultiple" [class.placeholder-text]="!selectedOptions[0]">
           {{ selectedOptions[0]?.label || shPlaceHolder }}
         </span>
         <span *ngIf="shMultiple && selectedOptions.length" class="tags">
