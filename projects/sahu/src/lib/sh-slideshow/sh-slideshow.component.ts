@@ -71,8 +71,8 @@ export class ShSlideshowComponent {
 
     const imgElement = event.target as HTMLImageElement;
     this.slideStyles[index] = {
-      'width': imgElement.naturalWidth,
-      'height': imgElement.naturalHeight
+      width: imgElement.naturalWidth,
+      height: imgElement.naturalHeight
     }
 
     if (this.slideLoaded.every(x => x)) {
@@ -106,6 +106,8 @@ export class ShSlideshowComponent {
             rotate: 0,
             left: (parW - imgW) / 2,
             top: (parH - imgH) / 2,
+            height: this.slideStyles[i].height,
+            width: this.slideStyles[i].width,
           }
         }
 
@@ -121,8 +123,10 @@ export class ShSlideshowComponent {
   applyStyle(index: number) {
     let currentImg = this.popupContainer.nativeElement.querySelector('#slide-' + index + ' img');
 
-    currentImg.style.left = this.slideStyles[index].left + 'px';
     currentImg.style.top = this.slideStyles[index].top + 'px';
+    currentImg.style.left = this.slideStyles[index].left + 'px';
+    currentImg.style.width = this.slideStyles[index].width + 'px';
+    currentImg.style.height = this.slideStyles[index].height + 'px';
     currentImg.style.transform = `rotate(${this.slideStyles[index].rotate}deg) scale(${this.slideStyles[index].zoom})`;
   }
 
