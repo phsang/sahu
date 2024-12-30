@@ -5,6 +5,7 @@
         [src]="slide.src"
         alt="Image {{ i + 1 }}"
         (click)="openPopup(i)"
+        (error)="onSlideError(i)"
         class="thumbnail" />
       <p *ngIf="slide.title" class="title">{{ slide.title }}</p>
     </div>

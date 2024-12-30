@@ -114,6 +114,10 @@ export class ShSlideshowComponent {
     }
   }
 
+  onSlideError(index: number): void {
+    this.shData[index].src = 'assets/images/no-image.svg';
+  }
+
   applyStyle(index: number) {
     let currentImg = this.popupContainer.nativeElement.querySelector('#slide-' + index + ' img');
 
