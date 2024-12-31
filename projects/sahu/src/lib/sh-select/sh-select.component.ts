@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -26,12 +26,22 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 
-export class ShSelectComponent implements OnInit, ControlValueAccessor {
+export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChanges {
   @ViewChild('inputHidden') inputHidden!: ElementRef;
   @ViewChild('selectSelection') selectSelection!: ElementRef;
 
-  @Input() shData: any[] = [];
+  // @Input() shData: any[] = [];
   _sData: { [key: string]: any[] } = {};
+  private _shData: any[] = [];
+  @Input()
+  set shData(value: any[]) {
+    this._shData = value || [];
+    this.initializeOptions();
+    this.updateSelectedOptions();
+  }
+  get shData(): any[] {
+    return this._shData;
+  }
 
   @Input() shId?: string = '';
   @Input() shName?: string = '';
@@ -60,16 +70,29 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor {
     this.selectedOptions = [];
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['shData'] && !changes['shData'].firstChange) {
+      this.initializeOptions();
+      this.updateSelectedOptions();
+    }
+  }
+
+  updateSelectedOptions(): void {
+    if (this.inputValue) {
+      this.selectedOptions = this.shMultiple
+        ? this.shData.filter(option => this.inputValue.includes(option.value))
+        : [this.shData.find(option => option.value === this.inputValue)];
+    }
+  }
+
   initializeOptions(): void {
-    this.shData.forEach(data => {
+    this._sData = this.shData.reduce((acc, data) => {
       if (data.group) {
-        if (this._sData[data.group]) {
-          this._sData[data.group].push(data);
-        } else {
-          this._sData[data.group] = [data];
-        }
+        acc[data.group] = acc[data.group] || [];
+        acc[data.group].push(data);
       }
-    });
+      return acc;
+    }, {});
   }
 
   toggleDropdown(): void {

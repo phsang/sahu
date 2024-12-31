@@ -63,7 +63,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14), 0 9px 46px 8px rgba(0, 0, 0, .12);
-    max-height: 200px;
+    max-height: 220px;
     overflow-y: auto;
     position: absolute;
     top: calc(100% + 8px);
@@ -86,6 +86,7 @@
       }
 
       input {
+        cursor: pointer;
         height: 100%;
         margin: 0;
         opacity: 0;
@@ -104,10 +105,24 @@
       }
     }
 
-    .option-group {
-      background-color: #f7f7f7;
-      font-weight: bold;
-      padding: 10px;
+    .content-group {
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .content-group > span {
+      color: #008964;
+      display: inline-block;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .content-group .sh-select-option {
+      padding: 5px 5px 5px 12px;
     }
 
     .loading {

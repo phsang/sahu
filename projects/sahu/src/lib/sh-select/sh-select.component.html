@@ -31,8 +31,9 @@
 
   <div class="sh-select-dropdown {{dropdownPosition}}" *ngIf="dropdownOpen" @fadeInOut>
     <input *ngIf="shShowSearch" [placeholder]="shSearchPlaceHolder" />
+
     <ng-container *ngIf="(_sData | json) != ({} | json)">
-      <div class="option-group" *ngFor="let group of _sData | keyvalue">
+      <div class="content-group" *ngFor="let group of _sData | keyvalue">
         <span>{{ group.key }}</span>
         <div class="option-group">
           <div *ngFor="let option of group.value" class="sh-select-option">
@@ -65,5 +66,6 @@
         </label>
       </div>
     </ng-container>
+
   </div>
 </div>
