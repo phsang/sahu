@@ -30,7 +30,6 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @ViewChild('inputHidden') inputHidden!: ElementRef;
   @ViewChild('selectSelection') selectSelection!: ElementRef;
 
-  // @Input() shData: any[] = [];
   _sData: { [key: string]: any[] } = {};
   private _shData: any[] = [];
   @Input()
@@ -47,6 +46,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @Input() shName?: string = '';
   @Input() shDisabled?: boolean = false;
   @Input() shMultiple: boolean = false;
+  @Input() shLine: number = 1;
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
 

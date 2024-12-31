@@ -72,6 +72,22 @@
     width: 100%;
     z-index: 1000;
 
+    &::-webkit-scrollbar {
+      background-color: #dfdfdf;
+      border-radius: 99px;
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #bfbfbf;
+      border-radius: 99px;
+      transition: .3s;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #a0a0a0;
+    }
+
     .sh-select-option {
       cursor: pointer;
       position: relative;
@@ -197,9 +213,19 @@
 }
 
 .sh-select-dropdown .text {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
   font-size: 14px;
   font-weight: 400;
+  -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+}
+
+.sh-select-dropdown .text.clam-2 {
+  -webkit-line-clamp: 2;
+}
+
+.sh-select-dropdown .text.clam-3 {
+  -webkit-line-clamp: 3;
 }

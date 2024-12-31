@@ -44,7 +44,7 @@
                 [value]="option.value"
                 (click)="selectOption(option, $event)"
                 [checked]="selectedOptions.includes(option)" />
-              <span class="text">{{ option.label }}</span>
+              <span class="text clam-{{shLine}}">{{ option.label }}</span>
               <span class="remark"></span>
             </label>
           </div>
@@ -61,7 +61,7 @@
             [value]="option.value"
             (click)="selectOption(option, $event)"
             [checked]="selectedOptions.includes(option)" />
-          <span class="text">{{ option.label }}</span>
+          <span class="text clam-{{shLine}}">{{ option.label }}</span>
           <span class="remark"></span>
         </label>
       </div>
