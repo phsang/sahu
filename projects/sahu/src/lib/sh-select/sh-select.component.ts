@@ -30,17 +30,8 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @ViewChild('inputHidden') inputHidden!: ElementRef;
   @ViewChild('selectSelection') selectSelection!: ElementRef;
 
+  @Input() shData: any[] = [];
   _sData: { [key: string]: any[] } = {};
-  private _shData: any[] = [];
-  @Input()
-  set shData(value: any[]) {
-    this._shData = value || [];
-    this.initializeOptions();
-    this.updateSelectedOptions();
-  }
-  get shData(): any[] {
-    return this._shData;
-  }
 
   @Input() shId?: string = '';
   @Input() shName?: string = '';
