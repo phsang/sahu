@@ -27,6 +27,7 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shId?: string;
   @Input() shValue?: string;
   @Input() shResize?: string;
+  @Input() shResizeOption?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
   @Input() shLabel?: string;
@@ -324,15 +325,29 @@ export class ShInputComponent implements ControlValueAccessor {
 
         // Nếu toàn bộ hợp lệ, resize và nén ảnh nếu có thuộc tính resize
         if (this.shResize) {
-          const [size, quality] = this.shResize.replace(/\s+/g, '').split(':');
-          const [width, height] = size.split('x');
-
-          const param = {
+          const [width, height] = this.shResize.replace(/\s+/g, '').split('x');
+          let param: any = null;
+          param = {
             file,
-            quality,
             width,
             height,
           };
+          if (this.shResizeOption) {
+            const [objectFit, quality, backgroundColor, outputFormat] = this.shResizeOption.replace(/\s+/g, '').split(':');
+            param['objectFit'] = objectFit;
+
+            if (quality) {
+              param['quality'] = quality;
+            }
+
+            if (backgroundColor) {
+              param['backgroundColor'] = backgroundColor;
+            }
+
+            if (outputFormat) {
+              param['outputFormat'] = outputFormat;
+            }
+          }
 
           file = await this.imageService.resizeAndCompressImage(param);
         }

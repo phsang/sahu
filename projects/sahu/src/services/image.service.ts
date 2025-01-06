@@ -26,8 +26,12 @@ export class ImageService {
       quality: 100,
       width: 300,
       height: 300,
+      objectFit: 'cover', // Options: 'cover' | 'contain'
+      backgroundColor: 'transparent', // Use 'transparent' or any color
+      outputFormat: 'png', // Change to 'jpeg' or 'webp' if needed
     };
     let options = { ..._default, ...param };
+    options.outputFormat = 'image/' + options.outputFormat;
 
     const img = new Image();
     const blobURL = URL.createObjectURL(options.file);
@@ -35,38 +39,62 @@ export class ImageService {
     return new Promise<File>((resolve, reject) => {
       img.onload = async () => {
         try {
-          // Create a canvas element for resizing
+          // Create a canvas element
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d')!;
 
-          // Calculate aspect ratio
-          const aspectRatio = img.width / img.height;
+          canvas.width = options.width;
+          canvas.height = options.height;
 
-          // Adjust width and height to maintain aspect ratio
-          let targetWidth = options.width;
-          let targetHeight = options.height;
+          // Calculate aspect ratios
+          const imgAspectRatio = img.width / img.height;
+          const targetAspectRatio = options.width / options.height;
 
-          if (img.width > img.height) {
-            targetHeight = Math.round(targetWidth / aspectRatio);
-          } else {
-            targetWidth = Math.round(targetHeight * aspectRatio);
+          let drawWidth = options.width;
+          let drawHeight = options.height;
+          let offsetX = 0;
+          let offsetY = 0;
+
+          if (options.objectFit === 'cover') {
+            // Resize to cover the target dimensions
+            if (imgAspectRatio > targetAspectRatio) {
+              drawWidth = options.height * imgAspectRatio;
+              offsetX = -(drawWidth - options.width) / 2; // Center horizontally
+            } else {
+              drawHeight = options.width / imgAspectRatio;
+              offsetY = -(drawHeight - options.height) / 2; // Center vertically
+            }
+          } else if (options.objectFit === 'contain') {
+            // Resize to fit within the target dimensions
+            if (imgAspectRatio > targetAspectRatio) {
+              drawHeight = options.width / imgAspectRatio;
+              offsetY = (options.height - drawHeight) / 2; // Center vertically
+            } else {
+              drawWidth = options.height * imgAspectRatio;
+              offsetX = (options.width - drawWidth) / 2; // Center horizontally
+            }
+
+            // Fill canvas background color if not transparent
+            if (options.backgroundColor !== 'transparent') {
+              ctx.fillStyle = options.backgroundColor;
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
           }
 
-          canvas.width = targetWidth;
-          canvas.height = targetHeight;
-
-          // Fill canvas with white background (optional for JPEG images)
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, targetWidth, targetHeight);
-
-          // Draw the image on the canvas
-          ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+          // Draw the image
+          ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
 
           // Compress the resized image
-          const blob = await this.pica.toBlob(canvas, 'image/jpeg', options.quality);
+          const blob = await this.pica.toBlob(
+            canvas,
+            options.outputFormat,
+            options.quality
+          );
 
           // Create a new File object from the Blob
-          const resizedFile = new File([blob], options.file.name, { type: 'image/jpeg' });
+          const resizedFile = new File([blob], options.file.name, {
+            type: options.outputFormat,
+          });
 
           // Clean up resources
           URL.revokeObjectURL(blobURL);
