@@ -359,7 +359,6 @@ export class ShInputComponent implements ControlValueAccessor {
             const options = this.parseResizeOptions(this.shResizeOptions);
             param = { ...param, ...options };
           }
-          console.log(param);
 
           file = await this.imageService.resizeAndCompressImage(param);
         }

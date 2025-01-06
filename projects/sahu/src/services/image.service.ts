@@ -28,10 +28,16 @@ export class ImageService {
       height: 300,
       objectFit: 'cover', // Options: 'cover' | 'contain'
       backgroundColor: 'transparent', // Use 'transparent' or any color
-      outputFormat: 'png', // Change to 'jpeg' or 'webp' if needed
+      format: 'png', // Change to 'jpeg' or 'webp' if needed
     };
     let options = { ..._default, ...param };
-    options.outputFormat = 'image/' + options.outputFormat;
+
+    // sử dụng định dạng jpeg để hỗ trợ nén ảnh (vì png không hỗ trợ nén ảnh)
+    // nếu tồn tại quality và không tồn tại format
+    if (param.quality && !param.format) {
+      options.format = 'jpeg';
+    }
+    options.format = 'image/' + options.format;
 
     const img = new Image();
     const blobURL = URL.createObjectURL(options.file);
@@ -88,13 +94,14 @@ export class ImageService {
           // Compress the resized image
           const blob = await this.pica.toBlob(
             canvas,
-            options.outputFormat,
-            options.quality
+            options.format,
+            options.quality / 100
           );
 
           // Create a new File object from the Blob
-          const resizedFile = new File([blob], options.file.name, {
-            type: options.outputFormat,
+          const fileName = options.file.name.replace(/\.\w+$/, `.${options.format.split('/')[1]}`);
+          const resizedFile = new File([blob], fileName, {
+            type: options.format,
           });
 
           // Clean up resources
