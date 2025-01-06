@@ -324,17 +324,17 @@ export class ShInputComponent implements ControlValueAccessor {
 
         // Nếu toàn bộ hợp lệ, resize và nén ảnh nếu có thuộc tính resize
         if (this.shResize) {
-          const [width, height, quality] = this.shResize
-            .replace(/\s+/g, '')
-            .split('x')[0]
-            .split(':');
+          const [size, quality] = this.shResize.replace(/\s+/g, '').split(':');
+          const [width, height] = size.split('x');
 
-          file = await this.imageService.resizeAndCompressImage({
+          const param = {
             file,
             quality,
             width,
             height,
-          });
+          };
+
+          file = await this.imageService.resizeAndCompressImage(param);
         }
 
         if (isValid) {

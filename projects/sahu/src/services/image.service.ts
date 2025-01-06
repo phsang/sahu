@@ -25,9 +25,10 @@ export class ImageService {
       file: null,
       quality: 100,
       width: 300,
-      height: 300
+      height: 300,
     };
     let options = { ..._default, ...param };
+
     const img = new Image();
     const blobURL = URL.createObjectURL(options.file);
 
@@ -36,14 +37,33 @@ export class ImageService {
         try {
           // Create a canvas element for resizing
           const canvas = document.createElement('canvas');
-          canvas.width = options.width;
-          canvas.height = options.height;
+          const ctx = canvas.getContext('2d')!;
 
-          // Resize the image using Pica
-          const resizedCanvas = await this.pica.resize(img, canvas);
+          // Calculate aspect ratio
+          const aspectRatio = img.width / img.height;
+
+          // Adjust width and height to maintain aspect ratio
+          let targetWidth = options.width;
+          let targetHeight = options.height;
+
+          if (img.width > img.height) {
+            targetHeight = Math.round(targetWidth / aspectRatio);
+          } else {
+            targetWidth = Math.round(targetHeight * aspectRatio);
+          }
+
+          canvas.width = targetWidth;
+          canvas.height = targetHeight;
+
+          // Fill canvas with white background (optional for JPEG images)
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+          // Draw the image on the canvas
+          ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
           // Compress the resized image
-          const blob = await this.pica.toBlob(resizedCanvas, 'image/jpeg', options.quality);
+          const blob = await this.pica.toBlob(canvas, 'image/jpeg', options.quality);
 
           // Create a new File object from the Blob
           const resizedFile = new File([blob], options.file.name, { type: 'image/jpeg' });
@@ -61,4 +81,5 @@ export class ImageService {
       img.src = blobURL;
     });
   }
+
 }
