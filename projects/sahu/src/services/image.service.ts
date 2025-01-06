@@ -51,18 +51,23 @@ export class ImageService {
 
           if (options.objectFit === 'cover') {
             if (imgAspectRatio > targetAspectRatio) {
-              targetWidth = options.height * imgAspectRatio;
+              canvas.height = options.height;
+              canvas.width = canvas.height * img.width / img.height;
             } else {
-              targetHeight = options.width / imgAspectRatio;
+              canvas.width = options.width;
+              canvas.height = canvas.width * img.height / img.width;
             }
-
-            canvas.width = targetWidth;
-            canvas.height = targetHeight;
-          } else if (options.objectFit === 'contain') {
+          }
+          if (options.objectFit === 'contain') {
             canvas.width = options.width;
             canvas.height = options.height;
 
-            // Fill canvas background color if not transparent
+            if (imgAspectRatio > targetAspectRatio) {
+              targetHeight = options.width * img.height / img.width;
+            } else {
+              targetWidth = options.height * img.width / img.height;
+            }
+
             if (options.backgroundColor !== 'transparent') {
               ctx.fillStyle = options.backgroundColor;
               ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -72,7 +77,13 @@ export class ImageService {
           // Draw the image centered on the canvas
           const offsetX = (canvas.width - targetWidth) / 2;
           const offsetY = (canvas.height - targetHeight) / 2;
-          ctx.drawImage(img, offsetX, offsetY, targetWidth, targetHeight);
+
+          if (options.objectFit === 'contain') {
+            ctx.drawImage(img, 0, 0, img.width, img.height, offsetX, offsetY, targetWidth, targetHeight);
+          }
+          if (options.objectFit === 'cover') {
+            ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+          }
 
           // Compress the resized image
           const blob = await this.pica.toBlob(
