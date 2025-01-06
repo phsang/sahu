@@ -27,7 +27,7 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shId?: string;
   @Input() shValue?: string;
   @Input() shResize?: string;
-  @Input() shResizeOption?: string;
+  @Input() shResizeOptions?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
   @Input() shLabel?: string;
@@ -283,6 +283,29 @@ export class ShInputComponent implements ControlValueAccessor {
     };
   }
 
+  parseResizeOptions(options: string): Record<string, any> {
+    const result: Record<string, any> = {};
+    const pairs = options.split(',').map(pair => pair.trim()); // Tách các cặp key-value
+
+    pairs.forEach(pair => {
+      const [key, value] = pair.split(':').map(item => item.trim());
+      if (!key) return;
+
+      // Kiểm tra giá trị và parse đúng kiểu
+      if (value === 'true' || value === 'false') {
+        result[key] = value === 'true';
+      } else if (!isNaN(Number(value))) {
+        result[key] = Number(value);
+      } else if (value.startsWith('#') || value.startsWith('"') || value.startsWith("'")) {
+        result[key] = value.replace(/^["']|["']$/g, ''); // Loại bỏ dấu nháy nếu có
+      } else {
+        result[key] = value;
+      }
+    });
+
+    return result;
+  }
+
   async handleFileInput(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     let valid = this.shDataVali ? this.parseDataVali(this.shDataVali) : null;
@@ -332,22 +355,11 @@ export class ShInputComponent implements ControlValueAccessor {
             width,
             height,
           };
-          if (this.shResizeOption) {
-            const [objectFit, quality, backgroundColor, outputFormat] = this.shResizeOption.replace(/\s+/g, '').split(':');
-            param['objectFit'] = objectFit;
-
-            if (quality) {
-              param['quality'] = quality;
-            }
-
-            if (backgroundColor) {
-              param['backgroundColor'] = backgroundColor;
-            }
-
-            if (outputFormat) {
-              param['outputFormat'] = outputFormat;
-            }
+          if (this.shResizeOptions) {
+            const options = this.parseResizeOptions(this.shResizeOptions);
+            param = { ...param, ...options };
           }
+          console.log(param);
 
           file = await this.imageService.resizeAndCompressImage(param);
         }

@@ -43,36 +43,24 @@ export class ImageService {
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d')!;
 
-          canvas.width = options.width;
-          canvas.height = options.height;
+          let targetWidth = options.width;
+          let targetHeight = options.height;
 
-          // Calculate aspect ratios
           const imgAspectRatio = img.width / img.height;
           const targetAspectRatio = options.width / options.height;
 
-          let drawWidth = options.width;
-          let drawHeight = options.height;
-          let offsetX = 0;
-          let offsetY = 0;
-
           if (options.objectFit === 'cover') {
-            // Resize to cover the target dimensions
             if (imgAspectRatio > targetAspectRatio) {
-              drawWidth = options.height * imgAspectRatio;
-              offsetX = -(drawWidth - options.width) / 2; // Center horizontally
+              targetWidth = options.height * imgAspectRatio;
             } else {
-              drawHeight = options.width / imgAspectRatio;
-              offsetY = -(drawHeight - options.height) / 2; // Center vertically
+              targetHeight = options.width / imgAspectRatio;
             }
+
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
           } else if (options.objectFit === 'contain') {
-            // Resize to fit within the target dimensions
-            if (imgAspectRatio > targetAspectRatio) {
-              drawHeight = options.width / imgAspectRatio;
-              offsetY = (options.height - drawHeight) / 2; // Center vertically
-            } else {
-              drawWidth = options.height * imgAspectRatio;
-              offsetX = (options.width - drawWidth) / 2; // Center horizontally
-            }
+            canvas.width = options.width;
+            canvas.height = options.height;
 
             // Fill canvas background color if not transparent
             if (options.backgroundColor !== 'transparent') {
@@ -81,8 +69,10 @@ export class ImageService {
             }
           }
 
-          // Draw the image
-          ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+          // Draw the image centered on the canvas
+          const offsetX = (canvas.width - targetWidth) / 2;
+          const offsetY = (canvas.height - targetHeight) / 2;
+          ctx.drawImage(img, offsetX, offsetY, targetWidth, targetHeight);
 
           // Compress the resized image
           const blob = await this.pica.toBlob(
