@@ -2,7 +2,8 @@ import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Inp
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getIconList } from '../../utils/icon-list';
-import { ExcelService } from '../../utils/excel.service';
+import { ExcelService } from '../../services/excel.service';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'sh-input',
@@ -25,6 +26,7 @@ export class ShInputComponent implements ControlValueAccessor {
   @Input() shClass: string = '';
   @Input() shId?: string;
   @Input() shValue?: string;
+  @Input() shResize?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
   @Input() shLabel?: string;
@@ -51,7 +53,8 @@ export class ShInputComponent implements ControlValueAccessor {
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private imageService: ImageService,
   ) {
     if (this.shType === 'file') {
       this.dropFile();
@@ -289,7 +292,7 @@ export class ShInputComponent implements ControlValueAccessor {
     }
 
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
+      let file = input.files[0];
       if (rule) {
         const { type: allowedTypes, maxSize } = { type: rule.type, maxSize: rule.size };
 
@@ -317,6 +320,21 @@ export class ShInputComponent implements ControlValueAccessor {
           if (file.size > maxSizeInBytes) {
             isValid = false;
           }
+        }
+
+        // Nếu toàn bộ hợp lệ, resize và nén ảnh nếu có thuộc tính resize
+        if (this.shResize) {
+          const [width, height, quality] = this.shResize
+            .replace(/\s+/g, '')
+            .split('x')[0]
+            .split(':');
+
+          file = await this.imageService.resizeAndCompressImage({
+            file,
+            quality,
+            width,
+            height,
+          });
         }
 
         if (isValid) {

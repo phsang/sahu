@@ -4,7 +4,7 @@ import { slideDown, slideUp } from '../../utils/mf.animation';
 import { formatNumber } from '../../utils/mf.app';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { ExcelService } from '../../utils/excel.service';
+import { ExcelService } from '../../services/excel.service';
 
 interface validInterface {
   control: HTMLInputElement | HTMLTextAreaElement,

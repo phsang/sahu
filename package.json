@@ -29,6 +29,7 @@
     "@angular/cli": "^18.2.11",
     "@angular/compiler-cli": "^18.2.10",
     "@types/jasmine": "~5.1.4",
+    "@types/pica": "^9.0.5",
     "fs": "^0.0.1-security",
     "jasmine-core": "~5.4.0",
     "karma": "~6.4.4",
@@ -37,6 +38,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^18.2.1",
+    "pica": "^9.0.1",
     "typescript": "~5.5.3"
   },
   "publishConfig": {
