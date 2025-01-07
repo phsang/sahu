@@ -71,7 +71,10 @@ export class ShInputComponent implements ControlValueAccessor {
       // Fetch file từ URL
       this.classLoading = 'loading';
       this.shLoading = true;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors'
+      });
       this.shLoading = false;
 
       if (!response.ok) {
