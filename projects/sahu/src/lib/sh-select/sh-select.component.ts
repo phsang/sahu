@@ -27,7 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 
 export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChanges {
-  @ViewChild('inputHidden') inputHidden!: ElementRef;
+  @ViewChild('inputHidden', { static: false }) inputHidden!: ElementRef;
   @ViewChild('selectSelection') selectSelection!: ElementRef;
 
   @Input() shData: any[] = [];
@@ -172,6 +172,9 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
       this.selectedOptions = [];
       this.inputValue = null;
     }
+    setTimeout(() => {
+      this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
+    }, 10);
   }
 
   registerOnChange(fn: any): void {
