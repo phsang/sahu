@@ -121,6 +121,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
     }
     this.inputValue = _model;
     this.onChange(_model);
+    this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
     this.shChange.emit(_model); // Emit the model change to the parent
   }
 
@@ -136,22 +137,18 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
       this.toggleDropdown();
     }
     this.modelChangeEmit();
-    this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
   }
 
   removeTag(option: any, event: MouseEvent): void {
     event.stopPropagation();
     this.selectedOptions = this.selectedOptions.filter(o => o !== option);
     this.modelChangeEmit();
-    this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
   }
 
   reset(event: Event): void {
     event.stopPropagation();
     this.selectedOptions = [];
     this.modelChangeEmit();
-    this.onChange(null);
-    this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
   }
 
   // ControlValueAccessor methods
@@ -172,9 +169,6 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
       this.selectedOptions = [];
       this.inputValue = null;
     }
-    setTimeout(() => {
-      this.inputHidden.nativeElement.dispatchEvent(new Event('change'));
-    }, 10);
   }
 
   registerOnChange(fn: any): void {
