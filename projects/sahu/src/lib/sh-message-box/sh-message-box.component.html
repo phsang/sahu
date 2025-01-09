@@ -7,7 +7,7 @@
         <h3>{{ messageBox?.title }}</h3>
       </div>
       <div class="sh-message-box-body" *ngIf="messageBox?.message">
-        <p>{{ messageBox?.message }}</p>
+        <p [innerHTML]="messageBox?.message"></p>
       </div>
     </div>
     <div class="sh-message-box-footer">
