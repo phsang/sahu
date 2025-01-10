@@ -48,9 +48,9 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
 
   inputValue: any = null;
   dropdownPosition: string = 'bottom';
-
   selectedOptions: any[] = [];
   dropdownOpen = false;
+  filterKey: string = '';
 
   // ControlValueAccessor methods
   private onChange: any = () => { };
@@ -181,5 +181,23 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
 
   setDisabledState?(isDisabled: boolean): void {
     // Add logic to manage the disabled state if needed
+  }
+
+  removeAccent(str: string) {
+    return str.normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+  };
+
+  filterData() {
+    // xử lý filter khi không có group
+    if (!Object.keys(this._sData).length) {
+      this.shData.forEach((item: any) => {
+        let _label = this.removeAccent(item.label).toLowerCase();
+        let _filterKey = this.removeAccent(this.filterKey).toLowerCase();
+
+        item.visible = (_filterKey == '' || _label.match(_filterKey)) ? true : false;
+      });
+    }
   }
 }
