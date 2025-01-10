@@ -31,7 +31,7 @@
   </div>
 
   <div class="sh-select-dropdown {{dropdownPosition}}" *ngIf="dropdownOpen" @fadeInOut>
-    <input *ngIf="shFilter" [attr.placeholder]="shSearchPlaceHolder" />
+    <input *ngIf="shFilter" [attr.placeholder]="shFilterPlaceHolder" />
 
     <ng-container *ngIf="(_sData | json) != ({} | json)">
       <div class="content-group" *ngFor="let group of _sData | keyvalue">
