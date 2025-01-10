@@ -31,7 +31,9 @@
   </div>
 
   <div class="sh-select-dropdown {{dropdownPosition}}" *ngIf="dropdownOpen" @fadeInOut>
-    <input *ngIf="shFilter" [attr.placeholder]="shFilterPlaceHolder" />
+    <div class="select-filter" *ngIf="shFilter">
+      <input [attr.placeholder]="shFilterPlaceHolder" />
+    </div>
 
     <ng-container *ngIf="(_sData | json) != ({} | json)">
       <div class="content-group" *ngFor="let group of _sData | keyvalue">
@@ -54,17 +56,19 @@
     </ng-container>
 
     <ng-container *ngIf="(_sData | json) == ({} | json)">
-      <div *ngFor="let option of shData" class="sh-select-option">
-        <label>
-          <input
-            name="item-select"
-            [type]="shMultiple ? 'checkbox' : 'radio'"
-            [value]="option.value"
-            (click)="selectOption(option, $event)"
-            [checked]="selectedOptions.includes(option)" />
-          <span class="text clam-{{shLine}}">{{ option.label }}</span>
-          <span class="remark"></span>
-        </label>
+      <div class="content-single">
+        <div *ngFor="let option of shData" class="sh-select-option">
+          <label>
+            <input
+              name="item-select"
+              [type]="shMultiple ? 'checkbox' : 'radio'"
+              [value]="option.value"
+              (click)="selectOption(option, $event)"
+              [checked]="selectedOptions.includes(option)" />
+            <span class="text clam-{{shLine}}">{{ option.label }}</span>
+            <span class="remark"></span>
+          </label>
+        </div>
       </div>
     </ng-container>
 
