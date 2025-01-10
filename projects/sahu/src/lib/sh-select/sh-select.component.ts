@@ -42,7 +42,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @Input() shDataVali?: string = '';
 
   @Input() shSearchPlaceHolder: string = 'Filter';
-  @Input() shShowSearch: boolean = false;
+  @Input() shFilter: boolean = false;
 
   @Output() shChange = new EventEmitter<any>();
 
