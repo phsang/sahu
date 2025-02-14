@@ -21,16 +21,17 @@ export class ShInputComponent implements ControlValueAccessor {
   @ViewChild('dropZone') dropZone!: ElementRef;
 
   @Input() shType: 'text' | 'radio' | 'switch' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
+  @Input() shSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() shIcon: string | null = '';
   @Input() shName?: string;
   @Input() shClass: string = '';
   @Input() shId?: string;
   @Input() shValue?: string;
-  @Input() shResize?: string;
+  @Input() shResize?: string; // [shResize]="'606x212'" - resize ảnh kèm theo các options
   @Input() shResizeOptions?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
-  @Input() shLabel?: string;
+  @Input() shLabel?: string; // sử dụng cho radio, checkbox
   @Input() shPlaceholder?: string;
   @Input() shChecked: boolean = false;
   @Input() shAutocomplete?: string;
