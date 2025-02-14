@@ -9,6 +9,7 @@ import { ShMessageBoxService } from '../../services/sh-message-box.service';
 })
 export class ShMessageBoxComponent implements OnDestroy {
   msgIcon: string = '';
+  @Output() closeClick = new EventEmitter<void>();
   @Output() okClick = new EventEmitter<void>();
 
   messageBox: {
@@ -16,9 +17,10 @@ export class ShMessageBoxComponent implements OnDestroy {
     message?: string,
     type: 'success' | 'error' | 'info' | 'warning',
     visible: boolean,
-    okCallback?: () => void,
     closeText?: string,
-    okText?: string
+    closeCallback?: () => void,
+    okText?: string,
+    okCallback?: () => void,
   } | null = null;
   private subscription: Subscription;
 
@@ -46,13 +48,17 @@ export class ShMessageBoxComponent implements OnDestroy {
 
   close() {
     this.messageBoxService.closeMessage();
+    if (this.messageBox?.closeCallback) {
+      this.messageBox.closeCallback();
+      this.closeClick.emit();
+    }
   }
 
   onOkClick() {
     if (this.messageBox?.okCallback) {
       this.messageBox.okCallback();
+      this.okClick.emit();
     }
-    this.okClick.emit();
     this.close();
   }
 

@@ -9,19 +9,21 @@ export class ShMessageBoxService {
     type: 'success' | 'error' | 'info' | 'warning',
     visible: boolean,
     closeText?: string,
+    closeCallback?: () => void,
+    okText?: string,
     okCallback?: () => void,
-    okText?: string
   } | null>(null);
   messageBox$ = this.messageBoxSubject.asObservable();
 
   showMessage(
-    { title, message, type = 'info', closeText, okCallback, okText }: {
+    { title, message, type = 'info', closeText, closeCallback, okText, okCallback, }: {
       title: string,
       message?: string,
       type?: 'success' | 'error' | 'info' | 'warning',
       closeText?: string,
+      closeCallback?: () => void,
+      okText?: string,
       okCallback?: () => void,
-      okText?: string
     }) {
     this.messageBoxSubject.next({
       title,
@@ -29,8 +31,9 @@ export class ShMessageBoxService {
       type,
       visible: true,
       closeText,
+      closeCallback,
+      okText,
       okCallback,
-      okText
     });
   }
 

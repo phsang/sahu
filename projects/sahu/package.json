@@ -1,6 +1,6 @@
 {
   "name": "sahu",
-  "version": "0.6.94",
+  "version": "0.6.95",
   "peerDependencies": {
     "@angular/common": "^18.2.10",
     "@angular/core": "^18.2.10",
