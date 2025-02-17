@@ -1,19 +1,19 @@
 /*~.~.~.~.~.~.~.~.~.~.~.~.~.~.~. text ~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.*/
 
+input {
+  border: none;
+  border-radius: 2px;
+  padding: 1px 12px 2px;
+}
+
 .sh-input-text {
   align-items: center;
   background-color: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 2px;
   display: flex;
   overflow: hidden;
   transition: .3s;
-
-  input {
-    background-color: transparent;
-    border: none;
-    border-radius: 8px;
-  }
 
   &.sh-input-icon .icon {
     align-items: center;
@@ -120,10 +120,6 @@
   .icon {
     font-size: 16px;
   }
-}
-
-.group_information .sh-input-text {
-  background-color: #f2f2f2;
 }
 
 .bg_lightgray .sh-input-text {
