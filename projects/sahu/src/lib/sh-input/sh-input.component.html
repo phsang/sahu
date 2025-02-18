@@ -61,6 +61,7 @@
         [attr.id]="shId ?? null"
         [checked]="shChecked"
         [attr.data-vali]="shDataVali ?? null"
+        [disabled]="shDisabled"
         (change)="handleInput($event)">
       <span class="remark"></span>
       <span class="text" *ngIf="shLabel">{{shLabel}}</span>
