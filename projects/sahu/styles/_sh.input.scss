@@ -150,36 +150,9 @@ input {
     z-index: 9;
   }
 
-  .remark {
-    align-items: center;
-    border: 2px solid #d0d0d0;
-    border-radius: 99px;
-    display: flex;
-    flex: 30px 0 0;
-    height: 30px;
-    justify-content: center;
-    transform: scale(0.8);
-    transform-origin: left center;
-    transition: 0.3s;
-    width: 30px;
-  }
-
   .remark::before {
-    background-color: #f9cc28;
-    border-radius: 99px;
     content: "";
-    height: 0;
     transition: 0.3s;
-    width: 0;
-  }
-
-  input:checked~.remark {
-    border-color: #f9cc28;
-  }
-
-  input:checked~.remark::before {
-    height: 70%;
-    width: 70%;
   }
 
   .text {
@@ -223,37 +196,29 @@ input {
 
 .sh-checkbox {
   .remark {
-    background-color: #fff;
     border: 1px solid #d0d0d0;
     border-radius: 2px;
     flex: 24px 0 0;
     height: 24px;
-    transform: scale(1);
     width: 24px;
   }
 
   .remark::before {
     background-color: transparent;
-    border: 2px solid;
-    border-color: transparent transparent #fff #fff;
+    border: solid #fff;
     border-radius: 0;
-    content: "";
+    border-width: 0 0 2px 2px;
     height: 8px;
-    left: 4px;
+    left: 5px;
     position: absolute;
     top: 5px;
     transform: rotate(-45deg);
-    transition: 0.3s;
     width: 14px;
   }
 
   input:checked~.remark {
-    background-color: #f9cc28;
-  }
-
-  input:checked~.remark::before {
-    height: 8px;
-    width: 14px;
+    background-color: #005fff;
+    border-color: #005fff;
   }
 }
 
