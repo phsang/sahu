@@ -26,7 +26,7 @@
       </div>
       <i class="dropdown-icon"></i>
 
-      <button *ngIf="(inputValue || inputValue == 0) && !shMultiple" type="button" class="sh-select-reset" (click)="reset($event)"></button>
+      <button *ngIf="(inputValue || inputValue == 0) && shAllowClear && !shMultiple" type="button" class="sh-select-reset" (click)="reset($event)"></button>
     </div>
   </div>
 
