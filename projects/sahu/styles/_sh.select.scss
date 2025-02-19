@@ -258,12 +258,21 @@
     white-space: nowrap;
     width: 100%;
   }
-}
 
-.sh-select.select-disabled {
-  cursor: not-allowed;
-  filter: brightness(.8);
-  opacity: .8;
+  .placeholder-text {
+    color: #707070;
+    white-space: nowrap;
+  }
+
+  &.select-disabled .sh-select-selection {
+    background-color: #d4d4d4;
+    border-color: #d4d4d4;
+    cursor: not-allowed;
+  }
+
+  &.select-disabled .results-zone>span {
+    color: #707070;
+  }
 }
 
 .sh-select-dropdown .text {

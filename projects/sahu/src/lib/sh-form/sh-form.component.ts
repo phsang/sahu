@@ -363,6 +363,40 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     return true;
   }
 
+  // kiểu number sử dụng như kiểu int, nhưng không format lại giá trị
+  numberValidation(rule: any): boolean {
+    let input = this.validItem.control;
+    let val: string | null = input.value.trim() || null;
+
+    if (val) {
+      val = val.trimStart().replace(/\D/g, '');
+      input.value = val;
+      let dataMin = rule.min;
+      let dataMax = rule.max;
+
+      if (dataMin) {
+        if (parseInt(dataMin) > parseInt(val)) {
+          this.validItem.status = false;
+          this.validItem.message = `Giá trị không được nhỏ hơn ${formatNumber(dataMin)}`;
+          return false;
+        }
+      }
+      if (dataMax) {
+        if (parseInt(dataMax) < parseInt(val)) {
+          this.validItem.status = false;
+          this.validItem.message = `Giá trị không được lớn hơn ${formatNumber(dataMax)}`;
+          return false;
+        }
+      }
+
+      this.validItem.status = true;
+      return true;
+    }
+
+    this.validItem.status = true;
+    return true;
+  }
+
   phoneValidation(): boolean {
     let input = this.validItem.control;
     const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
@@ -515,6 +549,10 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 isValid = this.intValidation(valiArr[i]);
                 break;
               }
+              case 'number': {
+                isValid = this.numberValidation(valiArr[i]);
+                break;
+              }
               case 'length': {
                 isValid = this.lengthValidation(valiArr[i]);
                 break;
@@ -596,6 +634,10 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 }
                 case 'int': {
                   isValid = this.intValidation(valiArr[i]);
+                  break;
+                }
+                case 'number': {
+                  isValid = this.numberValidation(valiArr[i]);
                   break;
                 }
                 case 'length': {
