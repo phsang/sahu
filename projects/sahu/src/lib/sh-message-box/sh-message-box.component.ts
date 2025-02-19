@@ -47,11 +47,11 @@ export class ShMessageBoxComponent implements OnDestroy {
   }
 
   close() {
-    this.messageBoxService.closeMessage();
     if (this.messageBox?.closeCallback) {
       this.messageBox.closeCallback();
       this.closeClick.emit();
     }
+    this.messageBoxService.closeMessage();
   }
 
   onOkClick() {
@@ -59,7 +59,7 @@ export class ShMessageBoxComponent implements OnDestroy {
       this.messageBox.okCallback();
       this.okClick.emit();
     }
-    this.close();
+    this.messageBoxService.closeMessage();
   }
 
   ngOnDestroy() {
