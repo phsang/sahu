@@ -171,30 +171,32 @@ input {
 .sh-switch {
   .remark {
     background-color: #e0e0e0;
-    border: none;
-    flex: 60px 0 0;
-    height: 36px;
-    transform: scale(1);
-    width: 60px;
+    border: 1px solid #ccc;
+    border-radius: 99px;
+    flex: 44px 0 0;
+    height: 24px;
+    transition: .3s;
+    width: 44px;
   }
 
   .remark::before {
     background-color: #fff;
-    height: 30px;
+    border-radius: 99px;
+    height: 18px;
     left: 3px;
     position: absolute;
     top: 3px;
-    width: 30px;
+    transition: .3s;
+    width: 18px;
   }
 
   input:checked~.remark {
-    background-color: #f9cc28;
+    background-color: #005fff;
+    border-color: #005fff;
   }
 
   input:checked~.remark::before {
-    height: 30px;
-    left: 26px;
-    width: 30px;
+    left: 22px;
   }
 }
 
@@ -226,6 +228,37 @@ input {
   }
 }
 
+.sh-radio {
+  .remark {
+    align-items: center;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 99px;
+    display: flex;
+    flex: 24px 0 0;
+    height: 24px;
+    justify-content: center;
+    transition: .3s;
+    width: 24px;
+  }
+
+  .remark::before {
+    background-color: #005fff;
+    border-radius: 99px;
+    height: 0;
+    transition: .3s;
+    width: 0;
+  }
+
+  input:checked~.remark {
+    border-color: #005fff;
+  }
+
+  input:checked~.remark::before {
+    height: 15px;
+    width: 15px;
+  }
+}
+
 .sh-file {
   background-color: #f2f2f2;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='16' ry='16' stroke='%23CEA709' stroke-width='4' stroke-dasharray='8%2c 9' stroke-dashoffset='5' stroke-linecap='round'/%3e%3c/svg%3e");
@@ -253,6 +286,7 @@ input {
   }
 
   .remark {
+    align-items: center;
     background-color: transparent;
     color: #6b6b81;
     display: flex;
@@ -261,6 +295,7 @@ input {
     font-weight: 500;
     gap: 7px;
     height: 100%;
+    justify-content: center;
     left: 0;
     position: absolute;
     top: 0;
@@ -354,10 +389,11 @@ input {
   }
 
   .remark {
+    align-items: center;
     background-color: transparent;
+    display: flex;
     font-weight: 400;
     height: 100%;
-    justify-content: flex-start;
 
     p {
       font-size: 14px;

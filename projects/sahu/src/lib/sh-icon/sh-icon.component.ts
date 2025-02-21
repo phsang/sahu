@@ -8,38 +8,33 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./sh-icon.component.scss']
 })
 export class ShIconComponent implements OnInit, AfterViewInit {
-  @ViewChild('shIcon') shIcon!: ElementRef;
-  @Input() shType: string = '';
-  @Input() shTheme: 'light' | 'regular' | 'solid' | 'duotone' = 'light';
+  @Input() shIcon: string = '';
   @Input() shColor?: string;
-  @Input() shFontSize: number = 14;
   @Input() shRotate?: number;
   @Input() shSpin?: boolean = false;
-  @Input() shClass: string = '';
   iconValue: SafeHtml = '';
   iconClass: string = '';
 
   constructor(
-    private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) { }
 
   ngOnInit() {
     if (this.shSpin) {
       this.iconClass = 'sh-icon-spin';
     }
-    if (this.shClass) {
-      this.iconClass += ' ' + this.shClass;
-    }
 
-    if (this.shType) {
-      let _icon = getIconList(this.shType, this.shTheme);
+    if (this.shIcon) {
+      // 'light' | 'regular' | 'solid' | 'duotone' = 'light';
+      let strIcon = this.shIcon.replace(/\s+/g, '').split(':');
+      let theme = strIcon[1] || 'light';
+      let icon = getIconList(strIcon[0], theme);
       let attributes = `fill="currentColor" height="1em" width="1em"`;
 
-      if (_icon) {
-        _icon = _icon.replace('<svg', `<svg ${attributes}`);
-        this.iconValue = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
+      if (icon) {
+        icon = icon.replace('<svg', `<svg ${attributes}`);
+        this.iconValue = this.sanitizer.bypassSecurityTrustHtml(icon.trim());
       }
     }
   }
