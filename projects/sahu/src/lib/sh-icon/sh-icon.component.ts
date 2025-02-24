@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { getIconList } from '../../utils/icon-list';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -7,7 +7,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   templateUrl: './sh-icon.component.html',
   styleUrls: ['./sh-icon.component.scss']
 })
-export class ShIconComponent implements OnInit, AfterViewInit {
+export class ShIconComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() shIcon: string = '';
   @Input() shColor?: string;
   @Input() shRotate?: number;
@@ -21,12 +21,25 @@ export class ShIconComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.updateIcon();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['shIcon'] && !changes['shIcon'].firstChange) {
+      this.updateIcon();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
+
+  private updateIcon(): void {
     if (this.shSpin) {
       this.iconClass = 'sh-icon-spin';
     }
 
     if (this.shIcon) {
-      // 'light' | 'regular' | 'solid' | 'duotone' = 'light';
       let strIcon = this.shIcon.replace(/\s+/g, '').split(':');
       let theme = strIcon[1] || 'light';
       let icon = getIconList(strIcon[0], theme);
@@ -38,9 +51,4 @@ export class ShIconComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
-  ngAfterViewInit(): void {
-    this.cdr.detectChanges();
-  }
-
 }
