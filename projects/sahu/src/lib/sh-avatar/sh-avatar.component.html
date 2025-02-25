@@ -1,4 +1,10 @@
-<div [ngClass]="avatarClass" [style.height.px]="isNumeric(shSize) ? shSize : null" [style.width.px]="isNumeric(shSize) ? shSize : null" [style.backgroundColor]="shBackgroundColor" #shAvatar>
+<div
+  class="sh-avatar"
+  [ngClass]="'sh-avatar-' + shShape + ' sh-avatar-' + shSize + (shAnimated && shSrc ? ' avatar-animated' : '')"
+  [style.height.px]="isNumeric(shSize) ? shSize : null"
+  [style.width.px]="isNumeric(shSize) ? shSize : null"
+  [style.backgroundColor]="shBackgroundColor"
+  #shAvatar>
   <img *ngIf="shSrc" [src]="shSrc" (load)="handleLoad()" />
   <ng-container *ngIf="!shSrc">
     <div *ngIf="shIcon" class="sh-avatar-icon">

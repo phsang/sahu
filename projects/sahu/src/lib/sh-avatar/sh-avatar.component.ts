@@ -8,46 +8,25 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChang
 export class ShAvatarComponent implements AfterViewInit, OnChanges {
   @ViewChild('shAvatar') shAvatar!: ElementRef;
   @Input() shSrc?: string;
-  @Input() shClass?: string;
   @Input() shIcon: true | false = true;
   @Input() shText: string = 'A';
   @Input() shBackgroundColor: string = '#d1d1d1';
   @Input() shColor: string = '#fff';
   @Input() shAnimated: boolean = true;
   @Input() shShape: 'circle' | 'square' = 'circle';
-  @Input() shSize?: 'large' | 'small' | number;
+  @Input() shSize: 'default' | 'large' | 'small' | number = 'default';
   @Input() shOnload?: () => void;
-
-  avatarClass = '';
 
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit(): void {
-    this.updateAvatarClass();
-    this.cdr.detectChanges(); // Giải quyết vấn đề ExpressionChangedAfterItHasBeenCheckedError
+    this.cdr.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['shSrc'] || changes['shText']) {
       this.resetAvatarClass();
-      this.updateAvatarClass();
     }
-  }
-
-  private updateAvatarClass(): void {
-    this.avatarClass = `${this.shClass ? this.shClass : ''} sh-avatar-${this.shShape}`;
-
-    if (this.shSize === 'large') {
-      this.avatarClass += ' sh-avatar-large';
-    } else if (this.shSize === 'small') {
-      this.avatarClass += ' sh-avatar-small';
-    }
-
-    if (this.shAnimated && this.shSrc) {
-      this.avatarClass += ' avatar-animated';
-    }
-
-    this.avatarClass += ' sh-avatar';
   }
 
   private resetAvatarClass(): void {
