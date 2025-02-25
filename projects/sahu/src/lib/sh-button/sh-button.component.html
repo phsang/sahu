@@ -4,5 +4,7 @@
   [attr.type]="shType"
   [disabled]="disabled"
   (click)="handleClick($event)">
+  <sh-icon [shIcon]="iconLeft" *ngIf="iconLeft"></sh-icon>
   {{shLabel}}
+  <sh-icon [shIcon]="iconRight" *ngIf="iconRight"></sh-icon>
 </button>
