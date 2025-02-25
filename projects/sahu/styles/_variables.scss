@@ -3,8 +3,75 @@
   font-family: 'Sh', sans-serif;
 }
 
+pre {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+h6 {
+  font-size: 14px;
+}
+
 .gray {
   color: #666 !important;
+}
+
+@for $i from 0 through 20 {
+  .gap-#{$i} {
+    gap: #{$i}px !important;
+  }
+}
+
+@for $i from -10 through 40 {
+  .mt#{$i} {
+    margin-top: #{$i}px !important;
+  }
+}
+
+@for $i from -10 through 40 {
+  .mr#{$i} {
+    margin-right: #{$i}px !important;
+  }
+}
+
+@for $i from -10 through 40 {
+  .mb#{$i} {
+    margin-bottom: #{$i}px !important;
+  }
+}
+
+@for $i from -10 through 40 {
+  .ml#{$i} {
+    margin-left: #{$i}px !important;
+  }
 }
 
 @keyframes spin {
