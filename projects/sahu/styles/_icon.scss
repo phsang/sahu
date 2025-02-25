@@ -1,18 +1,9 @@
 .sh-icon {
-  display: inline-block;
-  vertical-align: -.155em;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
 }
 
 .sh-icon-spin {
-  animation: iSpin 2s infinite linear;
-}
-
-@keyframes iSpin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
+  animation: spin 2s infinite linear;
 }
