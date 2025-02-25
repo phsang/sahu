@@ -8,7 +8,8 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 export class ShButtonComponent implements OnChanges {
   @Input() shType: 'button' | 'submit' | 'reset' = 'button';
   @Input() shLabel: string = '';
-  @Input() shClass: 'btn-default' | 'btn-primary' = 'btn-default';
+  @Input() shClass: 'btn-default' | 'btn-primary' | 'btn-blank' = 'btn-default';
+  @Input() shSize: 'btn-sm' | 'btn-md' | 'btn-lg' | 'btn-xl' = 'btn-md';
   @Input() disabled = false;
 
   @Input() shIcon?: string;

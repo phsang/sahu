@@ -1,6 +1,6 @@
 <button
   class="btn"
-  [ngClass]="shClass"
+  [ngClass]="shClass + ' ' + shSize"
   [attr.type]="shType"
   [disabled]="disabled"
   (click)="handleClick($event)">

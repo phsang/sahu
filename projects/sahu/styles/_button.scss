@@ -1,0 +1,41 @@
+.btn {
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 2px 16px;
+}
+
+.btn-blank {
+  padding: 0;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.btn-default {
+  background-color: #fff;
+  border-color: #ccc;
+  color: #333;
+}
+
+.btn-sm {
+  font-size: 13px;
+  height: 24px;
+}
+
+.btn-md {
+  font-size: 14px;
+  height: 32px;
+}
+
+.btn-lg {
+  font-size: 15px;
+  height: 40px;
+}
