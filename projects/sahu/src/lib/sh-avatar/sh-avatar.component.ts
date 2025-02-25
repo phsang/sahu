@@ -11,7 +11,7 @@ export class ShAvatarComponent implements AfterViewInit, OnChanges {
   @Input() shClass?: string;
   @Input() shIcon: true | false = true;
   @Input() shText: string = 'A';
-  @Input() shBackgroundColor: string = '#d2d2d2';
+  @Input() shBackgroundColor: string = '#d1d1d1';
   @Input() shColor: string = '#fff';
   @Input() shAnimated: boolean = true;
   @Input() shShape: 'circle' | 'square' = 'circle';
