@@ -1,14 +1,8 @@
-<a
-  *ngIf="shRouterLink"
-  [routerLink]="shRouterLink"
-  [ngClass]="shClass">
-  {{shTitle}}
-</a>
 <button
-  *ngIf="!shRouterLink"
+  class="btn"
   [ngClass]="shClass"
   [attr.type]="shType"
   [disabled]="disabled"
   (click)="handleClick($event)">
-  {{shTitle}}
+  {{shLabel}}
 </button>

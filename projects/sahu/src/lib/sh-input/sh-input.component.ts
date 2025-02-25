@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, Output, Renderer2, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getIconList } from '../../utils/icon-list';
@@ -17,7 +17,7 @@ import { ImageService } from '../../services/image.service';
     }
   ]
 })
-export class ShInputComponent implements ControlValueAccessor {
+export class ShInputComponent implements ControlValueAccessor, OnInit {
   @ViewChild('dropZone') dropZone!: ElementRef;
 
   @Input() shType: 'text' | 'radio' | 'switch' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
@@ -61,6 +61,10 @@ export class ShInputComponent implements ControlValueAccessor {
     if (this.shType === 'file') {
       this.dropFile();
     }
+  }
+
+  ngOnInit(): void {
+    this.updateInputClass();
   }
 
   async createFakeFile() {
@@ -140,7 +144,7 @@ export class ShInputComponent implements ControlValueAccessor {
   }
 
   private updateInputClass(): void {
-    let classType = `sh-input-${this.shType}`;
+    let classType = `sh-input-${this.shType || 'text'}`;
     if (!this.shClass.includes(classType)) {
       this.shClass += ' ' + classType;
     }

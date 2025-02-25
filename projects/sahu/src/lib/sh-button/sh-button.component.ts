@@ -6,10 +6,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./sh-button.component.scss']
 })
 export class ShButtonComponent {
-  @Input() shRouterLink?: string = '';
-  @Input() shType?: 'button' | 'submit' | 'reset' = 'button';
-  @Input() shTitle?: string = '';
-  @Input() shClass: string = '';
+  @Input() shType: 'button' | 'submit' | 'reset' = 'button';
+  @Input() shLabel: string = '';
+  @Input() shClass: 'btn-default' | 'btn-primary' = 'btn-default';
   @Input() disabled = false;
 
   @Output() shClick = new EventEmitter<Event>();

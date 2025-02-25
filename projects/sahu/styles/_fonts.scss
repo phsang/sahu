@@ -1,0 +1,102 @@
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-weight: 300;
+  src: url("../fonts/Sh-Light.woff2") format("woff2"),
+    url("../fonts/Sh-Light.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-style: italic;
+  font-weight: 300;
+  src: url("../fonts/Sh-LightItalic.woff2") format("woff2"),
+    url("../fonts/Sh-LightItalic.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-weight: 400;
+  src: url("../fonts/Sh-Regular.woff2") format("woff2"),
+    url("../fonts/Sh-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-style: italic;
+  font-weight: 400;
+  src: url("../fonts/Sh-Italic.woff2") format("woff2"),
+    url("../fonts/Sh-Italic.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-weight: 500;
+  src: url("../fonts/Sh-Medium.woff2") format("woff2"),
+    url("../fonts/Sh-Medium.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-style: italic;
+  font-weight: 500;
+  src: url("../fonts/Sh-MediumItalic.woff2") format("woff2"),
+    url("../fonts/Sh-MediumItalic.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-weight: 600;
+  src: url("../fonts/Sh-SemiBold.woff2") format("woff2"),
+    url("../fonts/Sh-SemiBold.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-style: italic;
+  font-weight: 600;
+  src: url("../fonts/Sh-SemiBoldItalic.woff2") format("woff2"),
+    url("../fonts/Sh-SemiBoldItalic.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-weight: 700;
+  src: url("../fonts/Sh-Bold.woff2") format("woff2"),
+    url("../fonts/Sh-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: Sh;
+  font-style: italic;
+  font-weight: 700;
+  src: url("../fonts/Sh-BoldItalic.woff2") format("woff2"),
+    url("../fonts/Sh-BoldItalic.woff") format("woff");
+}
+
+@for $i from 10 through 30 {
+  .font#{$i} {
+    font-size: #{$i}px !important;
+  }
+}
+
+@for $i from 300 through 700 {
+  @if($i % 100==0) {
+    .font#{$i} {
+      font-weight: #{$i} !important;
+    }
+  }
+}
+
+.font-italic {
+  font-style: italic !important;
+}
