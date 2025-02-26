@@ -48,6 +48,7 @@
         [attr.data-vali]="shDataVali ?? null"
         (change)="handleInput($event)">
       <span class="remark"></span>
+      <span class="text" *ngIf="shLabel">{{shLabel}}</span>
     </label>
   </div>
 </div>
