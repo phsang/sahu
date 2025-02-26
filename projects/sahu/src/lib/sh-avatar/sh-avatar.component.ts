@@ -1,15 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'sh-avatar',
   templateUrl: './sh-avatar.component.html',
   styleUrls: ['./sh-avatar.component.scss']
 })
-export class ShAvatarComponent implements AfterViewInit, OnChanges {
+export class ShAvatarComponent implements OnChanges {
   @ViewChild('shAvatar') shAvatar!: ElementRef;
   @Input() shSrc?: string;
-  @Input() shIcon: true | false = true;
-  @Input() shText: string = 'A';
+  @Input() shText?: string;
   @Input() shBackgroundColor: string = '#d1d1d1';
   @Input() shColor: string = '#fff';
   @Input() shAnimated: boolean = true;
@@ -17,11 +16,7 @@ export class ShAvatarComponent implements AfterViewInit, OnChanges {
   @Input() shSize: 'default' | 'large' | 'small' | number = 'default';
   @Input() shOnload?: () => void;
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) { }
-
-  ngAfterViewInit(): void {
-    this.cdr.detectChanges();
-  }
+  constructor(private renderer: Renderer2) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['shSrc'] || changes['shText']) {
