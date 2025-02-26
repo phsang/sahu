@@ -9,6 +9,7 @@ import { ShMessageBoxService } from '../../services/sh-message-box.service';
 })
 export class ShMessageBoxComponent implements OnDestroy {
   msgIcon: string = '';
+  actionBlock: 'only_close' | 'only_ok' | 'close_ok' | 'close_ok_event' = 'only_close';
   @Output() closeClick = new EventEmitter<void>();
   @Output() okClick = new EventEmitter<void>();
 
@@ -41,6 +42,21 @@ export class ShMessageBoxComponent implements OnDestroy {
         case 'error': {
           this.msgIcon += 'noti-error.svg';
           break;
+        }
+      }
+
+      // xử lý các nút action
+      if (!this.messageBox?.okCallback) {
+        if (!this.messageBox?.closeCallback) {
+          this.actionBlock = 'only_close';
+        } else {
+          this.actionBlock = 'only_ok';
+        }
+      } else {
+        if (!this.messageBox?.closeCallback) {
+          this.actionBlock = 'close_ok';
+        } else {
+          this.actionBlock = 'close_ok_event';
         }
       }
     });

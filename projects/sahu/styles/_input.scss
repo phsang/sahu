@@ -13,7 +13,8 @@ input:focus-visible {
   outline: none;
 }
 
-.sh-input-text {
+.sh-input-text,
+.sh-input-password {
   align-items: center;
   background-color: #f5f5f5;
   border: 1px solid #d9d9d9;
@@ -61,6 +62,18 @@ input:focus-visible {
   &.input-focus .icon {
     color: #f9cc28;
   }
+}
+
+.sh-input-text.input-disabled,
+.sh-input-password.input-disabled {
+  background-color: #dcdcdc;
+  border-color: #afafaf;
+  cursor: not-allowed;
+}
+
+.sh-input-text.input-disabled input,
+.sh-input-password.input-disabled input {
+  cursor: not-allowed;
 }
 
 .input-sm {

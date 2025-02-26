@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
   font-family: 'Sh', sans-serif;
+  text-decoration: none;
 }
 
 html,
@@ -78,6 +79,30 @@ h6 {
 @for $i from -10 through 40 {
   .ml#{$i} {
     margin-left: #{$i}px !important;
+  }
+}
+
+@for $i from 0 through 40 {
+  .pt#{$i} {
+    padding-top: #{$i}px !important;
+  }
+}
+
+@for $i from 0 through 40 {
+  .pr#{$i} {
+    padding-right: #{$i}px !important;
+  }
+}
+
+@for $i from 0 through 40 {
+  .pb#{$i} {
+    padding-bottom: #{$i}px !important;
+  }
+}
+
+@for $i from 0 through 40 {
+  .pl#{$i} {
+    padding-left: #{$i}px !important;
   }
 }
 

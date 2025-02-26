@@ -11,8 +11,19 @@
       </div>
     </div>
     <div class="sh-message-box-footer">
-      <button class="btn-cancel" (click)="close()">{{messageBox?.closeText || 'Đã hiểu'}}</button>
-      <button class="btn-primary" (click)="onOkClick()" *ngIf="messageBox?.okCallback">{{messageBox?.okText}}</button>
+      <ng-container *ngIf="actionBlock === 'only_close'">
+        <button class="btn-cancel" (click)="close()">{{messageBox?.closeText || 'Đã hiểu'}}</button>
+      </ng-container>
+
+      <ng-container *ngIf="actionBlock === 'only_ok'">
+        <button class="btn-primary" (click)="onOkClick()">{{messageBox?.okText || 'Tiếp tục'}}</button>
+      </ng-container>
+
+      <ng-container *ngIf="actionBlock === 'close_ok' || actionBlock === 'close_ok_event'">
+        <button class="btn-cancel" (click)="close()">{{messageBox?.closeText || 'Đã hiểu'}}</button>
+        <button class="btn-primary" (click)="onOkClick()">{{messageBox?.okText || 'Tiếp tục'}}</button>
+      </ng-container>
+
     </div>
   </div>
 </div>

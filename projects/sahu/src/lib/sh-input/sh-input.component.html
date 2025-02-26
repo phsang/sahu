@@ -1,5 +1,5 @@
-<div *ngIf="shType === 'text'" class="field-validation">
-  <div class="sh-input input-{{shSize}} {{shDisabled ? 'disabled' : ''}}" ngClass="{{shClass}}">
+<div *ngIf="shType === 'text' || shType === 'password'" class="field-validation">
+  <div class="sh-input input-{{shSize}} {{shDisabled ? 'input-disabled' : ''}}" ngClass="{{shClass}}">
     <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
     <input
       value="{{value}}"
