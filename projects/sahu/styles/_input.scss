@@ -6,6 +6,7 @@ input {
   background-color: transparent;
   border: none;
   border-radius: 2px;
+  color: $primary_color_text;
   height: 100%;
   margin: 0;
   padding: 1px 12px 2px;
@@ -42,14 +43,6 @@ input:focus-visible {
       width: 16px;
     }
   }
-
-  &.input-focus {
-    border-color: $primary_color;
-  }
-
-  &.input-focus .icon {
-    color: $primary_color;
-  }
 }
 
 .sh-input-text.input-disabled,
@@ -76,6 +69,24 @@ input:focus-visible {
 
 .sh-input-icon input~.icon {
   padding: 5px 10px 5px 0;
+}
+
+.input-focus {
+  background-color: #f9f9f9;
+  border-color: $primary_color;
+}
+
+.input-focus .icon {
+  color: $primary_color;
+}
+
+.input-value {
+  background-color: #fbfbfb;
+  border-color: #cfcfcf;
+}
+
+.input-value .icon {
+  color: $primary_color_text;
 }
 
 .input-sm {

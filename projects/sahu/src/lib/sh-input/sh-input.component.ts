@@ -427,12 +427,18 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   }
 
   handleFocus(): void {
+    this.shClass = this.shClass.replace('input-value', '').trim();
     if (!this.shClass.includes('input-focus')) {
       this.shClass += ' input-focus';
     }
   }
 
   handleBlur(): void {
+    // nếu có giá trị thì thêm class để style
+    if (this.value && this.value.trim() != '' && !this.shClass.includes('input-value')) {
+      this.shClass += ' input-value';
+    }
+
     if (this.shClass.includes('input-focus')) {
       this.shClass = this.shClass.replace('input-focus', '').trim();
     }

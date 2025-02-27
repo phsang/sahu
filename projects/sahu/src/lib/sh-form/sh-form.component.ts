@@ -109,7 +109,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
 
   private setValidationStatus(status: boolean, message: string = ''): boolean {
     this.validItem.status = status;
-    this.validItem.message = message;
+    this.validItem.message = status ? '' : message;
     return status;
   }
 
@@ -130,65 +130,34 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
   }
 
   nullValidation(): boolean {
-    let input = this.validItem.control;
-    let _type = input.getAttribute('type');
+    const input = this.validItem.control;
+    const type = input.getAttribute('type');
 
-    if (_type === 'file') {
-      if (!input.value || input.value === '') {
-        this.validItem.status = false;
-        this.validItem.message = 'Vui lòng chọn file';
-        return false;
-      }
-
-      this.validItem.status = true;
-      return true;
+    if (type === 'file') {
+      return this.setValidationStatus(!!input.value, 'Vui lòng chọn file');
     }
 
-    if (_type === 'radio') {
-      let parent = input.closest('.field-validation');
+    if (type === 'radio') {
+      const parent = input.closest('.field-validation');
 
       if (parent) {
-        let radioNodes = parent.querySelectorAll('input[type="radio"]');
-        let msg = parent.getAttribute('data-msg');
-        let isCheck = false;
+        const radioNodes = parent.querySelectorAll<HTMLInputElement>('input[type="radio"]');
+        const msg = parent.getAttribute('data-msg') || 'Vui lòng chọn trường này';
 
-        for (let i = 0; i < radioNodes.length; i++) {
-          if ((radioNodes[i] as HTMLInputElement).checked) {
-            isCheck = true;
-            break;
-          }
-        }
-
-        if (!isCheck) {
-          this.validItem.status = false;
-          this.validItem.message = msg || 'Vui lòng chọn trường này';
-          return false;
-        } else {
-          this.validItem.status = true;
-          this.validItem.message = '';
-          return true;
-        }
+        return this.setValidationStatus(Array.from(radioNodes).some(radio => radio.checked), msg);
       }
     }
 
-    if (
-      (input.tagName.toUpperCase() === 'INPUT' && _type === 'text') ||
-      input.tagName.toUpperCase() === 'TEXTAREA'
-    ) {
-      let val: string | null = input.value || null;
+    if (input.tagName.toUpperCase() === 'INPUT' || input.tagName.toUpperCase() === 'TEXTAREA') {
+      const val = input.value?.trim() || '';
 
-      if (val?.trim()) {
-        val = val.trimStart();
-        input.value = val;
-
-        this.validItem.status = true;
-        return true;
+      if (val) {
+        input.value = val; // Loại bỏ khoảng trắng đầu & cuối
+        return this.setValidationStatus(true);
       }
     }
 
-    this.validItem.status = false;
-    this.validItem.message = 'Vui lòng điền vào trường này';
-    return false;
+    return this.setValidationStatus(false, 'Vui lòng điền vào trường này');
   }
 
   async excelValid(rule: any, file: File): Promise<any> {
