@@ -1,3 +1,5 @@
+@use './variables-global' as *;
+
 /*~.~.~.~.~.~.~.~.~.~.~.~.~.~.~. text ~.~.~.~.~.~.~.~.~.~.~.~.~.~.~.*/
 
 input {
@@ -57,11 +59,11 @@ input:focus-visible {
   }
 
   &.input-focus {
-    border-color: #f9cc28;
+    border-color: $primary_color;
   }
 
   &.input-focus .icon {
-    color: #f9cc28;
+    color: $primary_color;
   }
 }
 

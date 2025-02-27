@@ -1,10 +1,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, Output, PLATFORM_ID, ViewChild } from '@angular/core';
-import { slideDown, slideUp } from '../../utils/mf.animation';
-import { formatNumber } from '../../utils/mf.app';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ExcelService } from '../../services/excel.service';
+import { slideDown, slideUp } from '../../utils/mf.animation';
+import { formatNumber } from '../../utils/mf.app';
 
 interface validInterface {
   control: HTMLInputElement | HTMLTextAreaElement,
@@ -19,6 +19,7 @@ interface validInterface {
 })
 export class ShFormComponent implements AfterViewInit, OnDestroy {
   @ViewChild('shForm', { static: true }) shForm!: ElementRef;
+  @Input() shId: string = '';
   @Output() shSubmit = new EventEmitter<Event>();
   private observer!: MutationObserver;
 
@@ -106,29 +107,26 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  private setValidationStatus(status: boolean, message: string = ''): boolean {
+    this.validItem.status = status;
+    this.validItem.message = message;
+    return status;
+  }
+
   lengthValidation(rule: any): boolean {
-    let input = this.validItem.control;
-    let val = input.value.trim() || '';
-    let dataMin = rule.min;
-    let dataMax = rule.max;
+    const input = this.validItem.control;
+    const val = (input.value || '').trim();
+    const { min: dataMin, max: dataMax } = rule;
 
-    if (dataMin) {
-      if (parseInt(dataMin) > val.length) {
-        this.validItem.status = false;
-        this.validItem.message = `Giá trị có độ dài không được nhỏ hơn ${formatNumber(dataMin)}`;
-        return false;
-      }
-    }
-    if (dataMax) {
-      if (parseInt(dataMax) < val.length) {
-        this.validItem.status = false;
-        this.validItem.message = `Giá trị có độ dài không được lớn hơn ${formatNumber(dataMax)}`;
-        return false;
-      }
+    if (dataMin && val.length < dataMin) {
+      return this.setValidationStatus(false, `Giá trị có độ dài không được nhỏ hơn ${formatNumber(dataMin)}`);
     }
 
-    this.validItem.status = true;
-    return true;
+    if (dataMax && val.length > dataMax) {
+      return this.setValidationStatus(false, `Giá trị có độ dài không được lớn hơn ${formatNumber(dataMax)}`);
+    }
+
+    return this.setValidationStatus(true);
   }
 
   nullValidation(): boolean {
@@ -600,7 +598,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
           fromEvent(input, 'change')
         ).pipe(
           takeUntil(this.destroy$), // Dừng subscription khi destroy$ phát ra giá trị
-          debounceTime(0)
+          debounceTime(100)
         ).subscribe(async () => {
           this.validItem.control = input;
 
