@@ -8,8 +8,8 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 export class ShButtonComponent implements OnChanges {
   @Input() shType: 'button' | 'submit' | 'reset' = 'button';
   @Input() shLabel: string = '';
-  @Input() shClass: 'btn-default' | 'btn-primary' | 'btn-blank' = 'btn-default';
-  @Input() shSize: 'btn-sm' | 'btn-md' | 'btn-lg' | 'btn-xl' = 'btn-md';
+  @Input() shClass: 'default' | 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'blank' = 'default';
+  @Input() shSize: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() disabled = false;
 
   @Input() shIcon?: string;
@@ -22,26 +22,19 @@ export class ShButtonComponent implements OnChanges {
     this.updateButton();
   }
 
-  iconArr(iconRule: string): any {
-    if (iconRule.includes(',')) {
-      return iconRule.split(',');
-    } else {
-      return [iconRule];
-    }
+  private iconArr(iconRule: string): string[] {
+    return iconRule.includes(',') ? iconRule.split(',') : [iconRule];
   }
 
   private updateButton(): void {
-    this.shIcon = this.shIcon?.trim().replace(/\s+/g, '') || '';
+    const sanitizedIcon = this.shIcon?.trim().replace(/\s+/g, '') || '';
 
-    if (this.shIcon != '') {
-      let iconArray = this.iconArr(this.shIcon);
-      if (iconArray[0] !== '*') {
-        this.iconLeft = iconArray[0];
-      }
-      if (iconArray[1] && iconArray[1] !== '*') {
-        this.iconRight = iconArray[1];
-      }
-    }
+    if (!sanitizedIcon) return;
+
+    const [leftIcon, rightIcon] = this.iconArr(sanitizedIcon);
+
+    if (leftIcon !== '*') this.iconLeft = leftIcon;
+    if (rightIcon && rightIcon !== '*') this.iconRight = rightIcon;
   }
 
   handleClick(event: Event): void {
