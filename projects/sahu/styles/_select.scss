@@ -211,21 +211,22 @@
   }
 
   .sh-select-option {
-    border-radius: 6px;
     cursor: pointer;
     position: relative;
-    transition: .3s;
-
-    &:hover {
-      background-color: #f0f0f0;
-    }
 
     label {
       align-items: center;
+      border-radius: 5px;
       display: flex;
       gap: 17px;
       justify-content: space-between;
       padding: 4px 10px;
+      transition: .3s;
+    }
+
+    label:hover,
+    label.option_checked {
+      background-color: #f0f0f0;
     }
 
     input {
@@ -325,5 +326,51 @@
 
   &::after {
     transform: rotate(-135deg);
+  }
+}
+
+.select-header {
+  background-color: #ececec;
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  justify-content: center;
+  padding: 10px 10px 11px;
+  position: relative;
+}
+
+.select-header h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.select-header .close-select {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 20px;
+  padding: 0;
+  position: absolute;
+  right: 10px;
+  top: 11px;
+  transform: scale(.88);
+  width: 20px;
+
+  &:before,
+  &:after {
+    background-color: #4f4f4f;
+    border-radius: 9px;
+    content: "";
+    height: 2px;
+    left: 0;
+    position: absolute;
+    top: calc(50% - 1px);
+    transform: rotate(45deg);
+    width: 100%;
+  }
+
+
+  &:after {
+    transform: rotate(-45deg);
   }
 }

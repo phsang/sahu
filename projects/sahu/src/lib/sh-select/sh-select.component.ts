@@ -48,7 +48,9 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
   @Input() shAllowClear?: boolean = true;
+
   @Input() shDisplay?: 'center' | 'bottom' | 'top' | 'left' | 'right' | 'bubble' = 'bubble';
+  @Input() shHeaderText?: string;
 
   @Input() shFilter: boolean = false;
   @Input() shFilterPlaceHolder: string = 'Search';
@@ -104,6 +106,18 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
 
     // thêm class để hiển thị popup phía trên, nếu popup vượt qua khỏi màn hình
     if (this.dropdownOpen) {
+
+      // Mở lại filter khi vừa mở dropdown
+      this.filterKey = '';
+      if (!Object.keys(this._sData).length) {
+        this.shData.forEach((item: any) => {
+          let _label = this.removeAccent(item.label).toLowerCase();
+          let _filterKey = this.removeAccent(this.filterKey).toLowerCase();
+
+          item.visible = (_filterKey == '' || _label.match(_filterKey)) ? true : false;
+        });
+      }
+
       // xử lý khi shDisplay là bubble
       if (this.shDisplay == 'bubble') {
         let dropdownTop = this.selectSelection.nativeElement.getBoundingClientRect().top + this.selectSelection.nativeElement.getBoundingClientRect().height;
