@@ -21,6 +21,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       transition('void => bubble', [
         style({ transform: 'scaleY(0)' }),
         animate('220ms ease-in', style({ transform: 'scaleY(1)' }))
+      ]),
+      transition('center => void', [
+        animate('220ms ease-out', style({ transform: 'translate(-50%, -50%) scale(0.8)', opacity: '0' }))
+      ]),
+      transition('void => center', [
+        style({ transform: 'translate(-50%, -50%) scale(0.8)', opacity: '0' }),
+        animate('220ms ease-in', style({ transform: 'translate(-50%, -50%) scale(1)', opacity: '1' }))
       ])
     ])
   ]
