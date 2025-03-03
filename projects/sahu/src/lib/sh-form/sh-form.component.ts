@@ -370,35 +370,25 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     let val: string | null = input.value.trim() || null;
 
     if (val) {
-      val = val.replace(/\D|\.|\s+/g, '');
-      if (val.length > 10) {
-        val = val.substring(0, 10);
-      }
-
-      // format số điện thoại
-      if (val.length > 4 && val.length < 8) {
-        val = val.substring(0, 4) + '.' + val.substring(4);
-      } else if (val.length >= 8) {
-        val = val.substring(0, 4) + '.' + val.substring(4, 7) + '.' + val.substring(7);
-      }
-      input.value = val;
-
       val = val.replace(/\./g, '');
-      if (val.length !== 10) {
-        this.validItem.status = false;
-        this.validItem.message = 'Số điện thoại phải 10 số';
-        return false;
-      }
 
-      let vnf = vnf_regex.test(val);
+      if (val != '') {
+        if (val.length !== 10) {
+          this.validItem.status = false;
+          this.validItem.message = 'Số điện thoại phải 10 số';
+          return false;
+        }
 
-      if (!vnf) {
-        this.validItem.status = false;
-        this.validItem.message = 'Số điện thoại không đúng định dạng';
-        return false;
-      } else {
-        this.validItem.status = true;
-        return true;
+        let vnf = vnf_regex.test(val);
+
+        if (!vnf) {
+          this.validItem.status = false;
+          this.validItem.message = 'Số điện thoại không đúng định dạng';
+          return false;
+        } else {
+          this.validItem.status = true;
+          return true;
+        }
       }
     }
 

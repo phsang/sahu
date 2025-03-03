@@ -202,7 +202,14 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
     } else {
       // Mặc định lấy giá trị từ value
       this.value = input.value;
-      this.onChange(this.value);
+
+      // ràng buộc giá trị nhập (lưu ý: không ràng buộc trong shForm)
+      setTimeout(() => {
+        if (this.shDataVali?.includes('phone')) {
+          this.value = this.formatPhone(this.value);
+        }
+        this.onChange(this.value);
+      }, 10);
     }
   }
 
@@ -443,6 +450,22 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
       this.shClass = this.shClass.replace('input-focus', '').trim();
     }
     this.onTouched();
+  }
+
+  formatPhone(phone: string) {
+    phone = phone.replace(/\D|\.|\s+/g, '');
+    if (phone.length > 10) {
+      phone = phone.substring(0, 10);
+    }
+
+    // format số điện thoại
+    if (phone.length > 4 && phone.length < 8) {
+      phone = phone.substring(0, 4) + '.' + phone.substring(4);
+    } else if (phone.length >= 8) {
+      phone = phone.substring(0, 4) + '.' + phone.substring(4, 7) + '.' + phone.substring(7);
+    }
+
+    return phone;
   }
 
 }
