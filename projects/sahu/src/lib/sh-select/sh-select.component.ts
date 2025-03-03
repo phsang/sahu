@@ -14,13 +14,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ],
   animations: [
-    trigger('fadeInOut', [
-      state('void', style({
-        opacity: 0,
-        transform: 'scaleY(0)',
-      })),
-      transition(':enter, :leave', [
-        animate(220)
+    trigger('shAnimation', [
+      transition('bubble => void', [
+        animate('220ms ease-out', style({ transform: 'scaleY(0)' }))
+      ]),
+      transition('void => bubble', [
+        style({ transform: 'scaleY(0)' }),
+        animate('220ms ease-in', style({ transform: 'scaleY(1)' }))
       ])
     ])
   ]
@@ -49,7 +49,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @Output() shChange = new EventEmitter<any>();
 
   inputValue: any = null;
-  dropdownPosition: string = 'bottom';
+  dropdownPosition: string = 'drop_down';
   selectedOptions: any[] = [];
   dropdownOpen = false;
   filterKey: string = '';
