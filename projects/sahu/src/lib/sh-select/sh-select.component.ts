@@ -41,9 +41,10 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
   @Input() shAllowClear?: boolean = true;
+  @Input() shDisplay?: 'center' | 'bottom' | 'top' | 'left' | 'right' | 'bubble' = 'bubble';
 
-  @Input() shFilterPlaceHolder: string = 'Search';
   @Input() shFilter: boolean = false;
+  @Input() shFilterPlaceHolder: string = 'Search';
 
   @Output() shChange = new EventEmitter<any>();
 
@@ -96,13 +97,23 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
 
     // thêm class để hiển thị popup phía trên, nếu popup vượt qua khỏi màn hình
     if (this.dropdownOpen) {
-      let dropdownTop = this.selectSelection.nativeElement.getBoundingClientRect().top + this.selectSelection.nativeElement.getBoundingClientRect().height;
-      let windowHeight = window.innerHeight;
+      // xử lý khi shDisplay là bubble
+      if (this.shDisplay == 'bubble') {
+        let dropdownTop = this.selectSelection.nativeElement.getBoundingClientRect().top + this.selectSelection.nativeElement.getBoundingClientRect().height;
+        let windowHeight = window.innerHeight;
 
-      if (dropdownTop + 220 > windowHeight) {
-        this.dropdownPosition = 'top';
+        if (dropdownTop + 220 > windowHeight) {
+          this.dropdownPosition = 'drop_top';
+        } else {
+          this.dropdownPosition = 'drop_down';
+        }
       } else {
-        this.dropdownPosition = 'bottom';
+        // nếu không phải bubble sẽ gắn thêm class để hiển thị
+        switch (this.shDisplay) {
+          case 'center': {
+            break;
+          }
+        }
       }
     }
   }
