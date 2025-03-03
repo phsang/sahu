@@ -16,6 +16,15 @@
   visibility: visible;
 }
 
+.visible_overlay .sh-select-overlay {
+  background-color: rgba(0, 0, 0, 0);
+  transition: .2s;
+}
+
+.visible_overlay.open .sh-select-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
 .sh-select {
   position: relative;
   width: 100%;
@@ -270,7 +279,7 @@
   }
 }
 
-.sh-select-content.drop_bottom {
+.sh-select-content.drop_down {
   transform-origin: top;
 }
 
