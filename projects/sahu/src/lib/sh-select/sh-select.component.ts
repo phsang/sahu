@@ -107,13 +107,6 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
         } else {
           this.dropdownPosition = 'drop_down';
         }
-      } else {
-        // nếu không phải bubble sẽ gắn thêm class để hiển thị
-        switch (this.shDisplay) {
-          case 'center': {
-            break;
-          }
-        }
       }
     }
   }
