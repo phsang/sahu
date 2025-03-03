@@ -6,7 +6,7 @@ import Pica from 'pica';
   providedIn: 'root',
 })
 export class ImageService {
-  private pica: Pica;
+  private pica: any = Pica();
 
   constructor() {
     this.pica = new Pica();
