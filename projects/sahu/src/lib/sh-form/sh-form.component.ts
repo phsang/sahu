@@ -421,15 +421,8 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     let input = this.validItem.control;
     let val: string | null = input.value.trim() || null;
 
-    if (val) {
-      val = val.trimStart().replace(/\D/g, '');
-      input.value = val;
-
-      if (val != '' && val.length != 12) {
-        return this.setValidationStatus(false, 'Số CCCD phải là 12 số');
-      }
-
-      return this.setValidationStatus(true);
+    if (val && val.length != 12) {
+      return this.setValidationStatus(false, 'Số CCCD phải là 12 số');
     }
 
     return this.setValidationStatus(true);

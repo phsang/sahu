@@ -208,6 +208,12 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
         if (this.shDataVali?.includes('phone')) {
           this.value = this.formatPhone(this.value);
         }
+        if (this.shDataVali?.includes('identity')) {
+          this.value = this.value.trim().replace(/\D/g, '');
+          if (this.value.length > 12) {
+            this.value = this.value.substring(0, 10);
+          }
+        }
         this.onChange(this.value);
       }, 10);
     }
