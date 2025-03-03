@@ -427,6 +427,24 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     return true;
   }
 
+  identityValidation(): boolean {
+    let input = this.validItem.control;
+    let val: string | null = input.value.trim() || null;
+
+    if (val) {
+      val = val.trimStart().replace(/\D/g, '');
+      input.value = val;
+
+      if (val != '' && val.length != 12) {
+        return this.setValidationStatus(false, 'Số CCCD phải là 12 số');
+      }
+
+      return this.setValidationStatus(true);
+    }
+
+    return this.setValidationStatus(true);
+  }
+
   parseDataVali(dataVali: string): any {
     // Loại bỏ ký tự bao quanh nếu có (dấu ngoặc vuông [])
     const trimmedData = dataVali.trim().replace(/^\[|\]$/g, '');
@@ -502,6 +520,10 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
               }
               case 'phone': {
                 isValid = this.phoneValidation();
+                break;
+              }
+              case 'identity': {
+                isValid = this.identityValidation();
                 break;
               }
               case 'url': {
@@ -589,6 +611,10 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
                 }
                 case 'phone': {
                   isValid = this.phoneValidation();
+                  break;
+                }
+                case 'identity': {
+                  isValid = this.identityValidation();
                   break;
                 }
                 case 'url': {
