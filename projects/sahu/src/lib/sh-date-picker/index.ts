@@ -1,2 +1,2 @@
-export * from './sh-select.component';
-export * from './sh-select.module';
+export * from './sh-date-picker.component';
+export * from './sh-date-picker.module';

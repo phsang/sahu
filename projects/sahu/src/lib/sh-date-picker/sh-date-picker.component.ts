@@ -3,13 +3,13 @@ import { Component, ElementRef, EventEmitter, forwardRef, Input, OnChanges, OnIn
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
-  selector: 'sh-select',
-  templateUrl: './sh-select.component.html',
-  styleUrls: ['./sh-select.component.scss'],
+  selector: 'sh-date-picker',
+  templateUrl: './sh-date-picker.component.html',
+  styleUrls: ['./sh-date-picker.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ShSelectComponent),
+      useExisting: forwardRef(() => ShDatePickerComponent),
       multi: true
     }
   ],
@@ -33,7 +33,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 
-export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChanges {
+export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnChanges {
   @ViewChild('selectSelection') selectSelection!: ElementRef;
 
   @Input() shData: any[] = [];

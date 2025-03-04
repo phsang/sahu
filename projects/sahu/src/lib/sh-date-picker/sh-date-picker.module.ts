@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShSelectComponent } from './sh-select.component';
+import { ShDatePickerComponent } from './sh-date-picker.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [ShSelectComponent],
+  declarations: [ShDatePickerComponent],
   imports: [CommonModule, FormsModule],
-  exports: [ShSelectComponent],
+  exports: [ShDatePickerComponent],
 })
-export class ShSelectModule { }
+export class ShDatePickerModule { }

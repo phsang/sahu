@@ -7,6 +7,7 @@ export * from './lib/sahu.component';
 
 export * from './lib/sh-avatar';
 export * from './lib/sh-button';
+export * from './lib/sh-date-picker';
 export * from './lib/sh-form';
 export * from './lib/sh-icon';
 export * from './lib/sh-image';
