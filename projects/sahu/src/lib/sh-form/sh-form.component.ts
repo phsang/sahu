@@ -149,10 +149,9 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     }
 
     if (input.tagName.toUpperCase() === 'INPUT' || input.tagName.toUpperCase() === 'TEXTAREA') {
-      const val = input.value?.trim() || '';
+      const val = input.value?.trim() || null;
 
       if (val) {
-        input.value = val; // Loại bỏ khoảng trắng đầu & cuối
         return this.setValidationStatus(true);
       }
     }
