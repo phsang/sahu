@@ -25,6 +25,7 @@
 
   .tags {
     display: flex;
+    flex-wrap: wrap;
     gap: 5px;
     padding-right: 10px;
   }
@@ -124,7 +125,7 @@
   }
 
   .results-zone {
-    align-items: center;
+    align-items: flex-end;
     display: flex;
     overflow: hidden;
     padding: 1px 12px;
@@ -147,6 +148,11 @@
   &.select-disabled .results-zone>span {
     color: #707070;
   }
+}
+
+.sh-select .select-multiple {
+  height: unset;
+  padding: 7px 0;
 }
 
 .sh-select-content {
@@ -224,7 +230,8 @@
   }
 
   .content-group {
-    margin: 10px 0 12px;
+    margin: 9px 0 11px;
+    padding: 0 12px;
 
     &:last-child {
       margin-bottom: 0;
@@ -240,7 +247,7 @@
   }
 
   .content-group .sh-select-option {
-    padding-left: 10px;
+    padding-left: 8px;
   }
 
   .loading {
