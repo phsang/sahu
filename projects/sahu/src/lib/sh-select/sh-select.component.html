@@ -1,5 +1,5 @@
 <div class="sh-select {{shDisplay != 'bubble' ? 'visible_overlay' : ''}}" [class.open]="dropdownOpen" [class.select-disabled]="shDisabled">
-  <div class="sh-select-overlay" (click)="closeDropdown()"></div>
+  <div class="sh-overlay" (click)="closeDropdown()"></div>
 
   <div class="field-validation">
     <div class="sh-select-selection" (click)="toggleDropdown()" #selectSelection>

@@ -40,19 +40,21 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
   @Input() shName?: string = '';
   @Input() shDisabled?: boolean = false;
   @Input() shRange: boolean = false;
-  @Input() shPlaceHolder: string = 'Select';
+  @Input() shPlaceHolder: string = 'Select date';
   @Input() shDataVali?: string = '';
   @Input() shAllowClear?: boolean = true;
   @Input() shMin?: string;
   @Input() shMax?: string;
-
   @Input() shDisplay?: 'center' | 'bottom' | 'top' | 'left' | 'right' | 'bubble' = 'bubble';
 
-  @Output() shChange = new EventEmitter<any>();
-
+  startDate: string = '';
+  endDate: string = '';
   inputValue: any = null;
+  inputValueLabel: string = '';
   dropdownPosition: string = 'drop_down';
   datePickerOpen = false;
+
+  @Output() shChange = new EventEmitter<any>();
 
   // ControlValueAccessor methods
   private onChange: any = () => { };
@@ -77,6 +79,8 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
     }
 
     this.datePickerOpen = !this.datePickerOpen;
+
+    console.log(this.datePickerOpen);
 
     // thêm class để hiển thị popup phía trên, nếu popup vượt qua khỏi màn hình
     if (this.datePickerOpen) {
