@@ -38,3 +38,33 @@
 .visible_overlay.open .sh-overlay {
   background-color: rgba(0, 0, 0, 0.6);
 }
+
+.sh-reset {
+  background-color: #a0a0a0;
+  border: none;
+  border-radius: 99px;
+  cursor: pointer;
+  height: 25px;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%) scale(.65);
+  width: 25px;
+
+  &:before,
+  &:after {
+    background-color: #fff;
+    border-radius: 99px;
+    content: "";
+    height: 2px;
+    left: 20%;
+    position: absolute;
+    top: calc(50% - 1px);
+    transform: rotate(45deg);
+    width: 60%;
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+}

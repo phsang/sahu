@@ -19,14 +19,15 @@
         </span>
         <span *ngIf="shMultiple && selectedOptions.length" class="tags">
           <span *ngFor="let option of selectedOptions" class="tag">
-            {{ option.label }}<i class="remove-tag" (click)="removeTag(option, $event)">×</i>
+            {{ option.label }}
+            <i class="remove-tag" (click)="removeTag(option, $event)"></i>
           </span>
         </span>
         <span *ngIf="shMultiple" class="placeholder-text">{{ shPlaceHolder }}</span>
       </div>
       <i class="dropdown-icon"></i>
 
-      <button *ngIf="(inputValue || inputValue == 0) && shAllowClear && !shMultiple" type="button" class="sh-select-reset" (click)="reset($event)"></button>
+      <button *ngIf="(inputValue || inputValue == 0) && shAllowClear && !shMultiple" type="button" class="sh-reset" (click)="reset($event)"></button>
     </div>
   </div>
 

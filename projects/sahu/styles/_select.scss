@@ -21,23 +21,46 @@
       width: 100%;
       z-index: -1;
     }
+  }
 
-    .tags {
-      padding-right: 10px;
+  .tags {
+    display: flex;
+    gap: 5px;
+    padding-right: 10px;
+  }
+
+  .tag {
+    align-items: center;
+    background: #e0e0e0;
+    border-radius: 3px;
+    display: flex;
+    gap: 4px;
+    padding: 2px 5px;
+  }
+
+  .remove-tag {
+    cursor: pointer;
+    height: 16px;
+    position: relative;
+    transform: scale(.75);
+    transform-origin: right;
+    width: 16px;
+
+    &::before,
+    &::after {
+      background-color: #707070;
+      border-radius: 99px;
+      content: "";
+      height: 2px;
+      left: 0;
+      position: absolute;
+      top: calc(50% - 1px);
+      transform: rotate(45deg);
+      width: 100%;
     }
 
-    .tag {
-      align-items: center;
-      background: #e0e0e0;
-      border-radius: 3px;
-      display: inline-flex;
-      margin: 2px 3px;
-      padding: 5px;
-
-      .remove-tag {
-        cursor: pointer;
-        margin-left: 5px;
-      }
+    &::after {
+      transform: rotate(-45deg);
     }
   }
 
@@ -100,39 +123,11 @@
     }
   }
 
-  .sh-select-reset {
-    background-color: #D52A2A;
-    border: none;
-    border-radius: 99px;
-    cursor: pointer;
-    height: 25px;
-    position: absolute;
-    right: 9px;
-    top: 50%;
-    transform: translateY(-50%) scale(.65);
-    width: 25px;
-
-    &:before,
-    &:after {
-      background-color: #fff;
-      border-radius: 99px;
-      content: "";
-      height: 2px;
-      left: 16%;
-      position: absolute;
-      top: calc(50% - 1px);
-      transform: rotate(45deg);
-      width: 68%;
-    }
-
-    &:after {
-      transform: rotate(-45deg);
-    }
-  }
-
   .results-zone {
+    align-items: center;
+    display: flex;
     overflow: hidden;
-    padding: 1px 12px 2px;
+    padding: 1px 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
@@ -185,15 +180,16 @@
 
   .sh-select-option {
     cursor: pointer;
+    margin: 4px 0;
     position: relative;
 
     label {
       align-items: center;
-      border-radius: 5px;
+      border-radius: 3px;
       display: flex;
-      gap: 17px;
+      gap: 16px;
       justify-content: space-between;
-      padding: 4px 10px;
+      padding: 4px 8px 4px 10px;
       transition: .3s;
     }
 
