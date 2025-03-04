@@ -13,15 +13,6 @@
         [attr.data-vali]="shDataVali ? shDataVali : null" />
 
       <div class="results-zone">
-        <span *ngIf="!shMultiple" [class.placeholder-text]="!selectedOptions[0]">
-          {{ selectedOptions[0]?.label || shPlaceHolder }}
-        </span>
-        <span *ngIf="shMultiple && selectedOptions.length" class="tags">
-          <span *ngFor="let option of selectedOptions" class="tag">
-            {{ option.label }}<i class="remove-tag" (click)="removeTag(option, $event)">×</i>
-          </span>
-        </span>
-        <span *ngIf="shMultiple" class="placeholder-text">{{ shPlaceHolder }}</span>
       </div>
       <i class="dropdown-icon"></i>
 
