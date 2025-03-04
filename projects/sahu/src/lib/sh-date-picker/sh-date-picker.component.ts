@@ -80,8 +80,6 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
 
     this.datePickerOpen = !this.datePickerOpen;
 
-    console.log(this.datePickerOpen);
-
     // thêm class để hiển thị popup phía trên, nếu popup vượt qua khỏi màn hình
     if (this.datePickerOpen) {
       // xử lý khi shDisplay là bubble
@@ -90,7 +88,7 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
         let windowHeight = window.innerHeight;
 
         if (dropdownTop + 220 > windowHeight) {
-          this.dropdownPosition = 'drop_top';
+          this.dropdownPosition = 'drop_up';
         } else {
           this.dropdownPosition = 'drop_down';
         }

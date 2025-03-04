@@ -124,7 +124,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
         let windowHeight = window.innerHeight;
 
         if (dropdownTop + 220 > windowHeight) {
-          this.dropdownPosition = 'drop_top';
+          this.dropdownPosition = 'drop_up';
         } else {
           this.dropdownPosition = 'drop_down';
         }

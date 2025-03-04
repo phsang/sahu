@@ -12,7 +12,7 @@
         [attr.value]="inputValue"
         [attr.data-vali]="shDataVali ? shDataVali : null" />
 
-      <div class="results-zone" (click)="toggleDropdown()">
+      <div class="results-zone">
 
         <ng-container *ngIf="!shRange">
           <span class="sh-date-item">{{inputValueLabel || shPlaceHolder}}</span>
