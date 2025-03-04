@@ -36,52 +36,5 @@
       <button type="button" class="close-select" (click)="closeDropdown()"></button>
     </div>
 
-    <div class="select-filter" *ngIf="shFilter">
-      <div class="filter-form">
-        <svg fill="currentColor" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M508.5 481.6l-129-129c-2.3-2.3-5.3-3.5-8.5-3.5h-10.3C395 312 416 262.5 416 208 416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c54.5 0 104-21 141.1-55.2V371c0 3.2 1.3 6.2 3.5 8.5l129 129c4.7 4.7 12.3 4.7 17 0l9.9-9.9c4.7-4.7 4.7-12.3 0-17zM208 384c-97.3 0-176-78.7-176-176S110.7 32 208 32s176 78.7 176 176-78.7 176-176 176z" /></svg>
-        <input [attr.placeholder]="shFilterPlaceHolder" [(ngModel)]="filterKey" (input)="filterData()" />
-      </div>
-    </div>
-
-    <ng-container *ngIf="(_sData | json) != ({} | json)">
-      <div class="content-group" *ngFor="let group of _sData | keyvalue">
-        <span>{{ group.key }}</span>
-        <div class="option-group">
-          <div *ngFor="let option of group.value" class="sh-select-option">
-            <label [attr.class]="selectedOptions.includes(option) ? 'option_checked' : ''">
-              <input
-                name="item-select"
-                [type]="shMultiple ? 'checkbox' : 'radio'"
-                [value]="option.value"
-                (click)="selectOption(option, $event)"
-                [checked]="selectedOptions.includes(option)" />
-              <span class="text clam-{{shLine}}">{{ option.label }}</span>
-              <span class="remark"></span>
-            </label>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="(_sData | json) == ({} | json)">
-      <div class="content-single">
-        <ng-container *ngFor="let option of shData">
-          <div class="sh-select-option" *ngIf="option.visible != false">
-            <label [attr.class]="selectedOptions.includes(option) ? 'option_checked' : ''">
-              <input
-                name="item-select"
-                [type]="shMultiple ? 'checkbox' : 'radio'"
-                [value]="option.value"
-                (click)="selectOption(option, $event)"
-                [checked]="selectedOptions.includes(option)" />
-              <span class="text clam-{{shLine}}">{{ option.label }}</span>
-              <span class="remark"></span>
-            </label>
-          </div>
-        </ng-container>
-
-      </div>
-    </ng-container>
-
   </div>
 </div>

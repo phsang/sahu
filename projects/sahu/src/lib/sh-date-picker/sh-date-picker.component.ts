@@ -37,7 +37,6 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
   @ViewChild('selectSelection') selectSelection!: ElementRef;
 
   @Input() shData: any[] = [];
-  _sData: { [key: string]: any[] } = {};
 
   @Input() shId?: string = '';
   @Input() shName?: string = '';
@@ -87,13 +86,6 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
   }
 
   initializeOptions(): void {
-    this._sData = this.shData.reduce((acc, data) => {
-      if (data.group) {
-        acc[data.group] = acc[data.group] || [];
-        acc[data.group].push(data);
-      }
-      return acc;
-    }, {});
   }
 
   toggleDropdown(): void {
@@ -105,18 +97,6 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
 
     // thêm class để hiển thị popup phía trên, nếu popup vượt qua khỏi màn hình
     if (this.datePickerOpen) {
-
-      // Mở lại filter khi vừa mở dropdown
-      this.filterKey = '';
-      if (!Object.keys(this._sData).length) {
-        this.shData.forEach((item: any) => {
-          let _label = this.removeAccent(item.label).toLowerCase();
-          let _filterKey = this.removeAccent(this.filterKey).toLowerCase();
-
-          item.visible = (_filterKey == '' || _label.match(_filterKey)) ? true : false;
-        });
-      }
-
       // xử lý khi shDisplay là bubble
       if (this.shDisplay == 'bubble') {
         let dropdownTop = this.selectSelection.nativeElement.getBoundingClientRect().top + this.selectSelection.nativeElement.getBoundingClientRect().height;
@@ -212,16 +192,4 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/đ/g, 'd').replace(/Đ/g, 'D');
   };
-
-  filterData() {
-    // xử lý filter khi không có group
-    if (!Object.keys(this._sData).length) {
-      this.shData.forEach((item: any) => {
-        let _label = this.removeAccent(item.label).toLowerCase();
-        let _filterKey = this.removeAccent(this.filterKey).toLowerCase();
-
-        item.visible = (_filterKey == '' || _label.match(_filterKey)) ? true : false;
-      });
-    }
-  }
 }
