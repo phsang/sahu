@@ -34,17 +34,17 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 
 export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnChanges {
-  @ViewChild('selectSelection') selectSelection!: ElementRef;
-
-  @Input() shData: any[] = [];
+  @ViewChild('dateSelection') dateSelection!: ElementRef;
 
   @Input() shId?: string = '';
   @Input() shName?: string = '';
   @Input() shDisabled?: boolean = false;
-  @Input() shMultiple: boolean = false;
+  @Input() shRange: boolean = false;
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
   @Input() shAllowClear?: boolean = true;
+  @Input() shMin?: string;
+  @Input() shMax?: string;
 
   @Input() shDisplay?: 'center' | 'bottom' | 'top' | 'left' | 'right' | 'bubble' = 'bubble';
 
@@ -82,7 +82,7 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
     if (this.datePickerOpen) {
       // xử lý khi shDisplay là bubble
       if (this.shDisplay == 'bubble') {
-        let dropdownTop = this.selectSelection.nativeElement.getBoundingClientRect().top + this.selectSelection.nativeElement.getBoundingClientRect().height;
+        let dropdownTop = this.dateSelection.nativeElement.getBoundingClientRect().top + this.dateSelection.nativeElement.getBoundingClientRect().height;
         let windowHeight = window.innerHeight;
 
         if (dropdownTop + 220 > windowHeight) {
