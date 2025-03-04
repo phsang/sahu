@@ -42,16 +42,11 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
   @Input() shName?: string = '';
   @Input() shDisabled?: boolean = false;
   @Input() shMultiple: boolean = false;
-  @Input() shLine: number = 1;
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
   @Input() shAllowClear?: boolean = true;
 
   @Input() shDisplay?: 'center' | 'bottom' | 'top' | 'left' | 'right' | 'bubble' = 'bubble';
-  @Input() shHeaderText?: string;
-
-  @Input() shFilter: boolean = false;
-  @Input() shFilterPlaceHolder: string = 'Search';
 
   @Output() shChange = new EventEmitter<any>();
 
@@ -59,7 +54,6 @@ export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnCh
   dropdownPosition: string = 'drop_down';
   selectedOptions: any[] = [];
   datePickerOpen = false;
-  filterKey: string = '';
 
   // ControlValueAccessor methods
   private onChange: any = () => { };

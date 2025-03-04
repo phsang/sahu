@@ -31,10 +31,5 @@
 
   <div class="sh-select-content {{shDisplay == 'bubble' ? dropdownPosition : ('display_' + shDisplay)}}" *ngIf="datePickerOpen" [@shAnimation]="shDisplay">
 
-    <div class="select-header" *ngIf="shHeaderText">
-      <h4>{{shHeaderText}}</h4>
-      <button type="button" class="close-select" (click)="closeDropdown()"></button>
-    </div>
-
   </div>
 </div>
