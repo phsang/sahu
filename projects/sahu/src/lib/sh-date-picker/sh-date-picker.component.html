@@ -1,10 +1,11 @@
 <div class="date-picker-display" (click)="openDatePicker()">
   <sh-input
-    [shName]="'status'"
-    [shId]="'sh-status'"
-    [shPlaceholder]="'Họ và tên'"
-    [ngModel]="displayValue || 'Select date'"
+    [shName]="shName"
+    [shId]="shId"
+    [shPlaceholder]="shPlaceholder"
+    [ngModel]="displayValue"
     [shReadonly]="true"
-    [shAutocomplete]="'off'">
+    [shAutocomplete]="'off'"
+    [shDataVali]="shDataVali">
   </sh-input>
 </div>

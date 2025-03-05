@@ -17,9 +17,13 @@ import { DatePickerPanelComponent } from './date-picker-panel/sh-date-picker-pan
   ]
 })
 export class ShDatePickerComponent implements ControlValueAccessor {
+  @Input() shId?: string;
+  @Input() shName?: string;
+  @Input() shPlaceholder?: string;
   @Input() shMin?: string;
   @Input() shMax?: string;
   @Input() shRange: boolean = false;
+  @Input() shDataVali?: string;
   @Input() ngModel?: string | { start_date: string; end_date: string };
   @Output() ngModelChange = new EventEmitter<string | { start_date: string; end_date: string }>();
 
