@@ -36,9 +36,10 @@ export class CalendarBoxComponent implements OnChanges {
 
   currentYear: number = new Date().getFullYear();
   currentMonth: number = new Date().getMonth();
-  weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   calendarDays: any[] = [];
   selectedDates: { start_date?: string; end_date?: string } = {};
+  flagDate: any;
 
   constructor() {
     this.setTargetDate();
@@ -62,6 +63,8 @@ export class CalendarBoxComponent implements OnChanges {
           this.currentMonth = targetDate.getMonth();
         }
       }
+
+      this.flagDate = this.value;
     }
   }
 
@@ -71,7 +74,12 @@ export class CalendarBoxComponent implements OnChanges {
     this.calendarDays = [];
 
     for (let i = 1; i <= lastDay.getDate(); i++) {
-      this.calendarDays.push({ date: i, fullDate: new Date(this.currentYear, this.currentMonth, i).toISOString().split('T')[0] });
+      const _date = new Date(this.currentYear, this.currentMonth, i);
+      const fullDate = _date.toLocaleDateString('en-CA'); // Định dạng YYYY-MM-DD
+      this.calendarDays.push({
+        date: i,
+        fullDate
+      });
     }
   }
 
@@ -106,6 +114,17 @@ export class CalendarBoxComponent implements OnChanges {
   }
 
   isSelected(day: any) {
-    return false;
+    const _date = new Date(day.fullDate);
+    const fullDate = _date.toLocaleDateString('en-CA'); // Định dạng YYYY-MM-DD
+    let selected;
+    if (this.shRange) {
+      const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date) : null;
+      const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date) : null;
+      if (!start || !end) return;
+      selected = _date >= start && _date <= end;
+    } else {
+      selected = this.value === fullDate;
+    }
+    return selected;
   }
 }
