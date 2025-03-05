@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
 
 @Component({
   selector: 'sh-calendar-box',
@@ -27,7 +27,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
      .day.selected { background: #007bff; color: white; }`
   ]
 })
-export class CalendarBoxComponent {
+export class CalendarBoxComponent implements OnChanges {
   @Input() shMin?: string;
   @Input() shMax?: string;
   @Input() shRange: boolean = false;
@@ -44,10 +44,24 @@ export class CalendarBoxComponent {
     this.generateCalendar();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['value']) {
+      this.setTargetDate();
+      this.generateCalendar();
+    }
+  }
+
   setTargetDate() {
-    const targetDate = this.value ? new Date(this.value as string) : new Date();
-    this.currentYear = targetDate.getFullYear();
-    this.currentMonth = targetDate.getMonth();
+    if (this.value) {
+      const dateStr = typeof this.value === 'string' ? this.value : this.value.start_date;
+      if (dateStr) {
+        const targetDate = new Date(dateStr);
+        if (!isNaN(targetDate.getTime())) {
+          this.currentYear = targetDate.getFullYear();
+          this.currentMonth = targetDate.getMonth();
+        }
+      }
+    }
   }
 
   generateCalendar() {
