@@ -78,9 +78,14 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   }
 
   updateDisplayValue() {
-    if (this.shRange && typeof this.ngModel === 'object') {
+    if (
+      this.shRange &&
+      typeof this.ngModel === 'object' &&
+      this.ngModel?.start_date &&
+      this.ngModel?.end_date
+    ) {
       this.displayValue = `${this.ngModel.start_date} - ${this.ngModel.end_date}`;
-    } else if (typeof this.ngModel === 'string') {
+    } else if (typeof this.ngModel === 'string' && this.ngModel !== '') {
       this.displayValue = this.ngModel;
     } else {
       this.displayValue = '';

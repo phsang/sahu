@@ -38,6 +38,7 @@ export class CalendarBoxComponent implements OnChanges {
   currentMonth: number = new Date().getMonth();
   weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   calendarDays: any[] = [];
+  selectedDates: { start_date?: string; end_date?: string } = {};
 
   constructor() {
     this.setTargetDate();
@@ -92,7 +93,16 @@ export class CalendarBoxComponent implements OnChanges {
   }
 
   selectDay(day: any) {
-    this.dateSelected.emit(day.fullDate);
+    if (this.shRange) {
+      if (!this.selectedDates.start_date) {
+        this.selectedDates.start_date = day.fullDate;
+      } else {
+        this.selectedDates.end_date = day.fullDate;
+        this.dateSelected.emit(this.selectedDates as { start_date: string; end_date: string });
+      }
+    } else {
+      this.dateSelected.emit(day.fullDate);
+    }
   }
 
   isSelected(day: any) {
