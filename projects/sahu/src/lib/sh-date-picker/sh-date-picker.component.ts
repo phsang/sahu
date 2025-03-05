@@ -1,12 +1,12 @@
-import { Component, Input, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { DatePickerPanelComponent } from './sh-date-picker-panel.component';
+import { DatePickerPanelComponent } from './date-picker-panel/sh-date-picker-panel.component';
 
 @Component({
   selector: 'sh-date-picker',
-  templateUrl: './sh-date-picker.component.html',
-  styleUrl: './sh-date-picker.component.scss'
+  template: `<div class="date-picker-display" (click)="openDatePicker()">{{ displayValue || 'Select date' }}</div>`,
+  styles: [`.date-picker-display { width: 100%; padding: 8px; border: 1px solid #ccc; cursor: pointer; text-align: center; }`]
 })
 export class ShDatePickerComponent {
   @Input() shMin?: string;
@@ -36,7 +36,6 @@ export class ShDatePickerComponent {
     componentRef.instance.shMin = this.shMin;
     componentRef.instance.shMax = this.shMax;
     componentRef.instance.shRange = this.shRange;
-    componentRef.instance.value = this.ngModel;
     componentRef.instance.valueChange.subscribe((value: any) => {
       this.ngModel = value;
       this.ngModelChange.emit(value);
