@@ -36,7 +36,7 @@ export class ShDatePickerComponent {
     componentRef.instance.shMin = this.shMin;
     componentRef.instance.shMax = this.shMax;
     componentRef.instance.shRange = this.shRange;
-    componentRef.instance.valueChange.subscribe((value: any) => {
+    componentRef.instance.valueChange.subscribe(value => {
       this.ngModel = value;
       this.ngModelChange.emit(value);
       this.updateDisplayValue();

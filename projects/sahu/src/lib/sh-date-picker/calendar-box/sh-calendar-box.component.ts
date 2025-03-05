@@ -31,42 +31,45 @@ export class CalendarBoxComponent {
   @Input() shMin?: string;
   @Input() shMax?: string;
   @Input() shRange: boolean = false;
+  @Input() ngModel?: string | { start_date: string; end_date: string };
   @Output() dateSelected = new EventEmitter<string | { start_date: string; end_date: string }>();
 
-  currentYear = new Date().getFullYear();
-  currentMonth = new Date().toLocaleString('default', { month: 'long' });
+  currentYear: number = new Date().getFullYear();
+  currentMonth: number = new Date().getMonth();
   weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   calendarDays: any[] = [];
 
-  selectedDates: { start_date?: string; end_date?: string } = {};
-
   constructor() {
+    this.setTargetDate();
     this.generateCalendar();
   }
 
-  generateCalendar() {
-    // Logic to generate days of the month
+  setTargetDate() {
+    const targetDate = this.ngModel ? new Date(this.ngModel as string) : new Date();
+    this.currentYear = targetDate.getFullYear();
+    this.currentMonth = targetDate.getMonth();
   }
 
-  prevMonth() { }
-  nextMonth() { }
-  prevYear() { }
-  nextYear() { }
+  generateCalendar() {
+    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+    this.calendarDays = [];
 
-  selectDay(day: any) {
-    if (this.shRange) {
-      if (!this.selectedDates.start_date) {
-        this.selectedDates.start_date = day.fullDate;
-      } else {
-        this.selectedDates.end_date = day.fullDate;
-        this.dateSelected.emit(this.selectedDates as { start_date: string; end_date: string });
-      }
-    } else {
-      this.dateSelected.emit(day.fullDate);
+    for (let i = 1; i <= lastDay.getDate(); i++) {
+      this.calendarDays.push({ date: i, fullDate: new Date(this.currentYear, this.currentMonth, i).toISOString().split('T')[0] });
     }
   }
 
+  prevMonth() { this.currentMonth--; this.generateCalendar(); }
+  nextMonth() { this.currentMonth++; this.generateCalendar(); }
+  prevYear() { this.currentYear--; this.generateCalendar(); }
+  nextYear() { this.currentYear++; this.generateCalendar(); }
+
+  selectDay(day: any) {
+    this.dateSelected.emit(day.fullDate);
+  }
+
   isSelected(day: any) {
-    return day.fullDate === this.selectedDates.start_date || day.fullDate === this.selectedDates.end_date;
+    return false;
   }
 }
