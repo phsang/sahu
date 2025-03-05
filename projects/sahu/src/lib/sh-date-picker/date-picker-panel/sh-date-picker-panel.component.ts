@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
   selector: 'sh-date-picker-panel',
   template: `
     <div class="date-picker-panel">
-      <sh-calendar-box [shRange]="shRange" [shMin]="shMin" [shMax]="shMax" [ngModel]="ngModel" (dateSelected)="confirmSelection($event)"></sh-calendar-box>
+      <sh-calendar-box [shRange]="shRange" [shMin]="shMin" [shMax]="shMax" [value]="value" (dateSelected)="confirmSelection($event)"></sh-calendar-box>
     </div>
   `,
   styles: [
@@ -15,7 +15,7 @@ export class DatePickerPanelComponent {
   @Input() shMin?: string;
   @Input() shMax?: string;
   @Input() shRange: boolean = false;
-  @Input() ngModel?: string | { start_date: string; end_date: string };
+  @Input() value?: string | { start_date: string; end_date: string };
   @Output() valueChange = new EventEmitter<string | { start_date: string; end_date: string }>();
 
   confirmSelection(value: string | { start_date: string; end_date: string }) {

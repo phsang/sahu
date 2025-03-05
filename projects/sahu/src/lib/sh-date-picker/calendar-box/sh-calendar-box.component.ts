@@ -31,7 +31,7 @@ export class CalendarBoxComponent {
   @Input() shMin?: string;
   @Input() shMax?: string;
   @Input() shRange: boolean = false;
-  @Input() ngModel?: string | { start_date: string; end_date: string };
+  @Input() value?: string | { start_date: string; end_date: string };
   @Output() dateSelected = new EventEmitter<string | { start_date: string; end_date: string }>();
 
   currentYear: number = new Date().getFullYear();
@@ -45,7 +45,7 @@ export class CalendarBoxComponent {
   }
 
   setTargetDate() {
-    const targetDate = this.ngModel ? new Date(this.ngModel as string) : new Date();
+    const targetDate = this.value ? new Date(this.value as string) : new Date();
     this.currentYear = targetDate.getFullYear();
     this.currentMonth = targetDate.getMonth();
   }

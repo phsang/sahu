@@ -20,29 +20,35 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   @Input() shMin?: string;
   @Input() shMax?: string;
   @Input() shRange: boolean = false;
+  @Input() ngModel?: string | { start_date: string; end_date: string };
   @Output() ngModelChange = new EventEmitter<string | { start_date: string; end_date: string }>();
 
   private overlayRef?: OverlayRef;
   displayValue: string = '';
   private onChange: (value: any) => void = () => { };
   private onTouched: () => void = () => { };
-  private _value?: string | { start_date: string; end_date: string };
 
   constructor(private overlay: Overlay, private elementRef: ElementRef) { }
 
-  get value(): any {
-    return this._value;
+  writeValue(value: string | { start_date: string; end_date: string }): void {
+    this.ngModel = value;
+    this.updateDisplayValue();
   }
 
-  set value(val: any) {
-    this._value = val;
-    this.updateDisplayValue();
-    this.onChange(val);
-    this.ngModelChange.emit(val);
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
   }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void { }
 
   openDatePicker() {
-    if (this.overlayRef) return;
+    if (this.overlayRef) {
+      return;
+    }
 
     const positionStrategy = this.overlay.position()
       .flexibleConnectedTo(this.elementRef)
@@ -56,7 +62,10 @@ export class ShDatePickerComponent implements ControlValueAccessor {
     componentRef.instance.shMax = this.shMax;
     componentRef.instance.shRange = this.shRange;
     componentRef.instance.valueChange.subscribe(value => {
-      this.value = value;
+      this.ngModel = value;
+      this.ngModelChange.emit(value);
+      this.onChange(value);
+      this.updateDisplayValue();
       this.overlayRef?.dispose();
       this.overlayRef = undefined;
     });
@@ -68,24 +77,12 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   }
 
   updateDisplayValue() {
-    if (this.shRange && typeof this.value === 'object') {
-      this.displayValue = `${this.value.start_date} - ${this.value.end_date}`;
-    } else if (typeof this.value === 'string') {
-      this.displayValue = this.value;
+    if (this.shRange && typeof this.ngModel === 'object') {
+      this.displayValue = `${this.ngModel.start_date} - ${this.ngModel.end_date}`;
+    } else if (typeof this.ngModel === 'string') {
+      this.displayValue = this.ngModel;
     } else {
       this.displayValue = '';
     }
-  }
-
-  writeValue(value: any): void {
-    this.value = value;
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
   }
 }
