@@ -1,1 +1,10 @@
-<input (focus)="openDatePicker()" [value]="displayValue" readonly />
+<div class="date-picker-display" (click)="openDatePicker()">
+  <sh-input
+    [shName]="'status'"
+    [shId]="'sh-status'"
+    [shPlaceholder]="'Họ và tên'"
+    [ngModel]="displayValue || 'Select date'"
+    [shReadonly]="true"
+    [shAutocomplete]="'off'">
+  </sh-input>
+</div>

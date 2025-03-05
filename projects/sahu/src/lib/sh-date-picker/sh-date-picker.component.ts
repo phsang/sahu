@@ -6,7 +6,7 @@ import { DatePickerPanelComponent } from './date-picker-panel/sh-date-picker-pan
 
 @Component({
   selector: 'sh-date-picker',
-  template: `<div class="date-picker-display" (click)="openDatePicker()">{{ displayValue || 'Select date' }}</div>`,
+  templateUrl: './sh-date-picker.component.html',
   styles: [`.date-picker-display { width: 100%; padding: 8px; border: 1px solid #ccc; cursor: pointer; text-align: center; }`],
   providers: [
     {
