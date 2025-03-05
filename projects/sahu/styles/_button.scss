@@ -24,8 +24,7 @@
   color: #fff;
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
+.btn-primary:hover {
   background-color: $primary_color_active;
   border-color: $primary_color_active;
 }
@@ -36,8 +35,7 @@
   color: #fff;
 }
 
-.btn-info:hover,
-.btn-info:focus {
+.btn-info:hover {
   background-color: $info_color_active;
   border-color: $info_color_active;
 }
@@ -48,8 +46,7 @@
   color: #fff;
 }
 
-.btn-success:hover,
-.btn-success:focus {
+.btn-success:hover {
   background-color: $success_color_active;
   border-color: $success_color_active;
 }

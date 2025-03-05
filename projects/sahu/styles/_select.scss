@@ -140,13 +140,18 @@
   }
 
   &.select-disabled .sh-select-selection {
-    background-color: #d4d4d4;
-    border-color: #d4d4d4;
+    background-color: #d8d8d8;
+    border-color: #c5c5c5;
     cursor: not-allowed;
   }
 
   &.select-disabled .results-zone>span {
     color: #707070;
+  }
+
+  &.select-disabled .dropdown-icon::before,
+  &.select-disabled .dropdown-icon::after {
+    border-color: #808080;
   }
 }
 

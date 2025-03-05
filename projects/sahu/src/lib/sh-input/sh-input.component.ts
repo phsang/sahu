@@ -36,18 +36,16 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   @Input() shChecked: boolean = false;
   @Input() shAutocomplete?: string;
   @Input() shLoading: boolean = false;
-
   @Input() shDataVali?: string;
-  iconLeft: SafeHtml = '';
-  iconRight: SafeHtml = '';
+  @Input() shReview: boolean = true; // sử dụng cho file hình
 
-  // input file
-  @Input() shReview: boolean = true;
   @Output() shChange = new EventEmitter<any>();
 
+  iconLeft: SafeHtml = '';
+  iconRight: SafeHtml = '';
   classLoading = '';
-
   value: string = '';
+
   onChange = (_: any) => { };
   onTouched = () => { };
 
