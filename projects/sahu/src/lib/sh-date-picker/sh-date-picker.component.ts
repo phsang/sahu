@@ -1,141 +1,63 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { DatePickerPanelComponent } from './sh-date-picker-panel.component';
 
 @Component({
   selector: 'sh-date-picker',
   templateUrl: './sh-date-picker.component.html',
-  styleUrls: ['./sh-date-picker.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ShDatePickerComponent),
-      multi: true
-    }
-  ],
-  animations: [
-    trigger('shAnimation', [
-      transition('bubble => void', [
-        animate('220ms ease-out', style({ transform: 'scaleY(0)' }))
-      ]),
-      transition('void => bubble', [
-        style({ transform: 'scaleY(0)' }),
-        animate('220ms ease-in', style({ transform: 'scaleY(1)' }))
-      ]),
-      transition('center => void', [
-        animate('220ms ease-out', style({ transform: 'translate(-50%, -50%) scale(0.8)', opacity: '0' }))
-      ]),
-      transition('void => center', [
-        style({ transform: 'translate(-50%, -50%) scale(0.8)', opacity: '0' }),
-        animate('220ms ease-in', style({ transform: 'translate(-50%, -50%) scale(1)', opacity: '1' }))
-      ])
-    ])
-  ]
+  styleUrl: './sh-date-picker.component.scss'
 })
-
-export class ShDatePickerComponent implements OnInit, ControlValueAccessor, OnChanges {
-  @ViewChild('dateSelection') dateSelection!: ElementRef;
-
-  @Input() shId?: string = '';
-  @Input() shName?: string = '';
-  @Input() shDisabled?: boolean = false;
-  @Input() shRange: boolean = false;
-  @Input() shPlaceHolder: string = 'Select date';
-  @Input() shDataVali?: string = '';
-  @Input() shAllowClear?: boolean = true;
+export class ShDatePickerComponent {
   @Input() shMin?: string;
   @Input() shMax?: string;
-  @Input() shDisplay?: 'center' | 'bottom' | 'top' | 'left' | 'right' | 'bubble' = 'bubble';
+  @Input() shRange: boolean = false;
+  @Input() ngModel?: string | { start_date: string; end_date: string };
+  @Output() ngModelChange = new EventEmitter<string | { start_date: string; end_date: string }>();
 
-  startDate: string = '';
-  endDate: string = '';
-  inputValue: any = null;
-  inputValueLabel: string = '';
-  dropdownPosition: string = 'drop_down';
-  datePickerOpen = false;
+  private overlayRef?: OverlayRef;
+  displayValue: string = '';
 
-  @Output() shChange = new EventEmitter<any>();
+  constructor(private overlay: Overlay, private elementRef: ElementRef) { }
 
-  // ControlValueAccessor methods
-  private onChange: any = () => { };
-  private onTouched: any = () => { };
-
-  ngOnInit(): void {
-    this.initializeOptions();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-  }
-
-  updateSelectedOptions(): void {
-  }
-
-  initializeOptions(): void {
-  }
-
-  toggleDropdown(): void {
-    if (this.shDisabled) {
+  openDatePicker() {
+    if (this.overlayRef) {
       return;
     }
 
-    this.datePickerOpen = !this.datePickerOpen;
+    const positionStrategy = this.overlay.position()
+      .flexibleConnectedTo(this.elementRef)
+      .withPositions([{ originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' }]);
 
-    // thêm class để hiển thị popup phía trên, nếu popup vượt qua khỏi màn hình
-    if (this.datePickerOpen) {
-      // xử lý khi shDisplay là bubble
-      if (this.shDisplay == 'bubble') {
-        let dropdownTop = this.dateSelection.nativeElement.getBoundingClientRect().top + this.dateSelection.nativeElement.getBoundingClientRect().height;
-        let windowHeight = window.innerHeight;
+    this.overlayRef = this.overlay.create({ positionStrategy, hasBackdrop: true });
+    const portal = new ComponentPortal(DatePickerPanelComponent);
+    const componentRef = this.overlayRef.attach(portal);
 
-        if (dropdownTop + 220 > windowHeight) {
-          this.dropdownPosition = 'drop_up';
-        } else {
-          this.dropdownPosition = 'drop_down';
-        }
-      }
-    }
+    componentRef.instance.shMin = this.shMin;
+    componentRef.instance.shMax = this.shMax;
+    componentRef.instance.shRange = this.shRange;
+    componentRef.instance.value = this.ngModel;
+    componentRef.instance.valueChange.subscribe((value: any) => {
+      this.ngModel = value;
+      this.ngModelChange.emit(value);
+      this.updateDisplayValue();
+      this.overlayRef?.dispose();
+      this.overlayRef = undefined;
+    });
+
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.overlayRef?.dispose();
+      this.overlayRef = undefined;
+    });
   }
 
-  closeDropdown(): void {
-    this.datePickerOpen = false;
-  }
-
-  modelChangeEmit() {
-    let _model: any[] = [];
-    this.inputValue = _model;
-    this.onChange(_model);
-    this.shChange.emit(_model); // Emit the model change to the parent
-  }
-
-  selectOption(option: any, event: any): void {
-    this.modelChangeEmit();
-  }
-
-  removeTag(option: any, event: MouseEvent): void {
-    event.stopPropagation();
-  }
-
-  reset(event: Event): void {
-    event.stopPropagation();
-    this.modelChangeEmit();
-  }
-
-  // ControlValueAccessor methods
-  writeValue(value: any): void {
-    if (value) {
+  updateDisplayValue() {
+    if (this.shRange && typeof this.ngModel === 'object') {
+      this.displayValue = `${this.ngModel.start_date} - ${this.ngModel.end_date}`;
+    } else if (typeof this.ngModel === 'string') {
+      this.displayValue = this.ngModel;
     } else {
+      this.displayValue = '';
     }
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    // Add logic to manage the disabled state if needed
   }
 }

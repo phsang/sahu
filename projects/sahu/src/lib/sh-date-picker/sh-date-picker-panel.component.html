@@ -1,0 +1,6 @@
+<div class="date-picker-panel">
+  <input type="date" [(ngModel)]="startDate" [min]="shMin" [max]="shMax" *ngIf="shRange" />
+  <input type="date" [(ngModel)]="endDate" [min]="shMin" [max]="shMax" *ngIf="shRange" />
+  <input type="date" [(ngModel)]="singleDate" [min]="shMin" [max]="shMax" *ngIf="!shRange" />
+  <button (click)="confirmSelection()">Chọn</button>
+</div>
