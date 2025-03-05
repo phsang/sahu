@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 @Component({
   selector: 'sh-calendar-box',
@@ -60,10 +60,22 @@ export class CalendarBoxComponent {
     }
   }
 
-  prevMonth() { this.currentMonth--; this.generateCalendar(); }
-  nextMonth() { this.currentMonth++; this.generateCalendar(); }
-  prevYear() { this.currentYear--; this.generateCalendar(); }
-  nextYear() { this.currentYear++; this.generateCalendar(); }
+  prevMonth() {
+    this.currentMonth--;
+    this.generateCalendar();
+  }
+  nextMonth() {
+    this.currentMonth++;
+    this.generateCalendar();
+  }
+  prevYear() {
+    this.currentYear--;
+    this.generateCalendar();
+  }
+  nextYear() {
+    this.currentYear++;
+    this.generateCalendar();
+  }
 
   selectDay(day: any) {
     this.dateSelected.emit(day.fullDate);
