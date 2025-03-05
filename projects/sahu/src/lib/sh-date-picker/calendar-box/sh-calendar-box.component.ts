@@ -13,7 +13,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
       </div>
       <div class="calendar-grid">
         <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
-        <div class="day" *ngFor="let day of calendarDays" (click)="selectDay(day)" [class.selected]="isSelected(day)">
+        <div class="day" *ngFor="let day of calendarDays" (click)="selectDay(day)" [class.selected]="day.selected">
           {{ day.date }}
         </div>
       </div>
@@ -76,9 +76,27 @@ export class CalendarBoxComponent implements OnChanges {
     for (let i = 1; i <= lastDay.getDate(); i++) {
       const _date = new Date(this.currentYear, this.currentMonth, i);
       const fullDate = _date.toLocaleDateString('en-CA'); // Định dạng YYYY-MM-DD
+
+      let selected;
+      if (this.shRange) {
+        const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date) : null;
+        const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date) : null;
+
+        console.log(fullDate, this.flagDate?.start_date, this.flagDate?.end_date);
+
+        if (start && _date >= start && end && _date <= end) {
+          selected = true;
+        } else {
+          selected = false;
+        }
+      } else {
+        selected = this.value === fullDate;
+      }
+
       this.calendarDays.push({
         date: i,
-        fullDate
+        fullDate,
+        selected: selected
       });
     }
   }
@@ -105,26 +123,18 @@ export class CalendarBoxComponent implements OnChanges {
       if (!this.selectedDates.start_date) {
         this.selectedDates.start_date = day.fullDate;
       } else {
-        this.selectedDates.end_date = day.fullDate;
-        this.dateSelected.emit(this.selectedDates as { start_date: string; end_date: string });
+        let start = new Date(this.selectedDates.start_date);
+        let end = new Date(day.fullDate);
+        if (start > end) {
+          this.selectedDates.start_date = day.fullDate;
+        } else {
+          this.selectedDates.end_date = day.fullDate;
+          this.dateSelected.emit(this.selectedDates as { start_date: string; end_date: string });
+        }
       }
     } else {
       this.dateSelected.emit(day.fullDate);
     }
   }
 
-  isSelected(day: any) {
-    const _date = new Date(day.fullDate);
-    const fullDate = _date.toLocaleDateString('en-CA'); // Định dạng YYYY-MM-DD
-    let selected;
-    if (this.shRange) {
-      const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date) : null;
-      const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date) : null;
-      if (!start || !end) return;
-      selected = _date >= start && _date <= end;
-    } else {
-      selected = this.value === fullDate;
-    }
-    return selected;
-  }
 }

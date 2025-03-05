@@ -7,7 +7,6 @@ import { DatePickerPanelComponent } from './date-picker-panel/sh-date-picker-pan
 @Component({
   selector: 'sh-date-picker',
   templateUrl: './sh-date-picker.component.html',
-  styles: [`.date-picker-display { width: 100%; padding: 8px; border: 1px solid #ccc; cursor: pointer; text-align: center; }`],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
