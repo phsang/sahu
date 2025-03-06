@@ -19,6 +19,7 @@
   align-items: center;
   border-bottom: 1px solid #cfcfcf;
   display: flex;
+  font-size: 13px;
   justify-content: space-between;
   padding: 5px;
 }
@@ -30,22 +31,21 @@
 
 .switch-date .btn {
   color: #666;
-  font-size: 20px;
-  padding-left: 1px;
-  padding-right: 1px;
+  font-size: 17px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .calendar-grid {
   display: grid;
-  font-size: 13px;
-  gap: 5px 0;
+  font-size: 12px;
+  gap: 7px 0;
   grid-template-columns: repeat(7, 1fr);
   padding: 5px 10px 10px;
 }
 
 .day-label {
   color: #222;
-  margin-bottom: 3px;
   padding: 6px 1px;
 }
 
@@ -54,8 +54,7 @@
   color: #222;
   cursor: pointer;
   display: flex;
-  font-size: 12px;
-  height: 26px;
+  height: 24px;
   justify-content: center;
   padding: 1px;
   width: 30px;
@@ -63,11 +62,23 @@
 
 .day-container:hover .day,
 .selected .day {
-  background: #c8e3ff;
+  background: #e6f3ff;
 }
 
 .start_date.selected .day,
 .end_date.selected .day {
   background: #238dff;
   color: #fff;
+}
+
+.start_date.selected .day {
+  border-radius: 4px 0 0 4px;
+}
+
+.end_date.selected .day {
+  border-radius: 0 4px 4px 0;
+}
+
+.other-month .day {
+  color: #6f6f6f;
 }

@@ -131,6 +131,10 @@ export class CalendarBoxComponent implements OnChanges {
   }
 
   selectDay(day: any) {
+    this.proccessDate(day);
+  }
+
+  proccessDate(day: any) {
     if (this.shRange) {
       if (!this.selectedDates.start_date) {
         this.selectedDates.start_date = day.fullDate;
@@ -148,5 +152,7 @@ export class CalendarBoxComponent implements OnChanges {
       this.dateSelected.emit(day.fullDate);
     }
   }
+
+  proccessLayout(day: any) { }
 
 }
