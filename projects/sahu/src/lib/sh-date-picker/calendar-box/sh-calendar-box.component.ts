@@ -41,7 +41,7 @@ export class CalendarBoxComponent implements OnChanges {
 
   currentYear: number = new Date().getFullYear();
   currentMonth: number = new Date().getMonth();
-  weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  weekDays = ['H', 'B', 'T', 'N', 'S', 'B', 'C'];
   calendarDays: any[] = [];
   selectedDates: { start_date?: string; end_date?: string } = {};
   flagDate: any;
@@ -80,15 +80,48 @@ export class CalendarBoxComponent implements OnChanges {
   }
 
   generateCalendar() {
-    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+    this.calendarDays = [];
+
+    const firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1);
+    const lastDayOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0);
+    const lastDateOfMonth = lastDayOfMonth.getDate();
+
+    // Ngày bắt đầu trong tuần (0 = Chủ Nhật, 1 = Thứ 2, ..., 6 = Thứ 7)
+    let startDay = firstDayOfMonth.getDay();
+    startDay = startDay === 0 ? 6 : startDay - 1; // Đổi Chủ Nhật (0) thành cuối tuần (6)
+
+    const prevMonthLastDay = new Date(this.currentYear, this.currentMonth, 0).getDate();
+    const nextMonthStart = 1;
+    const totalDays = 42; // 6 hàng x 7 cột (để đảm bảo đầy đủ các tuần)
+
     const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date).toLocaleDateString('en-CA') : null;
     const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date).toLocaleDateString('en-CA') : null;
 
-    this.calendarDays = Array.from({ length: lastDay }, (_, i) => {
-      const fullDate = new Date(this.currentYear, this.currentMonth, i + 1).toLocaleDateString('en-CA');
+    for (let i = 0; i < totalDays; i++) {
+      let date: number, fullDate: string, currentMonth: number;
+      let isPrevMonth = i < startDay;
+      let isNextMonth = i >= startDay + lastDateOfMonth;
+
+      if (isPrevMonth) {
+        date = prevMonthLastDay - (startDay - i - 1);
+        currentMonth = this.currentMonth - 1;
+      } else if (isNextMonth) {
+        date = nextMonthStart + (i - (startDay + lastDateOfMonth));
+        currentMonth = this.currentMonth + 1;
+      } else {
+        date = i - startDay + 1;
+        currentMonth = this.currentMonth;
+      }
+
+      const displayYear = currentMonth < 0 ? this.currentYear - 1 : currentMonth > 11 ? this.currentYear + 1 : this.currentYear;
+      const displayMonth = (currentMonth + 12) % 12; // Đảm bảo tháng đúng
+
+      fullDate = new Date(displayYear, displayMonth, date).toLocaleDateString('en-CA');
 
       const disabled = (this.shMin && fullDate < this.shMin) || (this.shMax && fullDate > this.shMax);
-      const selected = this.shRange ? start && fullDate >= start && end && fullDate <= end : this.value === fullDate;
+      const selected = this.shRange
+        ? start && fullDate >= start && end && fullDate <= end
+        : this.value === fullDate;
 
       let checkDate = '';
       if (this.shRange) {
@@ -97,8 +130,15 @@ export class CalendarBoxComponent implements OnChanges {
         checkDate = 'single_date';
       }
 
-      return { date: i + 1, fullDate, selected, checkDate, disabled };
-    });
+      this.calendarDays.push({
+        date,
+        fullDate,
+        selected,
+        checkDate,
+        disabled,
+        isCurrentMonth: !isPrevMonth && !isNextMonth
+      });
+    }
   }
 
   prevMonth() {
