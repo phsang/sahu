@@ -1,9 +1,10 @@
 <div class="date-picker-display" (click)="openDatePicker()">
   <sh-input
+    [shIcon]="'calendar'"
     [shName]="shName"
     [shId]="shId"
     [shPlaceholder]="shPlaceholder"
-    [ngModel]="displayValue"
+    [(ngModel)]="displayValue"
     [shReadonly]="true"
     [shAutocomplete]="'off'"
     [shDataVali]="shDataVali">

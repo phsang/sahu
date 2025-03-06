@@ -13,7 +13,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
       </div>
       <div class="calendar-grid">
         <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
-        <div class="day" *ngFor="let day of calendarDays" (click)="selectDay(day)" [class.selected]="day.selected">
+        <div *ngFor="let day of calendarDays" class="day {{day.checkDate}}" (click)="selectDay(day)" [class.selected]="day.selected">
           {{ day.date }}
         </div>
       </div>
@@ -69,7 +69,6 @@ export class CalendarBoxComponent implements OnChanges {
   }
 
   generateCalendar() {
-    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
     const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
     this.calendarDays = [];
 
@@ -77,26 +76,33 @@ export class CalendarBoxComponent implements OnChanges {
       const _date = new Date(this.currentYear, this.currentMonth, i);
       const fullDate = _date.toLocaleDateString('en-CA'); // Định dạng YYYY-MM-DD
 
-      let selected;
+      let selected = false;
+      let checkDate = '';
       if (this.shRange) {
-        const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date) : null;
-        const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date) : null;
+        const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date).toLocaleDateString('en-CA') : null;
+        const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date).toLocaleDateString('en-CA') : null;
 
-        console.log(fullDate, this.flagDate?.start_date, this.flagDate?.end_date);
-
-        if (start && _date >= start && end && _date <= end) {
+        if (start && fullDate >= start && end && fullDate <= end) {
           selected = true;
-        } else {
-          selected = false;
+        }
+        if (start && fullDate == start) {
+          checkDate = 'start_date';
+        }
+        if (end && fullDate == end) {
+          checkDate = 'end_date';
         }
       } else {
-        selected = this.value === fullDate;
+        if (this.value === fullDate) {
+          selected = true;
+          checkDate = 'single_date';
+        }
       }
 
       this.calendarDays.push({
         date: i,
         fullDate,
-        selected: selected
+        selected: selected,
+        checkDate
       });
     }
   }
