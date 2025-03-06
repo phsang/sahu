@@ -22,6 +22,7 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   @Input() shPlaceholder?: string;
   @Input() shMin?: Date;
   @Input() shMax?: Date;
+  @Input() shFormat: string = 'DD-MM-YYYY';
   @Input() shRange: boolean = false;
   @Input() shDataVali?: string;
   @Input() ngModel?: string | { start_date: string; end_date: string };
@@ -92,9 +93,9 @@ export class ShDatePickerComponent implements ControlValueAccessor {
       this.ngModel?.start_date &&
       this.ngModel?.end_date
     ) {
-      this.displayValue = `${moment(this.ngModel.start_date).format('DD/MM/YYYY')} - ${moment(this.ngModel.end_date).format('DD/MM/YYYY')}`;
+      this.displayValue = `${moment(this.ngModel.start_date).format(this.shFormat)} - ${moment(this.ngModel.end_date).format(this.shFormat)}`;
     } else if (typeof this.ngModel === 'string' && this.ngModel !== '') {
-      this.displayValue = moment(this.ngModel).format('DD/MM/YYYY');
+      this.displayValue = moment(this.ngModel).format(this.shFormat);
     } else {
       this.displayValue = '';
     }
