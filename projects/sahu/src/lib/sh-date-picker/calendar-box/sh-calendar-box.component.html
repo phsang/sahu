@@ -32,11 +32,11 @@
   </div>
   <div class="calendar-grid">
     <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
-    <div *ngFor="let day of calendarDays">
-      <div class="day {{day.checkDate}}" (click)="selectDay(day)" [class.selected]="day.selected" *ngIf="!day.disabled">
-        {{ day.date }}
-      </div>
-      <div class="day date_disabled" [class.selected]="day.selected" *ngIf="day.disabled">
+    <div *ngFor="let day of calendarDays"
+      [ngClass]="[day.checkDate, day.disabled ? 'date_disabled' : '', day.selected ? 'selected': '', day.isCurrentMonth ? '' : 'other-month']"
+      class="day-container"
+      (click)="!day.disabled && selectDay(day)">
+      <div class="day">
         {{ day.date }}
       </div>
     </div>
