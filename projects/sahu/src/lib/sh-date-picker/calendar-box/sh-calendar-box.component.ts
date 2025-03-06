@@ -2,28 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 
 @Component({
   selector: 'sh-calendar-box',
-  template: `
-    <div class="calendar-box">
-      <div class="calendar-header">
-        <button (click)="prevYear()">«</button>
-        <button (click)="prevMonth()">‹</button>
-        <span>{{ currentMonth + 1 }} {{ currentYear }}</span>
-        <button (click)="nextMonth()">›</button>
-        <button (click)="nextYear()">»</button>
-      </div>
-      <div class="calendar-grid">
-        <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
-        <div *ngFor="let day of calendarDays">
-          <div class="day {{day.checkDate}}" (click)="selectDay(day)" [class.selected]="day.selected" *ngIf="!day.disabled">
-            {{ day.date }}
-          </div>
-          <div class="day date_disabled" [class.selected]="day.selected" *ngIf="day.disabled">
-            {{ day.date }}
-          </div>
-        </div>
-      </div>
-    </div>
-  `
+  templateUrl: './sh-calendar-box.component.html',
 })
 export class CalendarBoxComponent implements OnChanges {
   @Input() shMin?: string;
