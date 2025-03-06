@@ -1,26 +1,34 @@
 <div class="calendar-box">
   <div class="calendar-header">
-    <sh-button
-      [shClass]="'blank'"
-      [shIcon]="'angle-double-left'"
-      (click)="prevYear()">
-    </sh-button>
-    <sh-button
-      [shClass]="'blank'"
-      [shIcon]="'angle-left'"
-      (click)="prevMonth()">
-    </sh-button>
-    <span>{{ currentMonth + 1 }} {{ currentYear }}</span>
-    <sh-button
-      [shClass]="'blank'"
-      [shIcon]="'angle-right'"
-      (click)="nextMonth()">
-    </sh-button>
-    <sh-button
-      [shClass]="'blank'"
-      [shIcon]="'angle-double-right'"
-      (click)="nextYear()">
-    </sh-button>
+    <div class="switch-date">
+      <sh-button
+        [shClass]="'blank'"
+        [shSize]="'sm'"
+        [shIcon]="'angle-double-left'"
+        (click)="prevYear()">
+      </sh-button>
+      <sh-button
+        [shClass]="'blank'"
+        [shSize]="'sm'"
+        [shIcon]="'angle-left'"
+        (click)="prevMonth()">
+      </sh-button>
+    </div>
+    <span>{{ currentMonth + 1 }} / {{ currentYear }}</span>
+    <div class="switch-date">
+      <sh-button
+        [shClass]="'blank'"
+        [shSize]="'sm'"
+        [shIcon]="'angle-right'"
+        (click)="nextMonth()">
+      </sh-button>
+      <sh-button
+        [shClass]="'blank'"
+        [shSize]="'sm'"
+        [shIcon]="'angle-double-right'"
+        (click)="nextYear()">
+      </sh-button>
+    </div>
   </div>
   <div class="calendar-grid">
     <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
