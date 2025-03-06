@@ -3,6 +3,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DatePickerPanelComponent } from './date-picker-panel/sh-date-picker-panel.component';
+import moment from 'moment';
 
 @Component({
   selector: 'sh-date-picker',
@@ -91,9 +92,9 @@ export class ShDatePickerComponent implements ControlValueAccessor {
       this.ngModel?.start_date &&
       this.ngModel?.end_date
     ) {
-      this.displayValue = `${this.ngModel.start_date} - ${this.ngModel.end_date}`;
+      this.displayValue = `${moment(this.ngModel.start_date).format('DD/MM/YYYY')} - ${moment(this.ngModel.end_date).format('DD/MM/YYYY')}`;
     } else if (typeof this.ngModel === 'string' && this.ngModel !== '') {
-      this.displayValue = this.ngModel;
+      this.displayValue = moment(this.ngModel).format('DD/MM/YYYY');
     } else {
       this.displayValue = '';
     }
