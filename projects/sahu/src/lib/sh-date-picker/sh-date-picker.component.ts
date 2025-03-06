@@ -24,7 +24,7 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   @Input() shRange: boolean = false;
   @Input() shDataVali?: string;
   @Input() ngModel?: string | { start_date: string; end_date: string };
-  @Output() ngModelChange = new EventEmitter<string | { start_date: string; end_date: string }>();
+  // @Output() ngModelChange = new EventEmitter<string | { start_date: string; end_date: string }>();
 
   private overlayRef?: OverlayRef;
   displayValue: string = '';
@@ -68,7 +68,9 @@ export class ShDatePickerComponent implements ControlValueAccessor {
     componentRef.instance.valueChange.subscribe(value => {
       if (JSON.stringify(this.ngModel) !== JSON.stringify(value)) {
         this.ngModel = value;
-        this.ngModelChange.emit(value);
+        // this.ngModelChange.emit(value);
+        // chỉ cần sử dụng onChange vẫn bảo đảm ShDatePickerComponent cập nhật các giá trị nội bộ mà vẫn trả sự kiện cho component cha
+        // component cha cần sử dụng ngModelChange để bắt sự kiện khi ngModel thay đổi
         this.onChange(value);
         this.updateDisplayValue();
         this.triggerInputChange();
