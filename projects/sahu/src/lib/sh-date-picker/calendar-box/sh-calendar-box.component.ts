@@ -132,6 +132,7 @@ export class CalendarBoxComponent implements OnChanges {
 
   selectDay(day: any) {
     this.proccessDate(day);
+    this.proccessLayout(day);
   }
 
   proccessDate(day: any) {
@@ -153,6 +154,20 @@ export class CalendarBoxComponent implements OnChanges {
     }
   }
 
-  proccessLayout(day: any) { }
+  proccessLayout(day: any) {
+    if (!this.shRange) {
+      this.calendarDays.map((item: any) => {
+        item.selected = item.fullDate === day.fullDate;
+        item.checkDate = item.selected ? 'single_date' : '';
+      });
+    } else {
+      this.calendarDays.map((item: any) => {
+        if (item.fullDate === day.fullDate) {
+          item.checkDate = item.fullDate === this.selectedDates.start_date ? 'start_date' : 'end_date';
+        }
+        item.selected = item.fullDate === this.selectedDates.start_date || item.fullDate === this.selectedDates.end_date;
+      });
+    }
+  }
 
 }

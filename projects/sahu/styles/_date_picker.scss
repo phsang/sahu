@@ -82,3 +82,9 @@
 .other-month .day {
   color: #6f6f6f;
 }
+
+.date_disabled .day {
+  background-color: #f2f2f2;
+  color: #444;
+  cursor: not-allowed;
+}
