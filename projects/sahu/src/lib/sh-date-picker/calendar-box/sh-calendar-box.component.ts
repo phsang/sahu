@@ -89,8 +89,15 @@ export class CalendarBoxComponent implements OnChanges {
       const displayMonth = (currentMonth + 12) % 12; // Đảm bảo tháng đúng
 
       fullDate = new Date(displayYear, displayMonth, date).toLocaleDateString('en-CA');
-
-      const disabled = (this.shMin && fullDate < this.shMin) || (this.shMax && fullDate > this.shMax);
+      const jMin = this.shMin ? new Date(this.shMin).toLocaleDateString('en-CA') : null;
+      const jMax = this.shMax ? new Date(this.shMax).toLocaleDateString('en-CA') : null;
+      let disabled = false;
+      if (jMin && fullDate < jMin) {
+        disabled = true;
+      }
+      if (jMax && fullDate > jMax) {
+        disabled = true;
+      }
       const selected = this.shRange
         ? start && fullDate >= start && end && fullDate <= end
         : this.value === fullDate;
