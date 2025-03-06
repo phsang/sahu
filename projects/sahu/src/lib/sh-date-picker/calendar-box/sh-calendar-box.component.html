@@ -1,10 +1,26 @@
 <div class="calendar-box">
   <div class="calendar-header">
-    <button (click)="prevYear()">«</button>
-    <button (click)="prevMonth()">‹</button>
+    <sh-button
+      [shClass]="'blank'"
+      [shIcon]="'angle-double-left'"
+      (click)="prevYear()">
+    </sh-button>
+    <sh-button
+      [shClass]="'blank'"
+      [shIcon]="'angle-left'"
+      (click)="prevMonth()">
+    </sh-button>
     <span>{{ currentMonth + 1 }} {{ currentYear }}</span>
-    <button (click)="nextMonth()">›</button>
-    <button (click)="nextYear()">»</button>
+    <sh-button
+      [shClass]="'blank'"
+      [shIcon]="'angle-right'"
+      (click)="nextMonth()">
+    </sh-button>
+    <sh-button
+      [shClass]="'blank'"
+      [shIcon]="'angle-double-right'"
+      (click)="nextYear()">
+    </sh-button>
   </div>
   <div class="calendar-grid">
     <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
