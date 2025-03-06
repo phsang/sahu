@@ -6,10 +6,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
     <div class="date-picker-panel">
       <sh-calendar-box [shRange]="shRange" [shMin]="shMin" [shMax]="shMax" [value]="value" (dateSelected)="confirmSelection($event)"></sh-calendar-box>
     </div>
-  `,
-  styles: [
-    `.date-picker-panel { background: white; padding: 10px; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }`
-  ]
+  `
 })
 export class DatePickerPanelComponent {
   @Input() shMin?: string;

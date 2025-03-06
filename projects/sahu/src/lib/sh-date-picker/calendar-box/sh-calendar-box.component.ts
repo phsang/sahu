@@ -23,14 +23,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
         </div>
       </div>
     </div>
-  `,
-  styles: [
-    `.calendar-box { width: 250px; text-align: center; }
-     .calendar-header { display: flex; justify-content: space-between; padding: 5px; }
-     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
-     .day { padding: 5px; cursor: pointer; border-radius: 5px; }
-     .day.selected { background: #007bff; color: white; }`
-  ]
+  `
 })
 export class CalendarBoxComponent implements OnChanges {
   @Input() shMin?: string;
