@@ -13,9 +13,14 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
       </div>
       <div class="calendar-grid">
         <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
-        <div *ngFor="let day of calendarDays" class="day {{day.checkDate}}" (click)="selectDay(day)" [class.selected]="day.selected">
-          {{ day.date }}
-        </div>
+        <ng-container *ngFor="let day of calendarDays">
+          <div class="day {{day.checkDate}}" (click)="selectDay(day)" [class.selected]="day.selected" *ngIf="!day.disabled">
+            {{ day.date }}
+          </div>
+          <div class="day date_disabled" [class.selected]="day.selected" *ngIf="day.disabled">
+            {{ day.date }}
+          </div>
+        </ng-container>
       </div>
     </div>
   `,
@@ -76,6 +81,14 @@ export class CalendarBoxComponent implements OnChanges {
       const _date = new Date(this.currentYear, this.currentMonth, i);
       const fullDate = _date.toLocaleDateString('en-CA'); // Định dạng YYYY-MM-DD
 
+      let disabled = false;
+      if (this.shMin && fullDate < this.shMin) {
+        disabled = true;
+      }
+      if (this.shMax && fullDate > this.shMax) {
+        disabled = true;
+      }
+
       let selected = false;
       let checkDate = '';
       if (this.shRange) {
@@ -102,7 +115,8 @@ export class CalendarBoxComponent implements OnChanges {
         date: i,
         fullDate,
         selected: selected,
-        checkDate
+        checkDate,
+        disabled
       });
     }
   }
