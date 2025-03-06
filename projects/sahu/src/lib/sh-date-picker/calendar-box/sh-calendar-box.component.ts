@@ -7,20 +7,20 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
       <div class="calendar-header">
         <button (click)="prevYear()">«</button>
         <button (click)="prevMonth()">‹</button>
-        <span>{{ currentMonth }} {{ currentYear }}</span>
+        <span>{{ currentMonth + 1 }} {{ currentYear }}</span>
         <button (click)="nextMonth()">›</button>
         <button (click)="nextYear()">»</button>
       </div>
       <div class="calendar-grid">
         <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
-        <ng-container *ngFor="let day of calendarDays">
+        <div *ngFor="let day of calendarDays">
           <div class="day {{day.checkDate}}" (click)="selectDay(day)" [class.selected]="day.selected" *ngIf="!day.disabled">
             {{ day.date }}
           </div>
           <div class="day date_disabled" [class.selected]="day.selected" *ngIf="day.disabled">
             {{ day.date }}
           </div>
-        </ng-container>
+        </div>
       </div>
     </div>
   `,
@@ -70,55 +70,35 @@ export class CalendarBoxComponent implements OnChanges {
       }
 
       this.flagDate = this.value;
+    } else if (this.shMin) {
+      const minDate = new Date(this.shMin);
+      if (!isNaN(minDate.getTime())) {
+        this.currentYear = minDate.getFullYear();
+        this.currentMonth = minDate.getMonth();
+      }
     }
   }
 
   generateCalendar() {
-    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
-    this.calendarDays = [];
+    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+    const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date).toLocaleDateString('en-CA') : null;
+    const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date).toLocaleDateString('en-CA') : null;
 
-    for (let i = 1; i <= lastDay.getDate(); i++) {
-      const _date = new Date(this.currentYear, this.currentMonth, i);
-      const fullDate = _date.toLocaleDateString('en-CA'); // Định dạng YYYY-MM-DD
+    this.calendarDays = Array.from({ length: lastDay }, (_, i) => {
+      const fullDate = new Date(this.currentYear, this.currentMonth, i + 1).toLocaleDateString('en-CA');
 
-      let disabled = false;
-      if (this.shMin && fullDate < this.shMin) {
-        disabled = true;
-      }
-      if (this.shMax && fullDate > this.shMax) {
-        disabled = true;
-      }
+      const disabled = (this.shMin && fullDate < this.shMin) || (this.shMax && fullDate > this.shMax);
+      const selected = this.shRange ? start && fullDate >= start && end && fullDate <= end : this.value === fullDate;
 
-      let selected = false;
       let checkDate = '';
       if (this.shRange) {
-        const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date).toLocaleDateString('en-CA') : null;
-        const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date).toLocaleDateString('en-CA') : null;
-
-        if (start && fullDate >= start && end && fullDate <= end) {
-          selected = true;
-        }
-        if (start && fullDate == start) {
-          checkDate = 'start_date';
-        }
-        if (end && fullDate == end) {
-          checkDate = 'end_date';
-        }
-      } else {
-        if (this.value === fullDate) {
-          selected = true;
-          checkDate = 'single_date';
-        }
+        checkDate = fullDate === start ? 'start_date' : fullDate === end ? 'end_date' : '';
+      } else if (selected) {
+        checkDate = 'single_date';
       }
 
-      this.calendarDays.push({
-        date: i,
-        fullDate,
-        selected: selected,
-        checkDate,
-        disabled
-      });
-    }
+      return { date: i + 1, fullDate, selected, checkDate, disabled };
+    });
   }
 
   prevMonth() {
