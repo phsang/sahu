@@ -9,8 +9,8 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
   `
 })
 export class DatePickerPanelComponent {
-  @Input() shMin?: string;
-  @Input() shMax?: string;
+  @Input() shMin?: Date;
+  @Input() shMax?: Date;
   @Input() shRange: boolean = false;
   @Input() value?: string | { start_date: string; end_date: string };
   @Output() valueChange = new EventEmitter<string | { start_date: string; end_date: string }>();

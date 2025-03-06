@@ -5,8 +5,8 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
   templateUrl: './sh-calendar-box.component.html',
 })
 export class CalendarBoxComponent implements OnChanges {
-  @Input() shMin?: string;
-  @Input() shMax?: string;
+  @Input() shMin?: Date;
+  @Input() shMax?: Date;
   @Input() shRange: boolean = false;
   @Input() value?: string | { start_date: string; end_date: string };
   @Output() dateSelected = new EventEmitter<string | { start_date: string; end_date: string }>();
@@ -43,11 +43,8 @@ export class CalendarBoxComponent implements OnChanges {
 
       this.flagDate = this.value;
     } else if (this.shMin) {
-      const minDate = new Date(this.shMin);
-      if (!isNaN(minDate.getTime())) {
-        this.currentYear = minDate.getFullYear();
-        this.currentMonth = minDate.getMonth();
-      }
+      this.currentYear = this.shMin.getFullYear();
+      this.currentMonth = this.shMin.getMonth();
     }
   }
 
@@ -89,8 +86,8 @@ export class CalendarBoxComponent implements OnChanges {
       const displayMonth = (currentMonth + 12) % 12; // Đảm bảo tháng đúng
 
       fullDate = new Date(displayYear, displayMonth, date).toLocaleDateString('en-CA');
-      const jMin = this.shMin ? new Date(this.shMin).toLocaleDateString('en-CA') : null;
-      const jMax = this.shMax ? new Date(this.shMax).toLocaleDateString('en-CA') : null;
+      const jMin = this.shMin ? this.shMin.toLocaleDateString('en-CA') : null;
+      const jMax = this.shMax ? this.shMax.toLocaleDateString('en-CA') : null;
       let disabled = false;
       if (jMin && fullDate < jMin) {
         disabled = true;

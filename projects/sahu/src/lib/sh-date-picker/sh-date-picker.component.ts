@@ -19,8 +19,8 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   @Input() shId?: string;
   @Input() shName?: string;
   @Input() shPlaceholder?: string;
-  @Input() shMin?: string;
-  @Input() shMax?: string;
+  @Input() shMin?: Date;
+  @Input() shMax?: Date;
   @Input() shRange: boolean = false;
   @Input() shDataVali?: string;
   @Input() ngModel?: string | { start_date: string; end_date: string };
