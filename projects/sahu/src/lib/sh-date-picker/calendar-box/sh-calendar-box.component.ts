@@ -119,10 +119,18 @@ export class CalendarBoxComponent implements OnChanges {
 
   prevMonth() {
     this.currentMonth--;
+    if (this.currentMonth < 0) {
+      this.currentMonth = 11;
+      this.currentYear--;
+    }
     this.generateCalendar();
   }
   nextMonth() {
     this.currentMonth++;
+    if (this.currentMonth > 11) {
+      this.currentMonth = 0;
+      this.currentYear++;
+    }
     this.generateCalendar();
   }
   prevYear() {
