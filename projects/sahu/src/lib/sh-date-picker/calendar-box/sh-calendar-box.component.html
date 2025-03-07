@@ -11,7 +11,8 @@
         [shVariant]="'blank'"
         [shSize]="'sm'"
         [shIcon]="'angle-left'"
-        (click)="prevMonth()">
+        (click)="prevMonth()"
+        *ngIf="!monthSelectorOpen && !yearSelectorOpen">
       </sh-button>
     </div>
 
@@ -30,7 +31,8 @@
         [shVariant]="'blank'"
         [shSize]="'sm'"
         [shIcon]="'angle-right'"
-        (click)="nextMonth()">
+        (click)="nextMonth()"
+        *ngIf="!monthSelectorOpen && !yearSelectorOpen">
       </sh-button>
       <sh-button
         [shVariant]="'blank'"

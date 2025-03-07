@@ -139,11 +139,21 @@ export class CalendarBoxComponent implements OnChanges {
     this.generateCalendar();
   }
   prevYear() {
-    this.currentYear--;
+    if (this.yearSelectorOpen) {
+      this.currentYear -= 10;
+      this.openYearSelector();
+    } else {
+      this.currentYear--;
+    }
     this.generateCalendar();
   }
   nextYear() {
-    this.currentYear++;
+    if (this.yearSelectorOpen) {
+      this.currentYear += 10;
+      this.openYearSelector();
+    } else {
+      this.currentYear++;
+    }
     this.generateCalendar();
   }
 
@@ -218,6 +228,7 @@ export class CalendarBoxComponent implements OnChanges {
   selectYear(year: number) {
     this.currentYear = year;
     this.yearSelectorOpen = false;
+    this.monthSelectorOpen = true;
     this.generateCalendar();
   }
 
