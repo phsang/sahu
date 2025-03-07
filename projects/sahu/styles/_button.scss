@@ -10,11 +10,21 @@
   gap: 8px;
   justify-content: center;
   padding: 2px 16px;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
   transition: .3s;
 }
 
 .btn-blank {}
+
+.btn-default {
+  background-color: $default_color;
+  border-color: $default_color;
+  color: #fff;
+}
+
+.btn-default:hover {
+  background-color: $default_color_active;
+  border-color: $default_color_active;
+}
 
 .btn-primary {
   background-color: $primary_color;
@@ -49,10 +59,26 @@
   border-color: $success_color_active;
 }
 
-.btn-default {
-  background-color: #fff;
-  border-color: #ccc;
-  color: #333;
+.btn-warning {
+  background-color: $warning_color;
+  border-color: $warning_color;
+  color: #fff;
+}
+
+.btn-warning:hover {
+  background-color: $warning_color_active;
+  border-color: $warning_color_active;
+}
+
+.btn-danger {
+  background-color: $danger_color;
+  border-color: $danger_color;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: $danger_color_active;
+  border-color: $danger_color_active;
 }
 
 .btn-sm {
