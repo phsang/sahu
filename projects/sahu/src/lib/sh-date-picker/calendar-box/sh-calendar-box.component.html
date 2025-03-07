@@ -16,9 +16,13 @@
     </div>
 
     <span class="display-date">
-      <span class="display-month" (click)="openMonthSelector()" *ngIf="!monthSelectorOpen">{{ currentMonth + 1 }}</span>
-      <span *ngIf="!monthSelectorOpen">/</span>
-      <span class="display-year">{{ currentYear }}</span>
+      <div *ngIf="!monthSelectorOpen && !yearSelectorOpen">
+        <span class="display-month" (click)="openMonthSelector()">{{ currentMonth + 1 }}</span>
+        <span>/</span>
+        <span class="display-year" (click)="openYearSelector()">{{ currentYear }}</span>
+      </div>
+      <span *ngIf="monthSelectorOpen">{{currentYear}}</span>
+      <span *ngIf="yearSelectorOpen">{{years[0] + ' - ' + years[9]}}</span>
     </span>
 
     <div class="switch-date">
@@ -43,7 +47,13 @@
     </div>
   </div>
 
-  <div class="calendar-grid" *ngIf="!monthSelectorOpen">
+  <div class="year-selector" *ngIf="yearSelectorOpen">
+    <div class="year-item" *ngFor="let year of years" (click)="selectYear(year)" [ngClass]="year === currentYear ? 'selected' : ''">
+      <span class="year-value">{{ year }}</span>
+    </div>
+  </div>
+
+  <div class="calendar-grid" *ngIf="!monthSelectorOpen && !yearSelectorOpen">
     <div class="day-label" *ngFor="let day of weekDays">{{ day }}</div>
     <div *ngFor="let day of calendarDays"
       [ngClass]="[day.checkDate, day.disabled ? 'date_disabled' : '', day.selected ? 'selected': '', day.isCurrentMonth ? '' : 'other-month']"

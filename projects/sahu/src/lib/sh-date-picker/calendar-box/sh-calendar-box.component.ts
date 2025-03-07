@@ -20,6 +20,8 @@ export class CalendarBoxComponent implements OnChanges {
 
   months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   monthSelectorOpen: boolean = false;
+  years: number[] = [];
+  yearSelectorOpen: boolean = false;
 
   constructor() {
     this.setTargetDate();
@@ -192,6 +194,30 @@ export class CalendarBoxComponent implements OnChanges {
   selectMonth(month: number) {
     this.currentMonth = month;
     this.monthSelectorOpen = false;
+    this.generateCalendar();
+  }
+
+  openYearSelector() {
+    this.years = [];
+    let yearTmp = this.currentYear;
+
+    while (yearTmp % 10 !== 0) {
+      yearTmp--;
+    }
+
+    this.years.push(yearTmp - 1);
+    for (let i = 0; i < 10; i++) {
+      this.years.push(yearTmp);
+      yearTmp++;
+    }
+    this.years.push(yearTmp);
+
+    this.yearSelectorOpen = true;
+  }
+
+  selectYear(year: number) {
+    this.currentYear = year;
+    this.yearSelectorOpen = false;
     this.generateCalendar();
   }
 
