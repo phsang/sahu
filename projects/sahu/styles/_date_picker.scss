@@ -132,3 +132,26 @@
   color: #777;
   cursor: not-allowed;
 }
+
+.month-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 6px;
+  justify-content: space-between;
+  padding: 14px 10px 16px;
+}
+
+.month-item {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 6px 2px;
+  transition: .3s;
+  width: 31%;
+}
+
+.month-item:hover,
+.month-item.selected {
+  border-color: $primary_color_active;
+  color: $primary_color_active;
+}

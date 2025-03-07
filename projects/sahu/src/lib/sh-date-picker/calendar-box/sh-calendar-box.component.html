@@ -39,7 +39,7 @@
 
   <div class="month-selector" *ngIf="monthSelectorOpen">
     <div class="month-item" *ngFor="let month of months" (click)="selectMonth(month)" [ngClass]="month === currentMonth ? 'selected' : ''">
-      <span class="month-value">{{ month + 1 }}</span>
+      <span class="month-value">Tháng {{ month + 1 }}</span>
     </div>
   </div>
 
