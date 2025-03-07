@@ -154,6 +154,7 @@
 
 .btn:disabled {
   background-color: $disabled_color;
-  color: #e0e0e0;
+  border-color: $disabled_color;
+  color: #fbfbfb;
   cursor: not-allowed;
 }

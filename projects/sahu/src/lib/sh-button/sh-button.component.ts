@@ -12,6 +12,7 @@ export class ShButtonComponent implements OnChanges {
   @Input() shLabel?: string = '';
   @Input() shSize?: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() shDisabled = false;
+  @Input() shLoading = false;
   @Input() shIcon?: string;
 
   iconLeft: string = '';

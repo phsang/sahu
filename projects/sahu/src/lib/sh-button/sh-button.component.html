@@ -6,5 +6,6 @@
   (click)="handleClick($event)">
   <sh-icon [shIcon]="iconLeft" *ngIf="iconLeft"></sh-icon>
   {{shLabel}}
-  <sh-icon [shIcon]="iconRight" *ngIf="iconRight"></sh-icon>
+  <sh-icon [shIcon]="iconRight" *ngIf="iconRight && !shLoading"></sh-icon>
+  <sh-icon [shIcon]="'spinner-third'" *ngIf="shLoading" [shSpin]="true"></sh-icon>
 </button>
