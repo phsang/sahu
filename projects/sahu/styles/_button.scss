@@ -13,7 +13,9 @@
   transition: .3s;
 }
 
-.btn-blank {}
+.btn-blank {
+  color: $primary_color;
+}
 
 .btn-default {
   background-color: $default_color;
@@ -79,6 +81,78 @@
 .btn-danger:hover {
   background-color: $danger_color_active;
   border-color: $danger_color_active;
+}
+
+.btn-outline-default {
+  background-color: #fff;
+  border-color: $default_color_active;
+  color: $default_color_active;
+}
+
+.btn-outline-default:hover {
+  background-color: $default_color;
+  border-color: $default_color;
+  color: #fff;
+}
+
+.btn-outline-primary {
+  background-color: #fff;
+  border-color: $primary_color_active;
+  color: $primary_color_active;
+}
+
+.btn-outline-primary:hover {
+  background-color: $primary_color;
+  border-color: $primary_color;
+  color: #fff;
+}
+
+.btn-outline-info {
+  background-color: #fff;
+  border-color: $info_color_active;
+  color: $info_color_active;
+}
+
+.btn-outline-info:hover {
+  background-color: $info_color;
+  border-color: $info_color;
+  color: #fff;
+}
+
+.btn-outline-success {
+  background-color: #fff;
+  border-color: $success_color_active;
+  color: $success_color_active;
+}
+
+.btn-outline-success:hover {
+  background-color: $success_color;
+  border-color: $success_color;
+  color: #fff;
+}
+
+.btn-outline-warning {
+  background-color: #fff;
+  border-color: $warning_color_active;
+  color: $warning_color_active;
+}
+
+.btn-outline-warning:hover {
+  background-color: $warning_color;
+  border-color: $warning_color;
+  color: #fff;
+}
+
+.btn-outline-danger {
+  background-color: #fff;
+  border-color: $danger_color_active;
+  color: $danger_color_active;
+}
+
+.btn-outline-danger:hover {
+  background-color: $danger_color;
+  border-color: $danger_color;
+  color: #fff;
 }
 
 .btn-sm {
