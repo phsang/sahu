@@ -22,7 +22,7 @@
         <span class="display-year" (click)="openYearSelector()">{{ currentYear }}</span>
       </div>
       <span *ngIf="monthSelectorOpen">{{currentYear}}</span>
-      <span *ngIf="yearSelectorOpen">{{years[0] + ' - ' + years[9]}}</span>
+      <span *ngIf="yearSelectorOpen">{{years[1] + ' - ' + years[10]}}</span>
     </span>
 
     <div class="switch-date">
@@ -48,7 +48,7 @@
   </div>
 
   <div class="year-selector" *ngIf="yearSelectorOpen">
-    <div class="year-item" *ngFor="let year of years" (click)="selectYear(year)" [ngClass]="year === currentYear ? 'selected' : ''">
+    <div class="year-item {{i == 0 || i == 11 ? 'year-border' : ''}}" *ngFor="let year of years; let i = index" (click)="selectYear(year)" [ngClass]="year === currentYear ? 'selected' : ''">
       <span class="year-value">{{ year }}</span>
     </div>
   </div>

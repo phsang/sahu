@@ -133,7 +133,8 @@
   cursor: not-allowed;
 }
 
-.month-selector {
+.month-selector,
+.year-selector {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 6px;
@@ -141,7 +142,8 @@
   padding: 14px 10px 16px;
 }
 
-.month-item {
+.month-item,
+.year-item {
   border: 1px solid transparent;
   border-radius: 2px;
   cursor: pointer;
@@ -151,7 +153,13 @@
 }
 
 .month-item:hover,
-.month-item.selected {
+.month-item.selected,
+.year-item:hover,
+.year-item.selected {
   border-color: $primary_color_active;
   color: $primary_color_active;
+}
+
+.year-border {
+  color: #ccc;
 }
