@@ -41,6 +41,29 @@
   padding: 5px 10px;
 }
 
+.display-date {
+  border-radius: 3px;
+  padding: 1px 25px;
+  transition: .3s;
+}
+
+.display-date:hover {
+  background-color: #d0d0d0;
+}
+
+.display-month,
+.display-year {
+  color: #222;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 2px 8px;
+}
+
+.display-month:hover,
+.display-year:hover {
+  color: $primary_color_active;
+}
+
 .switch-date {
   align-items: center;
   display: flex;

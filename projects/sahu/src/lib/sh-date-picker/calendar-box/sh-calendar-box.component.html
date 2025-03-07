@@ -14,7 +14,11 @@
         (click)="prevMonth()">
       </sh-button>
     </div>
-    <span>{{ currentMonth + 1 }} / {{ currentYear }}</span>
+
+    <span class="display-date">
+      <span class="display-month">{{ currentMonth + 1 }}</span>/<span class="display-year">{{ currentYear }}</span>
+    </span>
+
     <div class="switch-date">
       <sh-button
         [shVariant]="'blank'"
