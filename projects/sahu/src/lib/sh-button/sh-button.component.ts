@@ -6,13 +6,14 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
   styleUrls: ['./sh-button.component.scss']
 })
 export class ShButtonComponent implements OnChanges {
-  @Input() shType: 'button' | 'submit' | 'reset' = 'button';
-  @Input() shLabel: string = '';
-  @Input() shClass: 'default' | 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'blank' = 'default';
-  @Input() shSize: 'sm' | 'md' | 'lg' | 'xl' = 'md';
+  @Input() shType?: 'button' | 'submit' | 'reset' = 'button';
+  @Input() shVariant?: 'default' | 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'blank' = 'default';
+  @Input() shClass?: string;
+  @Input() shLabel?: string;
+  @Input() shSize?: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() disabled = false;
-
   @Input() shIcon?: string;
+
   iconLeft: string = '';
   iconRight: string = '';
 

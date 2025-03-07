@@ -2,13 +2,13 @@
   <div class="calendar-header">
     <div class="switch-date">
       <sh-button
-        [shClass]="'blank'"
+        [shVariant]="'blank'"
         [shSize]="'sm'"
         [shIcon]="'angle-double-left'"
         (click)="prevYear()">
       </sh-button>
       <sh-button
-        [shClass]="'blank'"
+        [shVariant]="'blank'"
         [shSize]="'sm'"
         [shIcon]="'angle-left'"
         (click)="prevMonth()">
@@ -17,13 +17,13 @@
     <span>{{ currentMonth + 1 }} / {{ currentYear }}</span>
     <div class="switch-date">
       <sh-button
-        [shClass]="'blank'"
+        [shVariant]="'blank'"
         [shSize]="'sm'"
         [shIcon]="'angle-right'"
         (click)="nextMonth()">
       </sh-button>
       <sh-button
-        [shClass]="'blank'"
+        [shVariant]="'blank'"
         [shSize]="'sm'"
         [shIcon]="'angle-double-right'"
         (click)="nextYear()">
