@@ -18,6 +18,9 @@ export class CalendarBoxComponent implements OnChanges {
   selectedDates: { start_date?: string; end_date?: string } = {};
   flagDate: any;
 
+  months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  monthSelectorOpen: boolean = false;
+
   constructor() {
     this.setTargetDate();
     this.generateCalendar();
@@ -180,6 +183,16 @@ export class CalendarBoxComponent implements OnChanges {
         item.selected = item.fullDate === this.selectedDates.start_date || item.fullDate === this.selectedDates.end_date;
       });
     }
+  }
+
+  openMonthSelector() {
+    this.monthSelectorOpen = true;
+  }
+
+  selectMonth(month: number) {
+    this.currentMonth = month;
+    this.monthSelectorOpen = false;
+    this.generateCalendar();
   }
 
 }
