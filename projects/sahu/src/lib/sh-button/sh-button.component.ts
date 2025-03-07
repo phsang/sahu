@@ -8,8 +8,8 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 export class ShButtonComponent implements OnChanges {
   @Input() shType?: 'button' | 'submit' | 'reset' = 'button';
   @Input() shVariant?: 'default' | 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'blank' = 'default';
-  @Input() shClass?: string;
-  @Input() shLabel?: string;
+  @Input() shClass?: string = '';
+  @Input() shLabel?: string = '';
   @Input() shSize?: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() disabled = false;
   @Input() shIcon?: string;

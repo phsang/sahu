@@ -1,6 +1,19 @@
-.date-picker-display {
+.date-picker-container {
   cursor: pointer;
+  position: relative;
   width: 100%;
+}
+
+.date-picker-reset {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
 }
 
 .date-picker-panel {

@@ -1,18 +1,24 @@
-<div class="date-picker-display" (click)="openDatePicker()">
-  <sh-input
-    [shIcon]="'calendar'"
-    [shName]="shName"
-    [shId]="shId"
-    [shSize]="shSize"
-    [shPlaceholder]="shPlaceholder"
-    [(ngModel)]="displayValue"
-    [shReadonly]="true"
-    [shAutocomplete]="'off'"
-    [shDataVali]="shDataVali">
-  </sh-input>
+<div class="date-picker-container">
+  <div class="date-picker-display" (click)="openDatePicker()">
+    <sh-input
+      [shIcon]="'calendar'"
+      [shName]="shName"
+      [shId]="shId"
+      [shSize]="shSize"
+      [shPlaceholder]="shPlaceholder"
+      [(ngModel)]="displayValue"
+      [shReadonly]="true"
+      [shAutocomplete]="'off'"
+      [shDataVali]="shDataVali">
+    </sh-input>
+  </div>
 
-  <sh-button
-    (shClick)="resetDisplayValue()"
-    [shClass]="'blank'">
-  </sh-button>
+  <div class="date-picker-reset" *ngIf="displayValue">
+    <sh-button
+      (shClick)="resetDisplayValue()"
+      [shVariant]="'blank'"
+      [shClass]="'sh-reset'">
+    </sh-button>
+  </div>
+
 </div>
