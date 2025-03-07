@@ -7,11 +7,11 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 })
 export class ShButtonComponent implements OnChanges {
   @Input() shType?: 'button' | 'submit' | 'reset' = 'button';
-  @Input() shVariant?: 'default' | 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'outline-default' | 'outline-primary' | 'outline-info' | 'outline-success' | 'outline-warning' | 'outline-danger' | 'blank' = 'default';
+  @Input() shVariant?: 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'outline-primary' | 'outline-info' | 'outline-success' | 'outline-warning' | 'outline-danger' | 'blank' = 'primary';
   @Input() shClass?: string = '';
   @Input() shLabel?: string = '';
   @Input() shSize?: 'sm' | 'md' | 'lg' | 'xl' = 'md';
-  @Input() disabled = false;
+  @Input() shDisabled = false;
   @Input() shIcon?: string;
 
   iconLeft: string = '';
@@ -39,7 +39,7 @@ export class ShButtonComponent implements OnChanges {
   }
 
   handleClick(event: Event): void {
-    if (!this.disabled) {
+    if (!this.shDisabled) {
       this.shClick.emit(event);
     }
   }

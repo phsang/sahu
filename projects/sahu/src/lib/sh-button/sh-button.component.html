@@ -2,7 +2,7 @@
   class="btn"
   [ngClass]="['btn-' + shVariant, ' btn-' + shSize, shClass]"
   [attr.type]="shType"
-  [disabled]="disabled"
+  [disabled]="shDisabled"
   (click)="handleClick($event)">
   <sh-icon [shIcon]="iconLeft" *ngIf="iconLeft"></sh-icon>
   {{shLabel}}
