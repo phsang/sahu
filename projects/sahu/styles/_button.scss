@@ -14,7 +14,10 @@
 }
 
 .btn-blank {
+  background-color: transparent;
+  border: none;
   color: $primary_color;
+  padding: 0;
 }
 
 .btn-primary {

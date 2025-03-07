@@ -1,3 +1,5 @@
+@use './variables-global' as *;
+
 .date-picker-container {
   cursor: pointer;
   position: relative;
@@ -6,11 +8,13 @@
 
 .date-picker-reset {
   align-items: center;
+  background-color: #f7f7f7;
+  border-radius: 2px;
   display: flex;
-  height: 100%;
+  height: calc(100% - 2px);
   justify-content: center;
   position: absolute;
-  right: 0;
+  right: 1px;
   top: 50%;
   transform: translateY(-50%);
   width: 32px;
@@ -34,7 +38,7 @@
   display: flex;
   font-size: 13px;
   justify-content: space-between;
-  padding: 5px;
+  padding: 5px 10px;
 }
 
 .switch-date {
@@ -44,9 +48,13 @@
 
 .switch-date .btn {
   color: #666;
-  font-size: 17px;
+  font-size: 18px;
   padding-left: 0;
   padding-right: 0;
+}
+
+.switch-date .btn:hover {
+  color: $primary_color;
 }
 
 .calendar-grid {
