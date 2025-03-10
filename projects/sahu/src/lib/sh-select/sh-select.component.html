@@ -25,9 +25,15 @@
         </span>
         <span *ngIf="shMultiple" class="placeholder-text">{{ shPlaceHolder }}</span>
       </div>
-      <i class="dropdown-icon"></i>
 
-      <button *ngIf="(inputValue || inputValue == 0) && shAllowClear && !shMultiple" type="button" class="sh-reset" (click)="reset($event)"></button>
+      <i class="dropdown-icon" *ngIf="!shAllowClear || !inputValue || inputValue == ''"></i>
+      <div class="pr4" *ngIf="shAllowClear && inputValue && (inputValue != '' || inputValue?.length > 0)">
+        <sh-button
+          [shVariant]="'blank'"
+          [shClass]="'sh-reset'"
+          (shClick)="reset($event)">
+        </sh-button>
+      </div>
     </div>
   </div>
 
