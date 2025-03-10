@@ -9,7 +9,7 @@ export class mfValidation {
     const parent = element.closest('.field-validation');
     const msgError = parent?.querySelector('.msg_error') as HTMLElement;
     msg = '<i class="fal fa-exclamation-triangle"></i>' + msg;
-  
+
     if (status) {
       parent?.classList.remove('field_error');
       if (msgError) {
@@ -309,8 +309,7 @@ export class mfValidation {
 
     inputs.forEach((input) => {
       // kiểm tra nếu input đang có sự kiện sẽ return
-      console.log(input.getAttribute('listener'));
-      if(input.getAttribute('listener') == 'true') {}
+      if (input.getAttribute('listener') == 'true') { }
 
       if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
 
