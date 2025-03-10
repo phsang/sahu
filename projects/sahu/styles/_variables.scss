@@ -51,8 +51,17 @@ h6 {
   font-size: 14px;
 }
 
+label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
 .gray {
   color: #666 !important;
+}
+
+.persian_red {
+  color: $persian_red !important;
 }
 
 @for $i from 0 through 20 {
