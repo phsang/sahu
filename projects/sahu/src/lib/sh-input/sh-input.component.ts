@@ -27,12 +27,13 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   @Input() shClass: string = '';
   @Input() shId?: string;
   @Input() shValue?: string;
+  @Input() shAllowClear: boolean = false;
   @Input() shResize?: string; // [shResize]="'606x212'" - resize ảnh kèm theo các options
   @Input() shResizeOptions?: string;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
   @Input() shLabel?: string; // sử dụng cho radio, checkbox
-  @Input() shPlaceholder?: string;
+  @Input() shPlaceHolder?: string;
   @Input() shChecked: boolean = false;
   @Input() shAutocomplete?: string;
   @Input() shLoading: boolean = false;
@@ -470,6 +471,11 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
     }
 
     return phone;
+  }
+
+  reset() {
+    this.shValue = '';
+    this.shChange.emit(null);
   }
 
 }
