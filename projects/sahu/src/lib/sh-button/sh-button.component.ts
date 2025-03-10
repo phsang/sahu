@@ -40,7 +40,7 @@ export class ShButtonComponent implements OnChanges {
   }
 
   handleClick(event: Event): void {
-    if (!this.shDisabled) {
+    if (!this.shDisabled && !this.shLoading) {
       this.shClick.emit(event);
     }
   }

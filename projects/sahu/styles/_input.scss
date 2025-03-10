@@ -218,6 +218,8 @@ input:focus-visible {
 }
 
 .sh-radio {
+  margin: 0;
+
   .remark {
     align-items: center;
     border: 1.5px solid #d0d0d0;
@@ -234,7 +236,6 @@ input:focus-visible {
     background-color: #005fff;
     border-radius: 99px;
     height: 0;
-    transition: .3s;
     width: 0;
   }
 
