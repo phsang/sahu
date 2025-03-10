@@ -47,8 +47,8 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   classLoading = '';
   value: string = '';
 
-  onChange = (_: any) => { };
-  onTouched = () => { };
+  onChange: any = () => { };
+  onTouched: any = () => { };
 
   constructor(
     private renderer: Renderer2,
@@ -190,6 +190,7 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
 
   handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
+    let newValue = input.value;
 
     if (
       this.shType === 'checkbox' ||
@@ -203,17 +204,19 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
       this.value = input.value;
 
       // ràng buộc giá trị nhập (lưu ý: không ràng buộc trong shForm)
+      if (this.shDataVali?.includes('phone')) {
+        newValue = this.formatPhone(this.value);
+      }
+      if (this.shDataVali?.includes('identity')) {
+        newValue = this.value.trim().replace(/\D/g, '');
+        if (this.value.length > 12) {
+          newValue = this.value.substring(0, 10);
+        }
+      }
+
+      this.onChange(newValue);
       setTimeout(() => {
-        if (this.shDataVali?.includes('phone')) {
-          this.value = this.formatPhone(this.value);
-        }
-        if (this.shDataVali?.includes('identity')) {
-          this.value = this.value.trim().replace(/\D/g, '');
-          if (this.value.length > 12) {
-            this.value = this.value.substring(0, 10);
-          }
-        }
-        this.onChange(this.value);
+        this.value = newValue;
       }, 10);
     }
   }
@@ -457,13 +460,15 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
     this.onTouched();
   }
 
-  formatPhone(phone: string) {
-    phone = phone.replace(/\D|\.|\s+/g, '');
+  formatPhone(phone: string): string {
+    // Loại bỏ tất cả ký tự không phải số trước khi định dạng
+    phone = phone.replace(/\D/g, '');
+
     if (phone.length > 10) {
       phone = phone.substring(0, 10);
     }
 
-    // format số điện thoại
+    // Format số điện thoại
     if (phone.length > 4 && phone.length < 8) {
       phone = phone.substring(0, 4) + '.' + phone.substring(4);
     } else if (phone.length >= 8) {
@@ -473,7 +478,8 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
     return phone;
   }
 
-  reset() {
+  resetDisplayValue() {
+    this.value = '';
     this.shValue = '';
     this.shChange.emit(null);
   }

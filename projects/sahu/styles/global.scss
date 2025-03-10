@@ -41,15 +41,9 @@
 
 .sh-reset {
   background-color: #a0a0a0;
-  border: none;
   border-radius: 99px;
-  cursor: pointer;
   height: 25px;
-  padding: 0;
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  transform: translateY(-50%) scale(.65);
+  transform: scale(.6);
   width: 25px;
 
   &:before,

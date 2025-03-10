@@ -2,11 +2,10 @@
   <div class="sh-input input-{{shSize}} {{shDisabled ? 'input-disabled' : ''}}" ngClass="{{shClass}}">
     <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
     <input
-      value="{{value}}"
+      [value]="value"
       [attr.type]="shType"
       [attr.name]="shName ?? null"
       [attr.id]="shId ?? null"
-      [attr.value]="shValue ?? null"
       [attr.readonly]="shReadonly ? true : null"
       [disabled]="shDisabled"
       [attr.placeholder]="shPlaceHolder ?? null"
@@ -16,7 +15,12 @@
       (input)="handleInput($event)"
       (blur)="handleBlur()">
     <span class="icon" *ngIf="iconRight && !shLoading && !shAllowClear" [innerHTML]="iconRight"></span>
-    <button *ngIf="!shLoading && shAllowClear" type="button" class="sh-reset" (click)="reset()"></button>
+    <sh-button
+      *ngIf="!shLoading && shAllowClear && value"
+      (shClick)="resetDisplayValue()"
+      [shVariant]="'blank'"
+      [shClass]="'sh-reset'">
+    </sh-button>
     <span class="input-loading" *ngIf="shLoading"></span>
   </div>
 </div>
