@@ -25,24 +25,6 @@ input:focus-visible {
   border-radius: 2px;
   display: flex;
   transition: .3s;
-
-  .input-loading {
-    align-items: center;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    padding: 5px 10px 5px 0;
-
-    &::before {
-      animation: spin 1.5s linear infinite;
-      border: 2px solid;
-      border-color: #999 #dfdfdf #dfdfdf #dfdfdf;
-      border-radius: 99px;
-      content: "";
-      height: 16px;
-      width: 16px;
-    }
-  }
 }
 
 .sh-input-text.input-disabled,

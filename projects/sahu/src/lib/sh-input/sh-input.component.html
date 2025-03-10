@@ -6,7 +6,7 @@
       [attr.type]="shType"
       [attr.name]="shName ?? null"
       [attr.id]="shId ?? null"
-      [attr.readonly]="shReadonly ? true : null"
+      [attr.readonly]="shLoading || shReadonly ? true : null"
       [disabled]="shDisabled"
       [attr.placeholder]="shPlaceHolder ?? null"
       [attr.autocomplete]="shAutocomplete ?? null"
@@ -14,14 +14,19 @@
       (focus)="handleFocus()"
       (input)="handleInput($event)"
       (blur)="handleBlur()">
-    <span class="icon" *ngIf="iconRight && !shLoading && !shAllowClear" [innerHTML]="iconRight"></span>
+    <span class="icon" *ngIf="iconRight && !shLoading && !value" [innerHTML]="iconRight"></span>
     <sh-button
       *ngIf="!shLoading && shAllowClear && value"
       (shClick)="resetDisplayValue()"
       [shVariant]="'blank'"
       [shClass]="'sh-reset'">
     </sh-button>
-    <span class="input-loading" *ngIf="shLoading"></span>
+    <div class="icon" *ngIf="shLoading">
+      <sh-icon
+        [shIcon]="'spinner-third'"
+        [shSpin]="true">
+      </sh-icon>
+    </div>
   </div>
 </div>
 
