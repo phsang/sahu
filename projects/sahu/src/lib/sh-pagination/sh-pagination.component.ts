@@ -25,17 +25,31 @@ export class ShPaginationComponent implements OnInit {
   @Output() pageSizeChange = new EventEmitter<number>();
 
   pages: number[] = [];
+  pageSizeList: any[] = [];
 
   ngOnInit(): void {
+    this.updatePages();
+
+    this.pageSizeList = this.pageSizeOptions.map((item) => {
+      return { label: item, value: item };
+    });
+  }
+
+  updatePages() {
+    this.pages = [];
     if (this.totalPages <= 5) {
       this.pages.push(...Array.from({ length: this.totalPages }, (_, i) => i + 1));
     } else {
-      if (this.shPageIndex - 2 > 0 && this.shPageIndex + 2 <= this.totalPages) {
-        this.pages.push(this.shPageIndex - 2, this.shPageIndex - 1, this.shPageIndex, this.shPageIndex + 1, this.shPageIndex + 2);
+      if (this.shPageIndex - 4 > 0 && this.shPageIndex + 4 <= this.totalPages) {
+        this.pages.push(1, -1, this.shPageIndex - 2, this.shPageIndex - 1, this.shPageIndex, this.shPageIndex + 1, this.shPageIndex + 2, -1, this.totalPages);
+      } else {
+        if (this.shPageIndex - 4 <= 0) {
+          this.pages.push(1, 2, 3, 4, 5, -1, this.totalPages);
+        } else {
+          this.pages.push(1, -1, this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1, this.totalPages);
+        }
       }
     }
-
-    console.log(this.pages);
   }
 
   get totalPages() {
@@ -47,6 +61,7 @@ export class ShPaginationComponent implements OnInit {
       this.shPageIndex--;
       this.pageChange.emit(this.shPageIndex);
     }
+    this.updatePages();
   }
 
   nextPage() {
@@ -54,16 +69,18 @@ export class ShPaginationComponent implements OnInit {
       this.shPageIndex++;
       this.pageChange.emit(this.shPageIndex);
     }
+    this.updatePages();
   }
 
   onSizeChange() {
     this.shPageIndex = 1;
     this.pageSizeChange.emit(this.shPageSize);
-    this.pageChange.emit(this.shPageIndex);
+    this.updatePages();
   }
 
   pageIndexChange(page: number) {
     this.shPageIndex = page;
     this.pageChange.emit(this.shPageIndex);
+    this.updatePages();
   }
 }

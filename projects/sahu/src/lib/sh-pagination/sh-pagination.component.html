@@ -3,9 +3,14 @@
   <span>Trang {{ shPageIndex }} / {{ totalPages }}</span>
 
   <div class="page-number-container">
-    <button *ngFor="let page of pages" (click)="pageIndexChange(page)" [class.active]="shPageIndex === page">
-      {{ page }}
-    </button>
+    <ng-content *ngFor="let page of pages">
+      <button *ngIf="page != -1" (click)="pageIndexChange(page)" [class.active]="shPageIndex === page">
+        {{ page }}
+      </button>
+      <button *ngIf="page == -1">
+        blank
+      </button>
+    </ng-content>
   </div>
 
   <button (click)="nextPage()" [disabled]="shPageIndex === totalPages">»</button>
