@@ -64,3 +64,34 @@
     transform: rotate(-45deg);
   }
 }
+
+.sh-control {
+  background-color: #fbfbfb;
+  border: 1px solid #dbdbdb;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+.sh-control-sm {
+  font-size: 13px;
+  font-weight: 400;
+  height: 28px;
+}
+
+.sh-control-md {
+  font-size: 14px;
+  font-weight: 400;
+  height: 32px;
+}
+
+.sh-control-lg {
+  font-size: 15px;
+  font-weight: 500;
+  height: 36px;
+}
+
+.sh-control-xl {
+  font-size: 16px;
+  font-weight: 500;
+  height: 40px;
+}

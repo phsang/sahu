@@ -2,7 +2,7 @@
   <div class="sh-overlay" (click)="closeDropdown()"></div>
 
   <div class="field-validation">
-    <div class="sh-select-selection {{shMultiple ? 'select-multiple' : ''}}" (click)="toggleDropdown()" #selectSelection>
+    <div class="sh-select-selection sh-control" [ngClass]="[shMultiple ? 'select-multiple' : 'sh-control-' + shSize]" (click)="toggleDropdown()" #selectSelection>
       <input
         type="text"
         class="input-hidden"

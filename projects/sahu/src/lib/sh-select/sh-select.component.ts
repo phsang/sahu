@@ -45,6 +45,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @Input() shDisabled?: boolean = false;
   @Input() shMultiple: boolean = false;
   @Input() shLine: number = 1;
+  @Input() shSize: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
   @Input() shAllowClear?: boolean = true;
