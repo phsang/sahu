@@ -15,7 +15,13 @@
 
   <button (click)="nextPage()" [disabled]="shPageIndex === totalPages">»</button>
 
-  <select *ngIf="shShowSizeChanger" [(ngModel)]="shPageSize" (change)="onSizeChange()">
-    <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
-  </select>
+  <ng-content *ngIf="shShowSizeChanger">
+    <sh-select
+      [shAllowClear]="false"
+      [(ngModel)]="shPageSize"
+      [shData]="pageSizeList"
+      [shName]="'pagination_size'"
+      (shChange)="onSizeChange()">
+    </sh-select>
+  </ng-content>
 </div>
