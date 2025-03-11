@@ -1,0 +1,9 @@
+<div class="pagination-container">
+  <button (click)="prevPage()" [disabled]="currentPage === 1">«</button>
+  <span>Trang {{ currentPage }} / {{ totalPages }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">»</button>
+
+  <select *ngIf="shShowSizeChanger" [(ngModel)]="itemsPerPage" (change)="onSizeChange()">
+    <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+  </select>
+</div>
