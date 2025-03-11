@@ -15,17 +15,31 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   `]
 })
 export class ShPaginationComponent {
-  @Input() shTotal = 100;
-  @Input() itemsPerPage = 10;
+  @Input() shTotal = 0;
   @Input() shPage = 1;
+  @Input() shPageSize = 10;
   @Input() shShowSizeChanger = false;
   @Input() pageSizeOptions = [10, 20, 30, 50];
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() pageSizeChange = new EventEmitter<number>();
 
+  pages: number[] = [];
+
+  constructor() {
+    if (this.totalPages <= 5) {
+      this.pages.push(...Array.from({ length: this.totalPages }, (_, i) => i + 1));
+    } else {
+      if (this.shPage - 2 > 0 && this.shPage + 2 <= this.totalPages) {
+        this.pages.push(this.shPage - 2, this.shPage - 1, this.shPage, this.shPage + 1, this.shPage + 2);
+      }
+    }
+
+    console.log(this.pages);
+  }
+
   get totalPages() {
-    return Math.ceil(this.shTotal / this.itemsPerPage);
+    return Math.ceil(this.shTotal / this.shPageSize);
   }
 
   prevPage() {
@@ -44,7 +58,12 @@ export class ShPaginationComponent {
 
   onSizeChange() {
     this.shPage = 1;
-    this.pageSizeChange.emit(this.itemsPerPage);
+    this.pageSizeChange.emit(this.shPageSize);
+    this.pageChange.emit(this.shPage);
+  }
+
+  pageIndexChange(page: number) {
+    this.shPage = page;
     this.pageChange.emit(this.shPage);
   }
 }
