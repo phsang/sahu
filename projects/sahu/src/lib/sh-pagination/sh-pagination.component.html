@@ -1,19 +1,28 @@
 <div class="pagination-container">
-  <button (click)="prevPage()" [disabled]="shPageIndex === 1">«</button>
-  <span>Trang {{ shPageIndex }} / {{ totalPages }}</span>
+  <sh-button
+    [shVariant]="'blank'"
+    [shIcon]="'angle-double-left'"
+    (shClick)="prevPage()"
+    [shDisabled]="shPageIndex === 1">
+  </sh-button>
 
   <div class="page-number-container">
     <ng-content *ngFor="let page of pages">
-      <button *ngIf="page != -1" (click)="pageIndexChange(page)" [class.active]="shPageIndex === page">
-        {{ page }}
-      </button>
-      <button *ngIf="page == -1">
-        blank
-      </button>
+      <sh-button
+        [shIcon]="page === -1 ? 'ellipsis-h' : ''"
+        [shVariant]="shPageIndex === page ? 'primary' : 'blank'"
+        [shLabel]="page !== -1 ? page.toString() : ''"
+        (shClick)="page !== -1 && pageIndexChange(page)">
+      </sh-button>
     </ng-content>
   </div>
 
-  <button (click)="nextPage()" [disabled]="shPageIndex === totalPages">»</button>
+  <sh-button
+    [shVariant]="'blank'"
+    [shIcon]="'angle-double-right'"
+    (shClick)="nextPage()"
+    [shDisabled]="shPageIndex === totalPages">
+  </sh-button>
 
   <ng-content *ngIf="shShowSizeChanger">
     <sh-select

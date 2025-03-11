@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ShIconModule } from '../sh-icon/sh-icon.module';
 import { FormsModule } from '@angular/forms';
 import { ShSelectModule } from '../sh-select';
+import { ShButtonModule } from '../sh-button';
 
 @NgModule({
   declarations: [ShPaginationComponent],
@@ -13,6 +14,7 @@ import { ShSelectModule } from '../sh-select';
     CommonModule,
     RouterModule,
     ShIconModule,
+    ShButtonModule,
     ShSelectModule,
   ],
   exports: [ShPaginationComponent],

@@ -3,16 +3,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'sh-pagination',
   templateUrl: './sh-pagination.component.html',
-  styles: [`
-    .pagination-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    button:disabled {
-      opacity: 0.5;
-    }
-  `]
 })
 export class ShPaginationComponent implements OnInit {
   @Input() shTotal = 0;
