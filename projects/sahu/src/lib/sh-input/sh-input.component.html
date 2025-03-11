@@ -3,7 +3,7 @@
   <div class="sh-input input-{{shSize}} {{shDisabled ? 'input-disabled' : ''}}" ngClass="{{shClass}}">
     <span class="icon" *ngIf="iconLeft" [innerHTML]="iconLeft"></span>
     <input
-      [value]="value"
+      [value]="value || null"
       [attr.type]="shType"
       [attr.name]="shName ?? null"
       [attr.id]="shId ?? null"

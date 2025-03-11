@@ -45,6 +45,7 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
   @Input() shDisabled?: boolean = false;
   @Input() shMultiple: boolean = false;
   @Input() shLine: number = 1;
+  @Input() shLabel?: string = '';
   @Input() shSize: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() shPlaceHolder: string = 'Select';
   @Input() shDataVali?: string = '';
@@ -210,11 +211,17 @@ export class ShSelectComponent implements OnInit, ControlValueAccessor, OnChange
     // Add logic to manage the disabled state if needed
   }
 
-  removeAccent(str: string) {
+  // xóa dấu tiếng việt để tìm kiếm không dấu
+  removeAccent(str: any): string {
+    if (typeof str !== 'string') {
+      return '';
+    }
+
     return str.normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
-      .replace(/đ/g, 'd').replace(/Đ/g, 'D');
-  };
+      .replace(/đ/g, 'd')
+      .replace(/Đ/g, 'D');
+  }
 
   filterData() {
     // xử lý filter khi không có group

@@ -26,6 +26,7 @@
 
   <ng-content *ngIf="shShowSizeChanger">
     <sh-select
+      [shSize]="'sm'"
       [shAllowClear]="false"
       [(ngModel)]="shPageSize"
       [shData]="pageSizeList"

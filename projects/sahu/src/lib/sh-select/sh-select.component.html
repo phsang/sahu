@@ -2,6 +2,7 @@
   <div class="sh-overlay" (click)="closeDropdown()"></div>
 
   <div class="field-validation">
+    <label for="{{shId}}" *ngIf="shLabel">{{shLabel}} <span class="persian_red" *ngIf="shDataVali">*</span></label>
     <div class="sh-select-selection sh-control" [ngClass]="[shMultiple ? 'select-multiple' : 'sh-control-' + shSize]" (click)="toggleDropdown()" #selectSelection>
       <input
         type="text"
@@ -23,7 +24,7 @@
             <i class="remove-tag" (click)="removeTag(option, $event)"></i>
           </span>
         </span>
-        <span *ngIf="shMultiple" class="placeholder-text">{{ shPlaceHolder }}</span>
+        <span *ngIf="shMultiple && !selectedOptions.length" class="placeholder-text">{{ shPlaceHolder }}</span>
       </div>
 
       <i class="dropdown-icon" *ngIf="!shAllowClear || !inputValue || inputValue == ''"></i>

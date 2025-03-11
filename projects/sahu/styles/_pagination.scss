@@ -10,16 +10,18 @@
 }
 
 .pagination-container .btn {
+  border-radius: 2px;
   height: 28px;
   padding: 1px;
   width: 28px;
 }
 
 .pagination-container .btn-blank {
+  background-color: #fff;
   border: 1px solid #ccc;
-  color: #666;
+  color: #555;
 }
 
 .pagination-container .btn:disabled {
-  background-color: #dcdcdc;
+  background-color: #ebebeb;
 }
