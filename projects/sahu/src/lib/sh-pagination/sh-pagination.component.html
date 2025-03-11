@@ -1,14 +1,14 @@
 <div class="pagination-container">
-  <button (click)="prevPage()" [disabled]="shPage === 1">«</button>
-  <span>Trang {{ shPage }} / {{ totalPages }}</span>
+  <button (click)="prevPage()" [disabled]="shPageIndex === 1">«</button>
+  <span>Trang {{ shPageIndex }} / {{ totalPages }}</span>
 
   <div class="page-number-container">
-    <button *ngFor="let page of pages" (click)="pageIndexChange(page)" [class.active]="shPage === page">
+    <button *ngFor="let page of pages" (click)="pageIndexChange(page)" [class.active]="shPageIndex === page">
       {{ page }}
     </button>
   </div>
 
-  <button (click)="nextPage()" [disabled]="shPage === totalPages">»</button>
+  <button (click)="nextPage()" [disabled]="shPageIndex === totalPages">»</button>
 
   <select *ngIf="shShowSizeChanger" [(ngModel)]="shPageSize" (change)="onSizeChange()">
     <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>

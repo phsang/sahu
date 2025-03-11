@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'sh-pagination',
@@ -14,9 +14,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     }
   `]
 })
-export class ShPaginationComponent {
+export class ShPaginationComponent implements OnInit {
   @Input() shTotal = 0;
-  @Input() shPage = 1;
+  @Input() shPageIndex = 1;
   @Input() shPageSize = 10;
   @Input() shShowSizeChanger = false;
   @Input() pageSizeOptions = [10, 20, 30, 50];
@@ -26,12 +26,12 @@ export class ShPaginationComponent {
 
   pages: number[] = [];
 
-  constructor() {
+  ngOnInit(): void {
     if (this.totalPages <= 5) {
       this.pages.push(...Array.from({ length: this.totalPages }, (_, i) => i + 1));
     } else {
-      if (this.shPage - 2 > 0 && this.shPage + 2 <= this.totalPages) {
-        this.pages.push(this.shPage - 2, this.shPage - 1, this.shPage, this.shPage + 1, this.shPage + 2);
+      if (this.shPageIndex - 2 > 0 && this.shPageIndex + 2 <= this.totalPages) {
+        this.pages.push(this.shPageIndex - 2, this.shPageIndex - 1, this.shPageIndex, this.shPageIndex + 1, this.shPageIndex + 2);
       }
     }
 
@@ -43,27 +43,27 @@ export class ShPaginationComponent {
   }
 
   prevPage() {
-    if (this.shPage > 1) {
-      this.shPage--;
-      this.pageChange.emit(this.shPage);
+    if (this.shPageIndex > 1) {
+      this.shPageIndex--;
+      this.pageChange.emit(this.shPageIndex);
     }
   }
 
   nextPage() {
-    if (this.shPage < this.totalPages) {
-      this.shPage++;
-      this.pageChange.emit(this.shPage);
+    if (this.shPageIndex < this.totalPages) {
+      this.shPageIndex++;
+      this.pageChange.emit(this.shPageIndex);
     }
   }
 
   onSizeChange() {
-    this.shPage = 1;
+    this.shPageIndex = 1;
     this.pageSizeChange.emit(this.shPageSize);
-    this.pageChange.emit(this.shPage);
+    this.pageChange.emit(this.shPageIndex);
   }
 
   pageIndexChange(page: number) {
-    this.shPage = page;
-    this.pageChange.emit(this.shPage);
+    this.shPageIndex = page;
+    this.pageChange.emit(this.shPageIndex);
   }
 }
