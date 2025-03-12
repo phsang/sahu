@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ShButtonModule } from '../sh-button/sh-button.module';
 import { ShInputModule } from '../sh-input/sh-input.module';
 import { ShDatePickerComponent } from './sh-date-picker.component';
 
@@ -11,7 +10,6 @@ import { ShDatePickerComponent } from './sh-date-picker.component';
     FormsModule,
     CommonModule,
     ShInputModule,
-    ShButtonModule,
   ],
   exports: [ShDatePickerComponent],
 })
