@@ -26,8 +26,8 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   @Input() shSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() shRange: boolean = false;
   @Input() shDataVali?: string;
-  @Input() ngModel?: string | { start_date: string; end_date: string };
-  @Output() ngModelChange = new EventEmitter<string | { start_date: string; end_date: string }>();
+  @Input() ngModel?: string | string[];
+  @Output() ngModelChange = new EventEmitter<string | string[]>();
 
   private overlayRef?: OverlayRef;
   displayValue: string = '';
@@ -36,7 +36,7 @@ export class ShDatePickerComponent implements ControlValueAccessor {
 
   constructor(private overlay: Overlay, private elementRef: ElementRef) { }
 
-  writeValue(value: string | { start_date: string; end_date: string }): void {
+  writeValue(value: string | [string, string]): void {
     this.ngModel = value;
     this.updateDisplayValue();
   }
@@ -88,13 +88,8 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   }
 
   updateDisplayValue() {
-    if (
-      this.shRange &&
-      typeof this.ngModel === 'object' &&
-      this.ngModel?.start_date &&
-      this.ngModel?.end_date
-    ) {
-      this.displayValue = `${moment(this.ngModel.start_date).format(this.shFormat)} - ${moment(this.ngModel.end_date).format(this.shFormat)}`;
+    if (this.shRange && this.ngModel?.length) {
+      this.displayValue = `${moment(this.ngModel[0]).format(this.shFormat)} - ${moment(this.ngModel[1]).format(this.shFormat)}`;
     } else if (typeof this.ngModel === 'string' && this.ngModel !== '') {
       this.displayValue = moment(this.ngModel).format(this.shFormat);
     } else {

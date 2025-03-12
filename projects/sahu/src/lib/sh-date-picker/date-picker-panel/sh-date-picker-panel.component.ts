@@ -12,10 +12,10 @@ export class DatePickerPanelComponent {
   @Input() shMin?: Date;
   @Input() shMax?: Date;
   @Input() shRange: boolean = false;
-  @Input() value?: string | { start_date: string; end_date: string };
-  @Output() valueChange = new EventEmitter<string | { start_date: string; end_date: string }>();
+  @Input() value?: string | string[];
+  @Output() valueChange = new EventEmitter<string | string[]>();
 
-  confirmSelection(value: string | { start_date: string; end_date: string }) {
+  confirmSelection(value: string | string[]) {
     this.valueChange.emit(value);
   }
 }

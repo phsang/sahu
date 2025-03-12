@@ -8,14 +8,14 @@ export class CalendarBoxComponent implements OnChanges {
   @Input() shMin?: Date;
   @Input() shMax?: Date;
   @Input() shRange: boolean = false;
-  @Input() value?: string | { start_date: string; end_date: string };
-  @Output() dateSelected = new EventEmitter<string | { start_date: string; end_date: string }>();
+  @Input() value?: string | string[];
+  @Output() dateSelected = new EventEmitter<string | string[]>();
 
   currentYear: number = new Date().getFullYear();
   currentMonth: number = new Date().getMonth();
   weekDays = ['H', 'B', 'T', 'N', 'S', 'B', 'C'];
   calendarDays: any[] = [];
-  selectedDates: { start_date?: string; end_date?: string } = {};
+  selectedDates: string[] = [];
   flagDate: any;
 
   months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -61,11 +61,11 @@ export class CalendarBoxComponent implements OnChanges {
       if (typeof this.value === 'string') {
         this.value = this.formatDate(this.value);
       } else {
-        this.value.start_date = this.formatDate(this.value.start_date);
-        this.value.end_date = this.formatDate(this.value.end_date);
+        this.value[0] = this.formatDate(this.value[0]);
+        this.value[1] = this.formatDate(this.value[1]);
       }
 
-      const dateStr = typeof this.value === 'string' ? this.value : this.value.start_date;
+      const dateStr = typeof this.value === 'string' ? this.value : this.value[0];
       if (dateStr) {
         const targetDate = new Date(dateStr);
         if (!isNaN(targetDate.getTime())) {
@@ -129,12 +129,14 @@ export class CalendarBoxComponent implements OnChanges {
       let selected = false;
       let checkDate = '';
       if (this.shRange) {
-        let start = this.flagDate?.start_date || null;
-        let end = this.flagDate?.end_date || null;
+        if (this.flagDate?.length) {
+          let start = this.flagDate[0] || null;
+          let end = this.flagDate[1] || null;
 
-        if (start && end) {
-          selected = start && fullDate >= start && end && fullDate <= end;
-          checkDate = fullDate === start ? 'start_date' : fullDate === end ? 'end_date' : '';
+          if (start && end) {
+            selected = start && fullDate >= start && end && fullDate <= end;
+            checkDate = fullDate === start ? 'start_date' : fullDate === end ? 'end_date' : '';
+          }
         }
       } else {
         selected = this.value === fullDate;
@@ -194,16 +196,16 @@ export class CalendarBoxComponent implements OnChanges {
 
   proccessDate(day: any) {
     if (this.shRange) {
-      if (!this.selectedDates.start_date) {
-        this.selectedDates.start_date = day.fullDate;
+      if (!this.selectedDates[0]) {
+        this.selectedDates[0] = day.fullDate;
       } else {
-        let start = new Date(this.selectedDates.start_date);
+        let start = new Date(this.selectedDates[0]);
         let end = new Date(day.fullDate);
         if (start > end) {
-          this.selectedDates.start_date = day.fullDate;
+          this.selectedDates[0] = day.fullDate;
         } else {
-          this.selectedDates.end_date = day.fullDate;
-          this.dateSelected.emit(this.selectedDates as { start_date: string; end_date: string });
+          this.selectedDates[1] = day.fullDate;
+          this.dateSelected.emit(this.selectedDates);
         }
       }
     } else {
@@ -220,9 +222,9 @@ export class CalendarBoxComponent implements OnChanges {
     } else {
       this.calendarDays.map((item: any) => {
         if (item.fullDate === day.fullDate) {
-          item.checkDate = item.fullDate === this.selectedDates.start_date ? 'start_date' : 'end_date';
+          item.checkDate = item.fullDate === this.selectedDates[0] ? 'start_date' : 'end_date';
         }
-        item.selected = item.fullDate === this.selectedDates.start_date || item.fullDate === this.selectedDates.end_date;
+        item.selected = item.fullDate === this.selectedDates[0] || item.fullDate === this.selectedDates[1];
       });
     }
   }
