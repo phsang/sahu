@@ -104,11 +104,9 @@ export class ShDatePickerComponent implements ControlValueAccessor {
     }
   }
 
-  resetDisplayValue() {
-    this.ngModel = '';
+  onInputDateChange(value: any) {
+    this.ngModel = value;
     this.ngModelChange.emit(this.ngModel);
     this.updateDisplayValue();
-    this.triggerInputChange();
   }
-
 }

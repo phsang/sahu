@@ -6,20 +6,6 @@
   width: 100%;
 }
 
-.date-picker-reset {
-  align-items: center;
-  background-color: #f7f7f7;
-  border-radius: 2px;
-  display: flex;
-  height: calc(100% - 2px);
-  justify-content: center;
-  position: absolute;
-  right: 1px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 32px;
-}
-
 .date-picker-panel {
   background: white;
   border: 1px solid #ccc;

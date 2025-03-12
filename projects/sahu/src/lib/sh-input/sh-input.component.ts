@@ -19,6 +19,7 @@ import { ImageService } from '../../services/image.service';
 })
 export class ShInputComponent implements ControlValueAccessor, OnInit {
   @ViewChild('dropZone') dropZone!: ElementRef;
+  @ViewChild('mainInput') mainInput!: ElementRef;
 
   @Input() shType: 'text' | 'radio' | 'switch' | 'checkbox' | 'email' | 'file' | 'hidden' | 'password' | 'range' = 'text';
   @Input() shSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
@@ -41,6 +42,7 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   @Input() shReview: boolean = true; // sử dụng cho file hình
 
   @Output() shChange = new EventEmitter<any>();
+  @Output() shClick = new EventEmitter<any>();
 
   iconLeft: SafeHtml = '';
   iconRight: SafeHtml = '';
@@ -111,11 +113,9 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
 
   writeValue(value: string): void {
     this.value = value;
-
     if (this.value && this.shType === 'file') {
       this.createFakeFile();
     }
-
     this.updateInputClass();
   }
 
@@ -219,6 +219,11 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
         this.value = newValue;
       }, 10);
     }
+  }
+
+  handleClick(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.shClick.emit(input.value);
   }
 
   dropFile() {
@@ -481,7 +486,10 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   resetDisplayValue() {
     this.value = '';
     this.shValue = '';
+    this.onChange('');
     this.shChange.emit(null);
+
+    this.mainInput.nativeElement.dispatchEvent(new Event('change'));
   }
 
 }
