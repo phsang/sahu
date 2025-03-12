@@ -35,8 +35,36 @@ export class CalendarBoxComponent implements OnChanges {
     }
   }
 
+  formatDate(date: string, type = 'date') {
+    let fullDate = new Intl.DateTimeFormat('en-CA', {
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: false
+    }).format(new Date(date));
+
+    let result = fullDate;
+    switch (type) {
+      case 'date': {
+        result = fullDate.split(',')[0].trim();
+        break;
+      }
+      case 'hour': {
+        result = fullDate.split(',')[1].trim();
+        break;
+      }
+    }
+    return result;
+  }
+
   setTargetDate() {
     if (this.value) {
+      if (typeof this.value === 'string') {
+        this.value = this.formatDate(this.value);
+      } else {
+        this.value.start_date = this.formatDate(this.value.start_date);
+        this.value.end_date = this.formatDate(this.value.end_date);
+      }
+
       const dateStr = typeof this.value === 'string' ? this.value : this.value.start_date;
       if (dateStr) {
         const targetDate = new Date(dateStr);
@@ -68,9 +96,6 @@ export class CalendarBoxComponent implements OnChanges {
     const nextMonthStart = 1;
     const totalDays = 42; // 6 hàng x 7 cột (để đảm bảo đầy đủ các tuần)
 
-    const start = this.flagDate?.start_date ? new Date(this.flagDate.start_date).toLocaleDateString('en-CA') : null;
-    const end = this.flagDate?.end_date ? new Date(this.flagDate.end_date).toLocaleDateString('en-CA') : null;
-
     for (let i = 0; i < totalDays; i++) {
       let date: number, fullDate: string, currentMonth: number;
       let isPrevMonth = i < startDay;
@@ -100,14 +125,19 @@ export class CalendarBoxComponent implements OnChanges {
       if (jMax && fullDate > jMax) {
         disabled = true;
       }
-      const selected = this.shRange
-        ? start && fullDate >= start && end && fullDate <= end
-        : this.value === fullDate;
 
+      let selected = false;
       let checkDate = '';
       if (this.shRange) {
-        checkDate = fullDate === start ? 'start_date' : fullDate === end ? 'end_date' : '';
-      } else if (selected) {
+        let start = this.flagDate?.start_date || null;
+        let end = this.flagDate?.end_date || null;
+
+        if (start && end) {
+          selected = start && fullDate >= start && end && fullDate <= end;
+          checkDate = fullDate === start ? 'start_date' : fullDate === end ? 'end_date' : '';
+        }
+      } else {
+        selected = this.value === fullDate;
         checkDate = 'single_date';
       }
 

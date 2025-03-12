@@ -69,13 +69,13 @@ export class ShDatePickerComponent implements ControlValueAccessor {
     componentRef.instance.shRange = this.shRange;
     componentRef.instance.value = this.ngModel;
     componentRef.instance.valueChange.subscribe(value => {
-      if (JSON.stringify(this.ngModel) !== JSON.stringify(value)) {
-        this.ngModel = value;
-        // this.onChange(value);
-        this.ngModelChange.emit(value);
-        this.updateDisplayValue();
-        this.triggerInputChange();
-      }
+      // if (JSON.stringify(this.ngModel) !== JSON.stringify(value)) {
+      this.ngModel = value;
+      // this.onChange(value);
+      this.ngModelChange.emit(value);
+      this.updateDisplayValue();
+      this.triggerInputChange();
+      // }
 
       this.overlayRef?.dispose();
       this.overlayRef = undefined;
