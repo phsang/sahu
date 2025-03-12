@@ -22,6 +22,7 @@ export class ShDatePickerComponent implements ControlValueAccessor {
   @Input() shPlaceHolder?: string;
   @Input() shMin?: Date;
   @Input() shMax?: Date;
+  @Input() shIcon: string = 'calendar';
   @Input() shFormat: string = 'DD-MM-YYYY';
   @Input() shSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() shRange: boolean = false;
