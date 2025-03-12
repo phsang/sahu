@@ -23,6 +23,8 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
   @Output() shSubmit = new EventEmitter<Event>();
   private observer!: MutationObserver;
 
+  btnSubmit: any = null;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private excelService: ExcelService,
@@ -547,10 +549,14 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
       }
     }
 
-    if (!validAll) {
-      form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
-    } else {
-      form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
+    if (this.btnSubmit) {
+      if (!validAll) {
+        this.btnSubmit.disabled = true;
+        this.btnSubmit.classList.add('btn-disabled');
+      } else {
+        this.btnSubmit.disabled = false;
+        this.btnSubmit.classList.remove('btn-disabled');
+      }
     }
 
     return validAll;
@@ -562,6 +568,7 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
     // Hủy tất cả các sự kiện trước đó
     this.destroy$.next();
 
+    this.btnSubmit = form.querySelector('*[type="submit"]');
     const inputs = form.querySelectorAll('input, textarea');
 
     inputs.forEach((input) => {
@@ -631,10 +638,15 @@ export class ShFormComponent implements AfterViewInit, OnDestroy {
             }
 
             this.generateError();
-            if (!isValid) {
-              form.querySelector('*[type="submit"]')?.classList.add('btn-disabled');
-            } else {
-              form.querySelector('*[type="submit"]')?.classList.remove('btn-disabled');
+
+            if (this.btnSubmit) {
+              if (!isValid) {
+                this.btnSubmit.disabled = true;
+                this.btnSubmit.classList.add('btn-disabled');
+              } else {
+                this.btnSubmit.disabled = false;
+                this.btnSubmit.classList.remove('btn-disabled');
+              }
             }
           }
         });
