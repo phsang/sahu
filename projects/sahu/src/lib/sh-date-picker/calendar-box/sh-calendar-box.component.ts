@@ -8,14 +8,14 @@ export class CalendarBoxComponent implements OnChanges {
   @Input() shMin?: Date;
   @Input() shMax?: Date;
   @Input() shRange: boolean = false;
-  @Input() value?: string | string[];
-  @Output() dateSelected = new EventEmitter<string | string[]>();
+  @Input() value?: Date | [Date, Date];
+  @Output() dateSelected = new EventEmitter<Date | [Date, Date]>();
 
   currentYear: number = new Date().getFullYear();
   currentMonth: number = new Date().getMonth();
   weekDays = ['H', 'B', 'T', 'N', 'S', 'B', 'C'];
   calendarDays: any[] = [];
-  selectedDates: string[] = [];
+  selectedDates: Date[] = [];
   flagDate: any;
 
   months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -35,43 +35,29 @@ export class CalendarBoxComponent implements OnChanges {
     }
   }
 
-  formatDate(date: string, type = 'date') {
-    let fullDate = new Intl.DateTimeFormat('en-CA', {
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false
-    }).format(new Date(date));
+  compareDate = (date1: Date, date2: Date, type = 'same') => {
+    const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate()).getTime();
+    const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate()).getTime();
 
-    let result = fullDate;
     switch (type) {
-      case 'date': {
-        result = fullDate.split(',')[0].trim();
-        break;
+      case 'before': {
+        return d1 < d2;
       }
-      case 'hour': {
-        result = fullDate.split(',')[1].trim();
-        break;
-      }
+      case 'after':
+        return d1 > d2;
+      default:
+        return d1 === d2;
     }
-    return result;
-  }
+  };
 
   setTargetDate() {
     if (this.value) {
-      if (typeof this.value === 'string') {
-        this.value = this.formatDate(this.value);
-      } else {
-        this.value[0] = this.formatDate(this.value[0]);
-        this.value[1] = this.formatDate(this.value[1]);
-      }
-
-      const dateStr = typeof this.value === 'string' ? this.value : this.value[0];
-      if (dateStr) {
-        const targetDate = new Date(dateStr);
-        if (!isNaN(targetDate.getTime())) {
-          this.currentYear = targetDate.getFullYear();
-          this.currentMonth = targetDate.getMonth();
-        }
+      if (this.value instanceof Date) {
+        this.currentYear = this.value.getFullYear();
+        this.currentMonth = this.value.getMonth();
+      } else if (this.value instanceof Array) {
+        this.currentYear = this.value[0].getFullYear();
+        this.currentMonth = this.value[0].getMonth();
       }
 
       this.flagDate = this.value;
@@ -97,7 +83,7 @@ export class CalendarBoxComponent implements OnChanges {
     const totalDays = 42; // 6 hàng x 7 cột (để đảm bảo đầy đủ các tuần)
 
     for (let i = 0; i < totalDays; i++) {
-      let date: number, fullDate: string, currentMonth: number;
+      let date: number, fullDate: Date, currentMonth: number;
       let isPrevMonth = i < startDay;
       let isNextMonth = i >= startDay + lastDateOfMonth;
 
@@ -115,32 +101,27 @@ export class CalendarBoxComponent implements OnChanges {
       const displayYear = currentMonth < 0 ? this.currentYear - 1 : currentMonth > 11 ? this.currentYear + 1 : this.currentYear;
       const displayMonth = (currentMonth + 12) % 12; // Đảm bảo tháng đúng
 
-      fullDate = this.formatDate(`${displayYear}-${displayMonth + 1}-${date}`);
-      const jMin = this.shMin ? this.formatDate(this.shMin.toString()) : null;
-      const jMax = this.shMax ? this.formatDate(this.shMax.toString()) : null;
-
       let disabled = false;
-      if (jMin && fullDate < jMin) {
+      fullDate = new Date(displayYear, displayMonth, date);
+      if (this.shMin && this.compareDate(fullDate, this.shMin, 'before')) {
         disabled = true;
       }
-      if (jMax && fullDate > jMax) {
+      if (this.shMax && this.compareDate(fullDate, this.shMax, 'after')) {
         disabled = true;
       }
 
       let selected = false;
       let checkDate = '';
-      if (this.shRange) {
-        if (this.flagDate?.length) {
-          let start = this.flagDate[0] || null;
-          let end = this.flagDate[1] || null;
+      if (this.shRange && this.value instanceof Array && this.value.length === 2) {
+        let start = this.value[0] || null;
+        let end = this.value[1] || null;
 
-          if (start && end) {
-            selected = start && fullDate >= start && end && fullDate <= end;
-            checkDate = fullDate === start ? 'start_date' : fullDate === end ? 'end_date' : '';
-          }
+        if (start && end) {
+          selected = !(this.compareDate(fullDate, start, 'before') || this.compareDate(fullDate, end, 'after'));
+          checkDate = this.compareDate(fullDate, start) ? 'start_date' : this.compareDate(fullDate, end) ? 'end_date' : '';
         }
-      } else {
-        selected = this.value === fullDate;
+      } else if (this.value instanceof Date) {
+        selected = this.compareDate(this.value, fullDate, 'same');
         checkDate = 'single_date';
       }
 
@@ -196,17 +177,20 @@ export class CalendarBoxComponent implements OnChanges {
   }
 
   proccessDate(day: any) {
-    if (this.shRange) {
+    if (this.shRange && this.selectedDates instanceof Array) {
       if (!this.selectedDates[0]) {
         this.selectedDates[0] = day.fullDate;
       } else {
         let start = new Date(this.selectedDates[0]);
         let end = new Date(day.fullDate);
+
         if (start > end) {
           this.selectedDates[0] = day.fullDate;
         } else {
           this.selectedDates[1] = day.fullDate;
-          this.dateSelected.emit(this.selectedDates);
+          if (this.selectedDates.length === 2) {
+            this.dateSelected.emit([this.selectedDates[0], this.selectedDates[1]]);
+          }
         }
       }
     } else {
