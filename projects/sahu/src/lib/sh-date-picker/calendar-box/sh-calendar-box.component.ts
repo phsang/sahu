@@ -118,7 +118,16 @@ export class CalendarBoxComponent implements OnChanges {
 
         if (start && end) {
           selected = !(this.compareDate(fullDate, start, 'before') || this.compareDate(fullDate, end, 'after'));
-          checkDate = this.compareDate(fullDate, start) ? 'start_date' : this.compareDate(fullDate, end) ? 'end_date' : '';
+          const isStart = this.compareDate(fullDate, start);
+          const isEnd = this.compareDate(fullDate, end);
+
+          if (isStart && isEnd) {
+            checkDate = 'single_date';
+          } else if (isStart) {
+            checkDate = 'start_date';
+          } else if (isEnd) {
+            checkDate = 'end_date';
+          }
         }
       } else if (this.value instanceof Date) {
         selected = this.compareDate(this.value, fullDate, 'same');

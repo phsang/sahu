@@ -29,12 +29,10 @@ export class ShButtonComponent implements OnChanges {
   }
 
   private updateButton(): void {
-    const sanitizedIcon = this.shIcon?.trim().replace(/\s+/g, '') || '';
-
+    const sanitizedIcon = this.shIcon?.trim().replace(/\s+/g, '') || null;
     if (!sanitizedIcon) return;
 
     const [leftIcon, rightIcon] = this.iconArr(sanitizedIcon);
-
     if (leftIcon !== '*') this.iconLeft = leftIcon;
     if (rightIcon && rightIcon !== '*') this.iconRight = rightIcon;
   }
