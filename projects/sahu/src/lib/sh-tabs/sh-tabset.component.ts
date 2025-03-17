@@ -10,7 +10,7 @@ import { ShTabComponent } from './sh-tab.component';
 @Component({
   selector: 'sh-tabset',
   template: `
-  <div class="tab-wrapper {{'tab-' + shTabPosition}}">
+  <div class="tab-wrapper" [ngClass]="['tab-' + shPosition, 'tab-' + shType]">
     <div class="tab-header-container">
       <div *ngFor="let tab of tabs; let i = index" 
            class="tab-header"
@@ -37,7 +37,8 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, AfterView
   @ContentChildren(ShTabComponent) tabs!: QueryList<ShTabComponent>;
   @ViewChildren('tabHeader') tabHeaders!: QueryList<ElementRef>;
 
-  @Input() shTabPosition: 'top' | 'right' | 'bottom' | 'left' = 'top';
+  @Input() shPosition: 'top' | 'right' | 'bottom' | 'left' = 'top';
+  @Input() shType: 'line' | 'card' = 'line';
   @Input() shActiveTab: number = 0;
   @Output() shChangeTab = new EventEmitter<number>();
 
@@ -70,12 +71,12 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, AfterView
     const activeHeader = headers[this.activeTabIndex]?.nativeElement;
 
     if (activeHeader) {
-      if (this.shTabPosition === 'top' || this.shTabPosition === 'bottom') {
+      if (this.shPosition === 'top' || this.shPosition === 'bottom') {
         this.indicatorOptions.width = activeHeader.offsetWidth;
         this.indicatorOptions.left = activeHeader.offsetLeft;
       }
 
-      if (this.shTabPosition === 'left' || this.shTabPosition === 'right') {
+      if (this.shPosition === 'left' || this.shPosition === 'right') {
         this.indicatorOptions.height = activeHeader.offsetHeight;
         this.indicatorOptions.top = activeHeader.offsetTop;
       }

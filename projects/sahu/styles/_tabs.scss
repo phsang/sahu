@@ -3,20 +3,39 @@
 }
 
 .tab-header-container {
-  border: solid #ddd;
   display: flex;
-  gap: 8px 16px;
+  gap: 6px;
   position: relative;
+
+  &::before {
+    background-color: #ddd;
+    content: "";
+    position: absolute
+  }
 }
 
 .tab-header {
+  background-color: #fff;
   cursor: pointer;
-  padding: 12px 20px;
+  padding: 8px 6px;
   transition: 0.3s;
+  z-index: 8;
+}
+
+.tab-header span {
+  padding: 4px;
 }
 
 .tab-header.active {
   color: #2196F3;
+}
+
+.tab-card .tab-header {
+  border: solid #ddd;
+}
+
+.tab-card .tab-header.active {
+  border-color: #2196F3;
 }
 
 .tab-header.disabled {
@@ -30,13 +49,22 @@
   position: absolute;
   transition: 0.3s;
   width: 2px;
+  z-index: 9;
 }
 
 .tab-top {
   flex-direction: column;
 
-  .tab-header-container {
-    border-width: 0 0 1px 0;
+  .tab-header-container::before {
+    bottom: 0;
+    height: 1px;
+    left: 0;
+    width: 100%;
+  }
+
+  &.tab-card .tab-header {
+    border-radius: 2px 2px 0 0;
+    border-width: 1px 1px 0 1px;
   }
 
   .tab-indicator {
@@ -47,8 +75,16 @@
 .tab-bottom {
   flex-direction: column-reverse;
 
-  .tab-header-container {
-    border-width: 1px 0 0 0;
+  .tab-header-container::before {
+    height: 1px;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  &.tab-card .tab-header {
+    border-radius: 0 0 2px 2px;
+    border-width: 0 1px 1px 1px;
   }
 
   .tab-indicator {
@@ -59,9 +95,16 @@
 .tab-left {
   flex-direction: row;
 
-  .tab-header-container {
-    border-width: 0 1px 0 0;
-    flex-direction: column;
+  .tab-header-container::before {
+    height: 100%;
+    right: 0;
+    top: 0;
+    width: 1px;
+  }
+
+  &.tab-card .tab-header {
+    border-radius: 2px 0 0 2px;
+    border-width: 1px 0 1px 1px;
   }
 
   .tab-indicator {
@@ -72,9 +115,16 @@
 .tab-right {
   flex-direction: row-reverse;
 
-  .tab-header-container {
-    border-width: 0 0 0 1px;
-    flex-direction: column;
+  .tab-header-container::before {
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 1px;
+  }
+
+  &.tab-card .tab-header {
+    border-radius: 0 2px 2px 0;
+    border-width: 1px 1px 1px 0;
   }
 
   .tab-indicator {
