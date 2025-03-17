@@ -23,7 +23,6 @@
 }
 
 .tab-header {
-  background-color: #fff;
   cursor: pointer;
   padding: 8px 6px;
   transition: 0.3s;
@@ -39,6 +38,7 @@
 }
 
 .tab-card .tab-header {
+  background-color: #fff;
   border: solid #ddd;
 }
 
@@ -53,6 +53,7 @@
 
 .tab-content {
   background: #fff;
+  border: solid #ddd;
   flex: 1 0 0;
   padding: 10px 18px;
 }
@@ -84,6 +85,11 @@
   .tab-indicator {
     bottom: 0;
   }
+
+  .tab-content {
+    border-radius: 0 0 2px 2px;
+    border-width: 0 1px 1px 1px;
+  }
 }
 
 .tab-bottom {
@@ -103,6 +109,11 @@
 
   .tab-indicator {
     top: 0;
+  }
+
+  .tab-content {
+    border-radius: 2px 2px 0 0;
+    border-width: 1px 1px 0 1px;
   }
 }
 
@@ -128,6 +139,11 @@
   .tab-indicator {
     right: 0;
   }
+
+  .tab-content {
+    border-radius: 0 2px 2px 0;
+    border-width: 1px 1px 1px 0;
+  }
 }
 
 .tab-right {
@@ -151,5 +167,10 @@
 
   .tab-indicator {
     left: 0;
+  }
+
+  .tab-content {
+    border-radius: 2px 0 0 2px;
+    border-width: 1px 0 1px 1px;
   }
 }
