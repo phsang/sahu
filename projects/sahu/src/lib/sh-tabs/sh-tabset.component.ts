@@ -20,7 +20,7 @@ import { ShTabComponent } from './sh-tab.component';
            #tabHeader>
            <span>{{ tab.shTitle }}</span>
       </div>
-      <div class="tab-indicator"
+      <div class="tab-indicator" *ngIf="shType === 'line'"
         [style.left.px]="indicatorOptions.left"
         [style.width.px]="indicatorOptions.width"
         [style.top.px]="indicatorOptions.top"
@@ -65,7 +65,7 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, AfterView
   }
 
   private updateIndicator(): void {
-    if (!this.tabHeaders) return;
+    if (!this.tabHeaders || this.shType !== 'line') return;
 
     const headers = this.tabHeaders.toArray();
     const activeHeader = headers[this.activeTabIndex]?.nativeElement;
