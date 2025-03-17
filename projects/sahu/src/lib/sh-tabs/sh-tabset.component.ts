@@ -7,6 +7,7 @@ import { ShTabComponent } from './sh-tab.component';
 @Component({
   selector: 'sh-tabset',
   template: `
+  <div class="tab-wrapper {{'tab-' + shTabPosition}}">
     <div class="tab-header-container">
       <div *ngFor="let tab of tabs; let i = index" 
            class="tab-header"
@@ -19,11 +20,13 @@ import { ShTabComponent } from './sh-tab.component';
     <div class="tab-content">
       <ng-container *ngTemplateOutlet="tabs.get(activeTabIndex)?.contentTemplate || null"></ng-container>
     </div>
+  </div>
   `,
 })
 export class ShTabsetComponent implements AfterContentInit, OnChanges {
   @ContentChildren(ShTabComponent) tabs!: QueryList<ShTabComponent>;
 
+  @Input() shTabPosition: 'top' | 'right' | 'bottom' | 'left' = 'top';
   @Input() shActiveTab: number = 0;
   @Output() shChangeTab = new EventEmitter<number>();
 
