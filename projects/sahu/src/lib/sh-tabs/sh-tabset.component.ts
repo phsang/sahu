@@ -1,9 +1,18 @@
 import {
-  Component, Input, Output, EventEmitter,
-  ContentChildren, QueryList, AfterContentInit, OnChanges, SimpleChanges,
-  ViewChildren,
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
   ElementRef,
-  AfterViewInit
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  QueryList,
+  SimpleChanges,
+  ViewChildren
 } from '@angular/core';
 import { ShTabComponent } from './sh-tab.component';
 
@@ -18,7 +27,11 @@ import { ShTabComponent } from './sh-tab.component';
            [class.disabled]="tab.shDisabled"
            (click)="selectTab(i)"
            #tabHeader>
-           <span>{{ tab.shTitle }}</span>
+           <span>
+              <sh-icon [shIcon]="tab.iconLeft" *ngIf="tab.iconLeft"></sh-icon>
+              {{ tab.shTitle }}
+              <sh-icon [shIcon]="tab.iconRight" *ngIf="tab.iconRight"></sh-icon>
+            </span>
       </div>
       <div class="tab-indicator" *ngIf="shType === 'line'"
         [style.left.px]="indicatorOptions.left"
@@ -33,7 +46,7 @@ import { ShTabComponent } from './sh-tab.component';
   </div>
   `,
 })
-export class ShTabsetComponent implements AfterContentInit, OnChanges, AfterViewInit {
+export class ShTabsetComponent implements AfterContentInit, OnChanges, OnInit, AfterViewInit {
   @ContentChildren(ShTabComponent) tabs!: QueryList<ShTabComponent>;
   @ViewChildren('tabHeader') tabHeaders!: QueryList<ElementRef>;
 
@@ -50,6 +63,11 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, AfterView
     height: null
   };
 
+  constructor(private cdr: ChangeDetectorRef) { }
+
+  ngOnInit(): void {
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if ('shActiveTab' in changes) {
       this.updateActiveTab(changes['shActiveTab'].currentValue);
@@ -62,6 +80,21 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, AfterView
 
   ngAfterViewInit(): void {
     this.updateIndicator();
+    this.cdr.detectChanges();
+
+    this.tabs.forEach((tab, index) => {
+      const sanitizedIcon = tab.shIcon?.trim().replace(/\s+/g, '') || null;
+
+      if (!sanitizedIcon) return;
+
+      const [leftIcon, rightIcon] = this.iconArr(sanitizedIcon);
+      if (leftIcon !== '*') tab.iconLeft = leftIcon;
+      if (rightIcon && rightIcon !== '*') tab.iconRight = rightIcon;
+    });
+  }
+
+  private iconArr(iconRule: string): string[] {
+    return iconRule.includes(',') ? iconRule.split(',') : [iconRule];
   }
 
   private updateIndicator(): void {

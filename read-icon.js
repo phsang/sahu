@@ -18,7 +18,7 @@ function getAllSvgFiles(modeIndex, fileList = {}) {
     } else if (path.extname(file) === '.svg') {
       // Nếu là file SVG, đọc nội dung
       let content = fs.readFileSync(filePath, 'utf8');
-      let attributes = `fill="currentColor" height="1em" width="1em"`;
+      let attributes = `name="${file.split('.')[0]}" fill="currentColor" height="1em" width="1em"`;
       content = content.replace('<svg', `<svg ${attributes}`);
 
       let _fileName = file.replace('.svg', '');

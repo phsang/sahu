@@ -14,23 +14,22 @@
   }
 }
 
-.tab-card .tab-header-container {
+.tab-left .tab-header-container,
+.tab-right .tab-header-container {
   gap: 2px;
-
-  .tab-header span {
-    padding: 4px 8px;
-  }
 }
 
 .tab-header {
   cursor: pointer;
-  padding: 8px 6px;
   transition: 0.3s;
   z-index: 8;
 }
 
-.tab-header span {
-  padding: 4px;
+.tab-header>span {
+  align-items: baseline;
+  display: flex;
+  gap: 1px;
+  padding: 10px 8px;
 }
 
 .tab-header.active {
@@ -173,4 +172,12 @@
     border-radius: 2px 0 0 2px;
     border-width: 1px 0 1px 1px;
   }
+}
+
+.tab-left.tab-line .tab-header>span {
+  padding-left: 0;
+}
+
+.tab-right.tab-line .tab-header>span {
+  padding-right: 0;
 }
