@@ -18,5 +18,5 @@ export * from './lib/sh-page-header';
 export * from './lib/sh-pagination';
 export * from './lib/sh-select';
 export * from './lib/sh-slideshow';
-export * from './lib/sh-tabs';
 
+export { ShTabsModule } from './lib/sh-tabs/sh-tabs.module';

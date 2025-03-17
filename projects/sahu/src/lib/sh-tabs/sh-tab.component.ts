@@ -1,28 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { getIconList } from '../../utils/icon-list';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+// sh-tab.component.ts
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'sh-tab',
-  template: `<div *ngIf="isActive"><ng-content></ng-content></div>`,
+  template: `
+    <ng-template>
+      <ng-content></ng-content>
+    </ng-template>
+  `
 })
-export class ShTabComponent implements OnInit {
-  @Input() shTitle!: string;
-  @Input() shIcon?: string;
-  @Input() shIconType: 'light' | 'regular' | 'solid' | 'duotone' = 'light';
-  isActive = false;
-  icon: SafeHtml = '';
-
-  constructor(
-    private sanitizer: DomSanitizer
-  ) { }
-
-  ngOnInit(): void {
-    if (this.shIcon) {
-      let _icon = getIconList(this.shIcon, this.shIconType);
-      if (_icon) {
-        this.icon = this.sanitizer.bypassSecurityTrustHtml(_icon);
-      }
-    }
-  }
+export class ShTabComponent {
+  @Input() shTitle: string = '';
+  @Input() shDisabled: boolean = false;
+  @ViewChild(TemplateRef) contentTemplate!: TemplateRef<any>;
 }
