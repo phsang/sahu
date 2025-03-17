@@ -20,7 +20,12 @@ import { ShTabComponent } from './sh-tab.component';
            #tabHeader>
            <span>{{ tab.shTitle }}</span>
       </div>
-      <div class="tab-indicator" [style.left.px]="indicatorLeft" [style.width.px]="indicatorWidth"></div>
+      <div class="tab-indicator"
+        [style.left.px]="indicatorOptions.left"
+        [style.width.px]="indicatorOptions.width"
+        [style.top.px]="indicatorOptions.top"
+        [style.height.px]="indicatorOptions.height">
+      </div>
     </div>
     <div class="tab-content">
       <ng-container *ngTemplateOutlet="tabs.get(activeTabIndex)?.contentTemplate || null"></ng-container>
@@ -37,8 +42,12 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, AfterView
   @Output() shChangeTab = new EventEmitter<number>();
 
   activeTabIndex: number = 0;
-  indicatorWidth: number = 0;
-  indicatorLeft: number = 0;
+  indicatorOptions: any = {
+    left: null,
+    width: null,
+    top: null,
+    height: null
+  };
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('shActiveTab' in changes) {
@@ -61,8 +70,15 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, AfterView
     const activeHeader = headers[this.activeTabIndex]?.nativeElement;
 
     if (activeHeader) {
-      this.indicatorWidth = activeHeader.offsetWidth;
-      this.indicatorLeft = activeHeader.offsetLeft;
+      if (this.shTabPosition === 'top' || this.shTabPosition === 'bottom') {
+        this.indicatorOptions.width = activeHeader.offsetWidth;
+        this.indicatorOptions.left = activeHeader.offsetLeft;
+      }
+
+      if (this.shTabPosition === 'left' || this.shTabPosition === 'right') {
+        this.indicatorOptions.height = activeHeader.offsetHeight;
+        this.indicatorOptions.top = activeHeader.offsetTop;
+      }
     }
   }
 
