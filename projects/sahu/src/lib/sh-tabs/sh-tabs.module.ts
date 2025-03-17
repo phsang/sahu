@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from './shared.module';
+import { CommonModule } from '@angular/common';
+import { ShTabComponent } from './sh-tab.component';
+import { ShTabsetComponent } from './sh-tabset.component';
 
 @NgModule({
-  imports: [SharedModule],
+  declarations: [ShTabsetComponent, ShTabComponent],
+  imports: [CommonModule],
+  exports: [ShTabsetComponent, ShTabComponent],
 })
-export class ShTabsModule { }
+export class ShTabsModule {
+}
