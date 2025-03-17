@@ -1,4 +1,3 @@
-// sh-tab.component.ts
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
