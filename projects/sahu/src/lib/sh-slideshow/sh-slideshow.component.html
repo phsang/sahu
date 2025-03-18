@@ -19,7 +19,12 @@
     <div class="slide-header">
       <h3>{{ shData[currentIndex].title }}</h3>
       <p><span class="font600">{{currentIndex + 1}}</span> / <span>{{shData.length}} hình</span></p>
-      <button class="close-btn" (click)="closePopup()"></button>
+      <sh-button
+        [shIcon]="'times'"
+        [shVariant]="'blank'"
+        [shClass]="'close-btn'"
+        (shClick)="closePopup()">
+      </sh-button>
     </div>
     <div class="slideshow-container">
       <ng-container *ngFor="let slide of shData; let i = index">
