@@ -1,6 +1,6 @@
 import { ConnectedPosition, FlexibleConnectedPositionStrategy, Overlay, OverlayRef, ScrollDispatcher, ViewportRuler } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { AfterViewInit, Component, ContentChild, OnDestroy, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ContentChild, OnDestroy, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ShDropdownContentDirective } from './sh-dropdown-content.directive';
 import { ShDropdownTriggerDirective } from './sh-dropdown-trigger.directive';
@@ -8,7 +8,30 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 @Component({
   selector: 'sh-dropdown',
-  template: '<ng-content></ng-content>',
+  template: `<ng-content></ng-content>
+    
+            <ng-template #animationWrapper>
+              <div [@dropdownAnimation]="animationState"
+                  (@dropdownAnimation.done)="onAnimationDone($event)">
+                <ng-container *ngTemplateOutlet="content?.templateRef || null"></ng-container>
+              </div>
+            </ng-template>`,
+  animations: [
+    trigger('dropdownAnimation', [
+      state('void', style({
+        transformOrigin: 'top center',
+        opacity: 0,
+        transform: 'scaleY(0)'
+      })),
+      state('visible', style({
+        transformOrigin: 'top center',
+        opacity: 1,
+        transform: 'scaleY(1)'
+      })),
+      transition('void => visible', animate('220ms ease-in')),
+      transition('visible => void', animate('220ms ease-out'))
+    ])
+  ]
 })
 export class ShDropdownComponent implements AfterViewInit, OnDestroy {
   @ContentChild(ShDropdownTriggerDirective) trigger!: ShDropdownTriggerDirective;
@@ -16,6 +39,12 @@ export class ShDropdownComponent implements AfterViewInit, OnDestroy {
 
   private overlayRef!: OverlayRef;
   private subscriptions: Subscription[] = [];
+
+  // Thêm các state animation
+  animationState: 'void' | 'visible' = 'void';
+  private isAnimating = false;
+
+  @ViewChild('animationWrapper') animationWrapper!: TemplateRef<any>;
 
   constructor(
     private overlay: Overlay,
@@ -74,8 +103,9 @@ export class ShDropdownComponent implements AfterViewInit, OnDestroy {
 
   private open(): void {
     if (!this.overlayRef.hasAttached()) {
+      this.animationState = 'visible';
       const portal = new TemplatePortal(
-        this.content.templateRef,
+        this.animationWrapper,
         this.viewContainerRef
       );
       this.overlayRef.attach(portal);
@@ -83,7 +113,17 @@ export class ShDropdownComponent implements AfterViewInit, OnDestroy {
   }
 
   private close(): void {
-    this.overlayRef.detach();
+    if (this.isAnimating) return;
+    this.isAnimating = true;
+    this.animationState = 'void';
+  }
+
+  // Xử lý khi animation hoàn thành
+  onAnimationDone(event: any): void {
+    if (event.toState === 'void') {
+      this.overlayRef.detach();
+      this.isAnimating = false;
+    }
   }
 
   private updatePosition(): void {

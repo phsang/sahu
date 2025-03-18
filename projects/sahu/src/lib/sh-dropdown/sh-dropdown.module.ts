@@ -1,12 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { OverlayModule, ScrollDispatcher, ViewportRuler } from '@angular/cdk/overlay';
-import { ShDropdownComponent } from './sh-dropdown.component';
-import { ShDropdownTriggerDirective } from './sh-dropdown-trigger.directive';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { ShDropdownContentDirective } from './sh-dropdown-content.directive';
+import { ShDropdownTriggerDirective } from './sh-dropdown-trigger.directive';
+import { ShDropdownComponent } from './sh-dropdown.component';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule],
+  imports: [
+    CommonModule,
+    OverlayModule,
+  ],
   declarations: [
     ShDropdownComponent,
     ShDropdownTriggerDirective,

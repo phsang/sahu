@@ -9,3 +9,7 @@
 .cdk-overlay-transparent-backdrop {
   background: transparent;
 }
+
+.cdk-overlay-pane {
+  will-change: transform;
+}
