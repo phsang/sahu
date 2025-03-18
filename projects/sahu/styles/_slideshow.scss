@@ -7,30 +7,30 @@
 
   .gallery-item {
     border-right: 1px solid #e0e0e0;
-    padding: 0 20px;
-
-    &:first-child {
-      padding-left: 16px;
-    }
+    padding: 0 8px;
+    width: 120px;
 
     &:last-child {
       border-right: none;
-      border-right: 16px;
     }
   }
 
   .title {
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
   }
 
   .thumbnail {
     border: 2px solid transparent;
     border-radius: 2px;
     cursor: pointer;
-    height: 96px;
+    height: 70px;
     object-fit: cover;
     transition: 0.3s;
-    width: 148px;
+    width: 100%;
   }
 
   .thumbnail:hover {
@@ -127,16 +127,18 @@
   }
 
   .btn.close-btn {
-    background: #9a9aa4;
-    border-radius: 2px;
+    background-color: #9a9aa4;
     color: #fff;
-    cursor: pointer;
     font-size: 18px;
     height: 24px;
     position: absolute;
     right: 18px;
     top: calc(50% - 12px);
     width: 24px;
+  }
+
+  .btn.close-btn:hover {
+    background-color: #6b6b6b;
   }
 
   /* Slideshow Styles */
@@ -199,18 +201,16 @@
     width: 32px;
   }
 
-  .prev,
-  .next {
-    align-items: center;
-    background: #6b6b81;
-    border: none;
+  .slide-switch {
+    background-color: #9a9aa4;
     border-radius: 99px;
     color: #fff;
-    cursor: pointer;
-    display: flex;
     height: 27px;
-    justify-content: center;
     width: 27px;
+  }
+
+  .slide-switch:hover {
+    background-color: #6b6b6b;
   }
 
 }

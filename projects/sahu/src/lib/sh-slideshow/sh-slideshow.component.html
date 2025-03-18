@@ -36,7 +36,13 @@
       </ng-container>
     </div>
     <div class="controls">
-      <button class="prev" (click)="previousSlide()">&#10094;</button>
+      <sh-button
+        [shClass]="'slide-switch'"
+        [shVariant]="'blank'"
+        [shIcon]="'chevron-left:regular'"
+        (shClick)="previousSlide()">
+      </sh-button>
+
       <div class="progress">
         <sh-button
           [shIcon]="'search-plus'"
@@ -59,7 +65,13 @@
           (shClick)="rotateRight()">
         </sh-button>
       </div>
-      <button class="next" (click)="nextSlide()">&#10095;</button>
+
+      <sh-button
+        [shClass]="'slide-switch'"
+        [shVariant]="'blank'"
+        [shIcon]="'chevron-right:regular'"
+        (shClick)="nextSlide()">
+      </sh-button>
     </div>
   </div>
 </div>
