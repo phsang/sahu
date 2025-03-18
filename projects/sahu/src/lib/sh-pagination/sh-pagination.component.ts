@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'sh-pagination',
   templateUrl: './sh-pagination.component.html',
 })
-export class ShPaginationComponent implements OnInit {
+export class ShPaginationComponent implements OnInit, OnChanges {
   @Input() shTotal = 0;
   @Input() shPageIndex = 1;
   @Input() shPageSize = 10;
@@ -23,6 +23,10 @@ export class ShPaginationComponent implements OnInit {
     this.pageSizeList = this.pageSizeOptions.map((item) => {
       return { label: item, value: item };
     });
+  }
+
+  ngOnChanges() {
+    this.updatePages();
   }
 
   updatePages() {

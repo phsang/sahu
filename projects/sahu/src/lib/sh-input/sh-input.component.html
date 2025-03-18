@@ -17,7 +17,7 @@
       (click)="handleClick($event)"
       (blur)="handleBlur()"
       #mainInput>
-    <span class="icon" *ngIf="iconRight && !shLoading && !value" [innerHTML]="iconRight"></span>
+    <span class="icon" *ngIf="iconRight && !shLoading" [innerHTML]="iconRight"></span>
     <sh-button
       *ngIf="!shLoading && shAllowClear && value"
       (shClick)="resetDisplayValue()"
