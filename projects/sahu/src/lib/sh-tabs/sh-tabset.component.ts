@@ -79,9 +79,6 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, OnInit, A
   }
 
   ngAfterViewInit(): void {
-    this.updateIndicator();
-    this.cdr.detectChanges();
-
     this.tabs.forEach((tab, index) => {
       const sanitizedIcon = tab.shIcon?.trim().replace(/\s+/g, '') || null;
 
@@ -91,6 +88,10 @@ export class ShTabsetComponent implements AfterContentInit, OnChanges, OnInit, A
       if (leftIcon !== '*') tab.iconLeft = leftIcon;
       if (rightIcon && rightIcon !== '*') tab.iconRight = rightIcon;
     });
+    setTimeout(() => {
+      this.updateIndicator();
+    });
+    this.cdr.detectChanges();
   }
 
   private iconArr(iconRule: string): string[] {
