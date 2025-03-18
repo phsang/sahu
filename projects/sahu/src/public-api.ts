@@ -10,6 +10,7 @@ export * from './lib/sh-button';
 export * from './lib/sh-date-picker';
 export * from './lib/sh-form';
 export * from './lib/sh-icon';
+export * from './lib/sh-dropdown';
 export * from './lib/sh-image';
 export * from './lib/sh-input';
 export * from './lib/sh-message-box';
