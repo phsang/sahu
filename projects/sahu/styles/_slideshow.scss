@@ -61,20 +61,20 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 74px;
+    height: 60px;
     justify-content: center;
-    padding: 2px 40px;
+    padding: 2px 18px 6px;
     position: relative;
   }
 
   .slide-header h3 {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 500;
     margin: 0;
   }
 
   .slide-header p {
-    font-size: 16px;
+    font-size: 15px;
     margin: 0;
   }
 
@@ -105,7 +105,9 @@
 
   .popup-content {
     background: #f2f2f2;
-    border-radius: 10px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
     height: 80vh;
     left: 50%;
     max-height: 800px;
@@ -160,8 +162,8 @@
   /* Slideshow Styles */
   .slideshow-container {
     background-color: #fff;
-    border-radius: 16px;
-    height: calc(100% - 154px);
+    border-radius: 2px;
+    flex: 1 0 0;
     margin: auto;
     position: relative;
     width: calc(100% - 48px);
@@ -190,7 +192,7 @@
   }
 
   .slide img {
-    border-radius: 10px;
+    border-radius: 2px;
     left: 50%;
     position: absolute;
     top: 50%;
@@ -201,10 +203,9 @@
   .controls {
     align-items: center;
     display: flex;
-    height: 80px;
+    height: 60px;
     justify-content: space-between;
-    margin: 0 auto;
-    width: calc(100% - 48px);
+    margin: 0 18px;
   }
 
   .progress {
@@ -213,35 +214,10 @@
     gap: 24px;
   }
 
-  .progress-btn {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    border: none;
-    cursor: pointer;
+  .btn {
     height: 32px;
     padding: 0;
     width: 32px;
-  }
-
-  .btn-zoom_in {
-    background-image: url("/assets/images/icons/slides/ico-zoom-in.svg");
-  }
-
-  .btn-zoom_out {
-    background-image: url("/assets/images/icons/slides/ico-zoom-out.svg");
-  }
-
-  .btn-zoom_reset {
-    background-image: url("/assets/images/icons/slides/ico-refresh.svg");
-  }
-
-  .btn-rotate_left {
-    background-image: url("/assets/images/icons/slides/ico-redo.svg");
-  }
-
-  .btn-rotate_right {
-    background-image: url("/assets/images/icons/slides/ico-undo.svg");
   }
 
   .prev,

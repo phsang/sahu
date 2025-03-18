@@ -1,11 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShSlideshowComponent } from './sh-slideshow.component';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ShButtonModule } from '../sh-button';
+import { ShSlideshowComponent } from './sh-slideshow.component';
 
 @NgModule({
   declarations: [ShSlideshowComponent],
-  imports: [CommonModule, FormsModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    ShButtonModule,
+  ],
   exports: [ShSlideshowComponent],
 })
 export class ShSlideshowModule { }
