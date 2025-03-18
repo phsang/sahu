@@ -1,3 +1,5 @@
+@use './variables-global' as *;
+
 .tab-wrapper {
   display: flex;
 }
@@ -33,7 +35,7 @@
 }
 
 .tab-header.active {
-  color: #2196F3;
+  color: $primary_color;
 }
 
 .tab-card .tab-header {
@@ -58,7 +60,7 @@
 }
 
 .tab-indicator {
-  background-color: #2196F3;
+  background-color: $primary_color;
   height: 2px;
   position: absolute;
   transition: 0.3s;
