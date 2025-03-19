@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { getIconList } from '../../utils/icon-list';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ExcelService } from '../../services/excel.service';
 import { ImageService } from '../../services/image.service';
 
