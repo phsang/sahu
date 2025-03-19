@@ -44,8 +44,8 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   @Output() shChange = new EventEmitter<any>();
   @Output() shClick = new EventEmitter<any>();
 
-  iconLeft: SafeHtml = '';
-  iconRight: SafeHtml = '';
+  iconLeft: string = '';
+  iconRight: string = '';
   classLoading = '';
   value: string = '';
 
@@ -127,56 +127,22 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  iconTheme(iconRule: string): any {
-    if (iconRule.includes(':')) {
-      const [icon, type] = iconRule.split(':');
-      return {
-        icon: icon,
-        type: type
-      };
-    } else {
-      return {
-        icon: iconRule,
-        type: 'light'
-      };
-    }
-  }
-
   private updateInputClass(): void {
     let classType = `sh-input-${this.shType || 'text'}`;
     if (!this.shClass.includes(classType)) {
       this.shClass += ' ' + classType;
     }
-    this.shIcon = this.shIcon?.trim().replace(/\s+/g, '') || null;
 
-    if (this.shIcon) {
+    const sanitizedIcon = this.shIcon?.trim().replace(/\s+/g, '') || null;
+    if (sanitizedIcon) {
       let classIcon = 'sh-input-icon';
       if (!this.shClass.includes(classIcon)) {
         this.shClass += ' ' + classIcon;
       }
-      let iconArray = this.iconArr(this.shIcon);
-      if (iconArray[0] !== '*') {
-        let leftIco = this.iconTheme(iconArray[0]);
 
-        let _icon = getIconList(leftIco.icon, leftIco.type);
-        let attributes = `fill="currentColor" height="1em" width="1em"`;
-
-        if (_icon) {
-          _icon = _icon.replace('<svg', `<svg ${attributes}`);
-          this.iconLeft = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
-        }
-      }
-      if (iconArray[1] && iconArray[1] !== '*') {
-        let rightIco = this.iconTheme(iconArray[1]);
-
-        let _icon = getIconList(rightIco.icon, rightIco.type);
-        let attributes = `fill="currentColor" height="1em" width="1em"`;
-
-        if (_icon) {
-          _icon = _icon.replace('<svg', `<svg ${attributes}`);
-          this.iconRight = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
-        }
-      }
+      const [leftIcon, rightIcon] = this.iconArr(sanitizedIcon);
+      if (leftIcon !== '*') this.iconLeft = leftIcon;
+      if (rightIcon && rightIcon !== '*') this.iconRight = rightIcon;
     }
   }
 
