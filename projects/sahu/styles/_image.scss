@@ -1,0 +1,70 @@
+.sh-image {
+  display: flex;
+  position: relative;
+}
+
+.sh-image-dummy {
+  align-items: center;
+  background-color: #bfbfbf;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  font-size: 16px;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.sh-image-dummy svg {
+  height: 46%;
+  width: 46%;
+}
+
+.sh-image img {
+  border-radius: inherit;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.image-animated img {
+  opacity: 0;
+  position: relative;
+  transform: scale(0);
+  transition: 0.3s;
+}
+
+.image-animated::before {
+  animation: l1 1s infinite linear;
+  background: linear-gradient(90deg, #0001 33%, #0005 50%, #0001 66%) #f2f2f2;
+  background-size: 300% 100%;
+  border-radius: 999px;
+  content: "";
+  height: 10%;
+  left: 50%;
+  max-height: 10px;
+  max-width: 300px;
+  min-height: 6px;
+  opacity: 1;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  visibility: visible;
+  width: 80%;
+}
+
+@keyframes l1 {
+  0% {
+    background-position: right
+  }
+}
+
+.image-animated.image-loaded img {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.image-animated.image-loaded::before {
+  opacity: 0;
+  visibility: hidden;
+}

@@ -1,5 +1,5 @@
 <div
-  [ngClass]="imageClass"
+  [ngClass]="['sh-image', shSrc && shAnimated ? 'image-animated' : '']"
   [style.height.px]="isNumeric(shHeight) ? shHeight : null"
   [style.width.px]="isNumeric(shWidth) ? shWidth : null"
   [style.backgroundColor]="shBackgroundColor"
@@ -8,6 +8,7 @@
   <img
     *ngIf="shSrc"
     [src]="shSrc"
+    [attr.alt]="shAlt"
     [attr.style]="shObjectFit ? 'object-fit: ' + shObjectFit : null"
     (load)="handleLoad()" />
   <div *ngIf="!shSrc" class="sh-image-dummy">

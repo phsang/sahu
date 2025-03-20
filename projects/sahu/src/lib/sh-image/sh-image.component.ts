@@ -8,37 +8,28 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChang
 export class ShImageComponent implements AfterViewInit, OnChanges {
   @ViewChild('shImage') shImage!: ElementRef;
   @Input() shSrc?: string;
-  @Input() shClass?: string;
+  @Input() shAlt?: string;
   @Input() shBackgroundColor: '#c0c0c0' | string = 'transparent';
   @Input() shColor: '#fff' | string = '#c0c0c0';
   @Input() shAnimated: boolean = true;
-  @Input() shHeight: number = 56;
-  @Input() shWidth: number = 56;
+  @Input() shHeight?: number;
+  @Input() shWidth?: number;
   @Input() shObjectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down' = 'cover';
-  @Input() shBradius: number = 3;
+  @Input() shBradius: number = 2;
   @Input() shOnload?: () => void;
 
-  imageClass = '';
-
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngAfterViewInit(): void {
-    this.updateImageClass();
-    this.cdr.detectChanges(); // Giải quyết vấn đề ExpressionChangedAfterItHasBeenCheckedError
+    this.cdr.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['shSrc'] || changes['shText']) {
+    if (changes['shSrc'] || changes['shAlt']) {
       this.resetImageClass();
-      this.updateImageClass();
-    }
-  }
-
-  private updateImageClass(): void {
-    this.imageClass = `${this.shClass ? this.shClass : ''} sh-image`;
-
-    if (this.shAnimated && this.shSrc) {
-      this.imageClass += ' image-animated';
     }
   }
 
