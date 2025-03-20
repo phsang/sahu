@@ -13,7 +13,10 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
             <ng-template #animationWrapper>
               <div [@dropdownAnimation]="animationState"
                   (@dropdownAnimation.done)="onAnimationDone($event)">
-                <ng-container *ngTemplateOutlet="content?.templateRef || null"></ng-container>
+
+                  <div class="dropdown-content">
+                    <ng-container *ngTemplateOutlet="content?.templateRef || null"></ng-container>
+                  </div>
               </div>
             </ng-template>`,
   animations: [
