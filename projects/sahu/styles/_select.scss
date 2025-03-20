@@ -96,7 +96,6 @@
 
   .dropdown-icon {
     height: 18px;
-    margin-right: 8px;
     position: relative;
     width: 18px;
 
@@ -125,7 +124,6 @@
     align-items: flex-end;
     display: flex;
     overflow: hidden;
-    padding: 1px 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
@@ -153,7 +151,7 @@
 }
 
 .sh-select .select-multiple {
-  padding: 6px 0;
+  padding: 6px 10px;
 }
 
 .sh-select-content {
