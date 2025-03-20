@@ -134,11 +134,6 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
 
     const sanitizedIcon = this.shIcon?.trim().replace(/\s+/g, '') || null;
     if (sanitizedIcon) {
-      let classIcon = 'sh-input-icon';
-      if (!this.shClass.includes(classIcon)) {
-        this.shClass += ' ' + classIcon;
-      }
-
       const [leftIcon, rightIcon] = this.iconArr(sanitizedIcon);
       if (leftIcon !== '*') this.iconLeft = leftIcon;
       if (rightIcon && rightIcon !== '*') this.iconRight = rightIcon;
@@ -412,20 +407,20 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   }
 
   handleFocus(): void {
-    this.shClass = this.shClass.replace('input-value', '').trim();
-    if (!this.shClass.includes('input-focus')) {
-      this.shClass += ' input-focus';
+    this.shClass = this.shClass.replace('control-value', '').trim();
+    if (!this.shClass.includes('control-focus')) {
+      this.shClass += ' control-focus';
     }
   }
 
   handleBlur(): void {
     // nếu có giá trị thì thêm class để style
-    if (this.value && this.value.trim() != '' && !this.shClass.includes('input-value')) {
-      this.shClass += ' input-value';
+    if (this.value && this.value.trim() != '' && !this.shClass.includes('control-value')) {
+      this.shClass += ' control-value';
     }
 
-    if (this.shClass.includes('input-focus')) {
-      this.shClass = this.shClass.replace('input-focus', '').trim();
+    if (this.shClass.includes('control-focus')) {
+      this.shClass = this.shClass.replace('control-focus', '').trim();
     }
     this.onTouched();
   }

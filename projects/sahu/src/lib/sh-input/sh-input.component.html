@@ -1,6 +1,6 @@
 <div *ngIf="shType === 'text' || shType === 'password'" class="field-validation">
   <label for="{{shId}}" *ngIf="shLabel">{{shLabel}} <span class="persian_red" *ngIf="shDataVali">*</span></label>
-  <div class="sh-input input-{{shSize}} {{shDisabled ? 'input-disabled' : ''}}" ngClass="{{shClass}}">
+  <div class="sh-control sh-control-{{shSize}} {{shDisabled ? 'control-disabled' : ''}}" ngClass="{{shClass}}">
 
     <div class="icon" *ngIf="iconLeft">
       <sh-icon
@@ -30,12 +30,15 @@
       </sh-icon>
     </div>
 
-    <sh-button
-      *ngIf="!shLoading && shAllowClear && value"
-      (shClick)="resetDisplayValue()"
-      [shVariant]="'blank'"
-      [shClass]="'sh-reset'">
-    </sh-button>
+    <div class="icon" *ngIf="!shLoading && shAllowClear && value">
+      <sh-button
+        [shIcon]="'times-circle:duotone'"
+        (shClick)="resetDisplayValue()"
+        [shVariant]="'blank'"
+        [shClass]="'sh-reset'">
+      </sh-button>
+    </div>
+
     <div class="icon" *ngIf="shLoading">
       <sh-icon
         [shIcon]="'spinner-third'"
