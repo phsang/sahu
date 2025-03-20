@@ -13,7 +13,7 @@ export class ShAvatarComponent implements OnChanges {
   @Input() shColor: string = '#fff';
   @Input() shAnimated: boolean = true;
   @Input() shShape: 'circle' | 'square' = 'circle';
-  @Input() shSize: 'default' | 'large' | 'small' | number = 'default';
+  @Input() shSize: 'sm' | 'md' | 'lg' | number = 'md';
   @Input() shOnload?: () => void;
 
   constructor(private renderer: Renderer2) { }
