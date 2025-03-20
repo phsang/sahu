@@ -15,6 +15,8 @@ export class ShModalComponent implements OnInit {
   @Input() shHeadClass?: string;
   @Input() shFoot: boolean = true;
   @Input() shFootClass?: string;
+  @Input() shCancelText: string = 'Cancel';
+  @Input() shOkText: string = 'Ok';
   @Input() shVisible: boolean = false;
   @Output() shCancel = new EventEmitter<Event>();
   @Output() shOk = new EventEmitter<Event>();

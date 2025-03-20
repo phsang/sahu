@@ -12,8 +12,8 @@
 
     <ng-container *ngIf="shFoot">
       <div class="md-foot" [ngClass]="shFootClass">
-        <sh-button (shClick)="handleCancel($event)">Đóng</sh-button>
-        <sh-button (shClick)="handleOk($event)">Ok</sh-button>
+        <sh-button (shClick)="handleCancel($event)" [shLabel]="shCancelText"></sh-button>
+        <sh-button (shClick)="handleOk($event)" [shLabel]="shOkText"></sh-button>
       </div>
     </ng-container>
 
