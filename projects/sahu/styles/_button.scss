@@ -134,30 +134,3 @@
   border-color: $danger_color;
   color: #fff;
 }
-
-.btn-sm {
-  font-size: 13px;
-  height: 28px;
-}
-
-.btn-md {
-  font-size: 14px;
-  height: 32px;
-}
-
-.btn-lg {
-  font-size: 15px;
-  height: 36px;
-}
-
-.btn-xl {
-  font-size: 16px;
-  height: 40px;
-}
-
-.btn:disabled {
-  background-color: $disabled_color;
-  border-color: $disabled_color;
-  color: #fbfbfb;
-  cursor: not-allowed;
-}

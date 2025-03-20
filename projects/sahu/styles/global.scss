@@ -117,10 +117,17 @@
   color: $primary_color_text;
 }
 
-.control-disabled {
+.control-disabled,
+.control-disabled:hover {
   background-color: #dcdcdc;
   border-color: #afafaf;
   cursor: not-allowed;
+}
+
+.control-disabled.btn,
+.control-disabled.btn:hover {
+  background-color: #b9b9b9;
+  border-color: #b9b9b9;
 }
 
 .control-disabled input {
