@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { getIconList } from '../../utils/icon-list';
 
 @Component({
   selector: 'sh-modal',
@@ -9,12 +7,10 @@ import { getIconList } from '../../utils/icon-list';
 })
 export class ShModalComponent implements OnInit {
   @Input() shIcon?: string;
-  @Input() shIconType: 'light' | 'regular' | 'solid' | 'duotone' = 'light';
-  iconElement?: SafeHtml = '';
-  @Input() shMdType: 'zoomInDown' | 'slideLeft' | 'slideRight' | 'rotateX' | 'rotateY' = 'zoomInDown';
+  @Input() shType: 'zoomInDown' | 'slideLeft' | 'slideRight' | 'rotateX' | 'rotateY' = 'zoomInDown';
   @Input() shTitle?: string;
-  @Input() shMdSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full' = 'md';
-  @Input() shMdClass?: string;
+  @Input() shSize: 'sm' | 'md' | 'lg' | 'full' = 'md';
+  @Input() shClass?: string;
   @Input() shHead: boolean = true;
   @Input() shHeadClass?: string;
   @Input() shFoot: boolean = true;
@@ -23,17 +19,9 @@ export class ShModalComponent implements OnInit {
   @Output() shCancel = new EventEmitter<Event>();
   @Output() shOk = new EventEmitter<Event>();
 
-  constructor(
-    private sanitizer: DomSanitizer
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
-    if (this.shIcon) {
-      let _icon = getIconList(this.shIcon, this.shIconType);
-      if (_icon) {
-        this.iconElement = this.sanitizer.bypassSecurityTrustHtml(_icon.trim());
-      }
-    }
   }
 
   handleCancel(event: Event): void {
