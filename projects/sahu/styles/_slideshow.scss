@@ -45,7 +45,7 @@
     opacity: 0;
     position: fixed;
     top: 0;
-    transition: .4s;
+    transition: .6s;
     width: 100%;
     z-index: 1000;
   }
@@ -114,7 +114,7 @@
     text-align: center;
     top: 50%;
     transform: translate(-50%, -50%) scale(0.5);
-    transition: .3s;
+    transition: .6s;
     visibility: hidden;
     width: 80%;
     z-index: 1000;
@@ -174,11 +174,8 @@
 
   .slide img {
     border-radius: 2px;
-    left: 50%;
     position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    transition: .3s;
+    transition: 0.3s;
   }
 
   .controls {
@@ -196,9 +193,9 @@
   }
 
   .btn {
-    height: 32px;
-    padding: 0;
-    width: 32px;
+    height: 30px;
+    padding: 2px;
+    width: 30px;
   }
 
   .slide-switch {

@@ -76,43 +76,44 @@ export class ShSlideshowComponent {
     }
 
     if (this.slideLoaded.every(x => x)) {
-      this.popupContainer.nativeElement.classList.add('loaded');
+      let currentSlide = this.popupContainer.nativeElement.querySelector('#slide-' + this.currentIndex);
+      for (let i = 0; i < this.slideStyles.length; i++) {
+        let percentZoom = 100;
+        let imgW = this.slideStyles[i].width;
+        let imgH = this.slideStyles[i].height;
+        let parW = currentSlide.offsetWidth;
+        let parH = currentSlide.offsetHeight;
 
-      setTimeout(() => {
-        let currentSlide = this.popupContainer.nativeElement.querySelector('#slide-' + this.currentIndex);
-        for (let i = 0; i < this.slideStyles.length; i++) {
-          let percentZoom = 100;
-          let imgW = this.slideStyles[i].width;
-          let imgH = this.slideStyles[i].height;
-          let parW = currentSlide.offsetWidth;
-          let parH = currentSlide.offsetHeight;
-
-          if ((imgW > imgH) && (imgW >= parW)) {
+        if ((imgW > imgH) && (imgW >= parW)) {
+          percentZoom = (parW / imgW) * 100;
+        } else if ((imgH > imgW) && (imgH >= parH)) {
+          percentZoom = (parH / imgH) * 100;
+        } else if (imgH === imgW) {
+          percentZoom = 100;
+          if (imgW > parW) {
             percentZoom = (parW / imgW) * 100;
-          } else if ((imgH > imgW) && (imgH >= parH)) {
-            percentZoom = (parH / imgH) * 100;
-          } else if (imgH === imgW) {
-            percentZoom = 100;
-            if (imgW > parW) {
-              percentZoom = (parW / imgW) * 100;
-            }
-            if (imgH > parH) {
-              percentZoom = (parH / imgH) * 100;
-            }
           }
-
-          this.slideStyles[i] = {
-            zoom: percentZoom / 100,
-            rotate: 0,
-            left: (parW - imgW) / 2,
-            top: (parH - imgH) / 2,
-            height: this.slideStyles[i].height,
-            width: this.slideStyles[i].width,
+          if (imgH > parH) {
+            percentZoom = (parH / imgH) * 100;
           }
         }
 
-        this.applyStyle(this.currentIndex);
-      }, 10);
+        this.slideStyles[i] = {
+          zoom: percentZoom / 100,
+          rotate: 0,
+          left: (parW - imgW) / 2,
+          top: (parH - imgH) / 2,
+          height: this.slideStyles[i].height,
+          width: this.slideStyles[i].width,
+        }
+      }
+
+      this.applyStyle(this.currentIndex);
+
+      // tính toán và apply style cho từng slide rồi mới show slideshow, tránh việc vừa animate slideshow vừa animate ảnh
+      setTimeout(() => {
+        this.popupContainer.nativeElement.classList.add('loaded');
+      }, 310);
     }
   }
 

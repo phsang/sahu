@@ -52,11 +52,8 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   onTouched: any = () => { };
 
   constructor(
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer,
-    private excelService: ExcelService,
-    private imageService: ImageService,
+    private readonly excelService: ExcelService,
+    private readonly imageService: ImageService,
   ) {
     if (this.shType === 'file') {
       this.dropFile();
@@ -132,7 +129,7 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
       this.shClass += ' ' + classType;
     }
 
-    const sanitizedIcon = this.shIcon?.trim().replace(/\s+/g, '') || null;
+    const sanitizedIcon = this.shIcon?.trim().replace(/\s+/g, '') ?? null;
     if (sanitizedIcon) {
       const [leftIcon, rightIcon] = this.iconArr(sanitizedIcon);
       if (leftIcon !== '*') this.iconLeft = leftIcon;
@@ -314,15 +311,12 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
         // Kiểm tra loại file
         if (allowedTypes) {
           const allowedTypesArray = allowedTypes.split(':').map((type: string) => type.trim().toLowerCase());
-          const fileType = file.name.split('.').pop()?.toLowerCase() || '';
+          const fileType = file.name.split('.').pop()?.toLowerCase() ?? '';
           if (!allowedTypesArray.includes(fileType)) {
             isValid = false;
-          } else {
-            // kiểm tra tính hợp lệ của file excel nếu chỉ chấp nhận file excel
-            if (fileType === 'xlsx' && allowedTypesArray.includes('xlsx')) {
-              excelData = await this.excelValid(rule, file);
-              isValid = excelData.status;
-            }
+          } else if (fileType === 'xlsx' && allowedTypesArray.includes('xlsx')) { // kiểm tra tính hợp lệ của file excel nếu chỉ chấp nhận file excel
+            excelData = await this.excelValid(rule, file);
+            isValid = excelData.status;
           }
         }
 

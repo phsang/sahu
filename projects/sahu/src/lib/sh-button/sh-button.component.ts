@@ -10,7 +10,7 @@ export class ShButtonComponent implements OnChanges {
   @Input() shVariant?: 'primary' | 'info' | 'success' | 'warning' | 'danger' | 'outline-primary' | 'outline-info' | 'outline-success' | 'outline-warning' | 'outline-danger' | 'blank' = 'primary';
   @Input() shClass?: string = '';
   @Input() shLabel?: string = '';
-  @Input() shSize?: 'xm' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
+  @Input() shSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
   @Input() shDisabled = false;
   @Input() shLoading = false;
   @Input() shIcon?: string;
