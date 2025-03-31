@@ -245,29 +245,6 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
     });
   }
 
-  async excelValid(rule: any, file: File): Promise<any> {
-    // đọc file excel và kiểm tra tính hợp lệ
-    let jsonData = await this.excelService.readFileExcelToJson(file);
-    let additional = jsonData[0].join(':');
-
-    if (
-      additional !== rule.additional ||
-      jsonData.length <= 1 ||
-      jsonData.length > (rule.entries + 1)
-    ) {
-      return {
-        data: null,
-        status: false
-      };
-    }
-
-    jsonData.shift();
-    return {
-      data: jsonData,
-      status: true
-    };
-  }
-
   parseResizeOptions(options: string): Record<string, any> {
     const result: Record<string, any> = {};
     const pairs = options.split(',').map(pair => pair.trim()); // Tách các cặp key-value
@@ -293,74 +270,42 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
 
   async handleFileInput(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
-    let valid = this.shDataVali ? this.parseDataVali(this.shDataVali) : null;
-    let rule = null;
+    let valid = this.shDataVali ? this.parseDataVali(this.shDataVali) : {};
+    let rule = valid.find((item: any) => item.key === 'file') || null;
 
-    if (valid?.length > 0) {
-      rule = valid[0].key === 'file' ? valid[0] : (valid[1]?.key === 'file' ? valid[1] : null);
-    }
-
-    if (input.files && input.files.length > 0) {
-      let file = input.files[0];
-      if (rule) {
-        const { type: allowedTypes, maxSize } = { type: rule.type, maxSize: rule.size };
-
-        let isValid = true;
-        let excelData: any = null;
-
-        // Kiểm tra loại file
-        if (allowedTypes) {
-          const allowedTypesArray = allowedTypes.split(':').map((type: string) => type.trim().toLowerCase());
-          const fileType = file.name.split('.').pop()?.toLowerCase() ?? '';
-          if (!allowedTypesArray.includes(fileType)) {
-            isValid = false;
-          } else if (fileType === 'xlsx' && allowedTypesArray.includes('xlsx')) { // kiểm tra tính hợp lệ của file excel nếu chỉ chấp nhận file excel
-            excelData = await this.excelValid(rule, file);
-            isValid = excelData.status;
-          }
-        }
-
-        // Kiểm tra kích thước file
-        if (maxSize) {
-          const maxSizeInBytes = parseInt(maxSize) * 1024; // Giả định maxSize là KB
-          if (file.size > maxSizeInBytes) {
-            isValid = false;
-          }
-        }
-
-        // Nếu toàn bộ hợp lệ, resize và nén ảnh nếu có thuộc tính resize
-        if (this.shResize) {
-          const [width, height] = this.shResize.replace(/\s+/g, '').split('x');
-          let param: any = null;
-          param = {
-            file,
-            width,
-            height,
-          };
-          if (this.shResizeOptions) {
-            const options = this.parseResizeOptions(this.shResizeOptions);
-            param = { ...param, ...options };
-          }
-
-          file = await this.imageService.resizeAndCompressImage(param);
-        }
-
-        if (isValid) {
-          this.classLoading = 'loading';
-          this.shChange.emit({
-            file: file,
-            data: excelData?.data || null
-          });
-        } else {
-          this.classLoading = '';
-        }
-
-      }
-    } else {
-      this.classLoading = '';
+    if (
+      !input.files ||
+      input.files.length === 0 ||
+      !rule
+    ) {
       this.shValue = '';
       input.files = null;
+      return;
     }
+
+    let file = input.files[0];
+
+    // Resize và nén ảnh nếu có thuộc tính resize và file là ảnh
+    let isImage = file.type.startsWith('image/');
+    if (this.shResize && isImage) {
+      const [width, height] = this.shResize.replace(/\s+/g, '').split('x');
+      let param: any = null;
+      param = {
+        file,
+        width,
+        height,
+      };
+      if (this.shResizeOptions) {
+        const options = this.parseResizeOptions(this.shResizeOptions);
+        param = { ...param, ...options };
+      }
+
+      file = await this.imageService.resizeAndCompressImage(param);
+    }
+
+    this.shChange.emit({
+      file: file
+    });
   }
 
   fileActive() {

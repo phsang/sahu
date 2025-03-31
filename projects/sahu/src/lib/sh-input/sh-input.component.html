@@ -100,7 +100,7 @@
 
 <div *ngIf="shType === 'file'" class="field-validation" #dropZone>
   <div class="{{shClass}}" *ngIf="shReview">
-    <label class="sh-file" ngClass="{{classLoading}}">
+    <label class="sh-file" ngClass="{{shLoading ? 'loading' : ''}}">
       <input
         [attr.type]="shType"
         [attr.name]="shName ?? null"
@@ -109,11 +109,11 @@
         [disabled]="shDisabled"
         (change)="handleFileInput($event)">
       <div class="remark">
-        <p><span class="gamboge_2 font600">Chọn</span> hoặc <span class="gamboge_2 font600">kéo thả ảnh</span> để tải lên</p>
+        <sh-icon [shIcon]="'image'"></sh-icon>
       </div>
       <img src="{{shValue}}" alt="input file" (load)="fileActive()">
       <button type="button" (click)="fileReset($event)">
-        <img src="assets/images/icons/ico-times.svg" alt="icon times">
+        <sh-icon [shIcon]="'times-circle:duotone'"></sh-icon>
       </button>
     </label>
   </div>
