@@ -100,7 +100,7 @@
 
 <div *ngIf="shType === 'file'" class="field-validation" #dropZone>
   <div class="{{shClass}}" *ngIf="shReview">
-    <label class="sh-file" ngClass="{{shLoading ? 'loading' : ''}}">
+    <label class="sh-file" ngClass="{{classLoading}}">
       <input
         [attr.type]="shType"
         [attr.name]="shName ?? null"
@@ -111,10 +111,13 @@
       <div class="remark">
         <sh-icon [shIcon]="'image'"></sh-icon>
       </div>
-      <img src="{{shValue}}" alt="input file" (load)="fileActive()">
-      <button type="button" (click)="fileReset($event)">
-        <sh-icon [shIcon]="'times-circle:duotone'"></sh-icon>
-      </button>
+      <img src="{{shValue || blobUrl}}" alt="input file" (load)="fileActive()">
+      <sh-button
+        [shIcon]="'times-circle:duotone'"
+        [shClass]="'sh-reset'"
+        [shVariant]="'blank'"
+        (shClick)="fileReset($event)">
+      </sh-button>
     </label>
   </div>
 

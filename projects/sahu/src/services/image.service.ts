@@ -103,9 +103,8 @@ export class ImageService {
     ctx.putImageData(new ImageData(newData, width, height), 0, 0);
   }
 
-  async resizeAndCompressImage(param: any): Promise<File> {
+  async resizeAndCompressImage(file: File, param: any): Promise<File> {
     const _default: any = {
-      file: null,
       quality: 100,
       width: 300,
       height: 300,
@@ -125,7 +124,7 @@ export class ImageService {
     options.format = 'image/' + options.format;
 
     const img = new Image();
-    const blobURL = URL.createObjectURL(options.file);
+    const blobURL = URL.createObjectURL(file);
 
     return new Promise<File>((resolve, reject) => {
       img.onload = async () => {
@@ -190,7 +189,7 @@ export class ImageService {
           );
 
           // Create a new File object from the Blob
-          const fileName = options.file.name.replace(/\.\w+$/, `.${options.format.split('/')[1]}`);
+          const fileName = file.name.replace(/\.\w+$/, `.${options.format.split('/')[1]}`);
           const resizedFile = new File([blob], fileName, {
             type: options.format,
           });

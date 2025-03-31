@@ -28,8 +28,7 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   @Input() shId?: string;
   @Input() shValue?: string;
   @Input() shAllowClear: boolean = false;
-  @Input() shResize?: string; // [shResize]="'606x212'" - resize ảnh kèm theo các options
-  @Input() shResizeOptions?: string;
+  @Input() shImageProcess?: any;
   @Input() shReadonly: boolean = false;
   @Input() shDisabled: boolean = false;
   @Input() shLabel?: string; // sử dụng cho radio, checkbox
@@ -47,6 +46,7 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
   iconRight: string = '';
   classLoading = '';
   value: string = '';
+  blobUrl = '';
 
   onChange: any = () => { };
   onTouched: any = () => { };
@@ -245,33 +245,11 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
     });
   }
 
-  parseResizeOptions(options: string): Record<string, any> {
-    const result: Record<string, any> = {};
-    const pairs = options.split(',').map(pair => pair.trim()); // Tách các cặp key-value
-
-    pairs.forEach(pair => {
-      const [key, value] = pair.split(':').map(item => item.trim());
-      if (!key) return;
-
-      // Kiểm tra giá trị và parse đúng kiểu
-      if (value === 'true' || value === 'false') {
-        result[key] = value === 'true';
-      } else if (!isNaN(Number(value))) {
-        result[key] = Number(value);
-      } else if (value.startsWith('#') || value.startsWith('"') || value.startsWith("'")) {
-        result[key] = value.replace(/^["']|["']$/g, ''); // Loại bỏ dấu nháy nếu có
-      } else {
-        result[key] = value;
-      }
-    });
-
-    return result;
-  }
-
   async handleFileInput(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     let valid = this.shDataVali ? this.parseDataVali(this.shDataVali) : {};
     let rule = valid.find((item: any) => item.key === 'file') || null;
+    this.classLoading = 'loading';
 
     if (
       !input.files ||
@@ -283,26 +261,38 @@ export class ShInputComponent implements ControlValueAccessor, OnInit {
       return;
     }
 
+    const { type: allowedTypes, maxSize } = { type: rule.type, maxSize: rule.size };
     let file = input.files[0];
-
-    // Resize và nén ảnh nếu có thuộc tính resize và file là ảnh
     let isImage = file.type.startsWith('image/');
-    if (this.shResize && isImage) {
-      const [width, height] = this.shResize.replace(/\s+/g, '').split('x');
-      let param: any = null;
-      param = {
-        file,
-        width,
-        height,
-      };
-      if (this.shResizeOptions) {
-        const options = this.parseResizeOptions(this.shResizeOptions);
-        param = { ...param, ...options };
-      }
+    let isValid = true;
 
-      file = await this.imageService.resizeAndCompressImage(param);
+    // Kiểm tra loại file
+    if (allowedTypes) {
+      const allowedTypesArray = allowedTypes.split(':').map((type: string) => type.trim().toLowerCase());
+      const fileType = file.name.split('.').pop()?.toLowerCase() ?? '';
+      if (!allowedTypesArray.includes(fileType)) {
+        isValid = false;
+      }
     }
 
+    // Kiểm tra kích thước file
+    if (maxSize) {
+      const maxSizeInBytes = parseInt(maxSize) * 1024; // Giả định maxSize là KB
+      if (file.size > maxSizeInBytes) {
+        isValid = false;
+      }
+    }
+
+    if (!isValid) {
+      this.classLoading = '';
+      return;
+    }
+
+    if (this.shImageProcess && isImage) {
+      file = await this.imageService.resizeAndCompressImage(file, this.shImageProcess);
+    }
+
+    this.blobUrl = URL.createObjectURL(file);
     this.shChange.emit({
       file: file
     });
